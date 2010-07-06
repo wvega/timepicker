@@ -4,7 +4,7 @@
  * A jQuery plugin to enhacen standard form input fields helpings users to
  * select (or type) times.
  *
- * @author Willington Vega <wvega@sinapsis.com.co>
+ * @author Willington Vega <wvega@wvega.com>
  * @url: http://github.com/wvega/timepicker
  * @ducumentation: coming soon...
  * @published: soon...
@@ -32,7 +32,7 @@ if(typeof jQuery != 'undefined') {
             // build the timepicker element
             self._build();
 
-            self.timepicker.delegate('a', 'mouseenter mouseleave', function(event) {
+            self.timepicker.delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
                 if (event.type == 'mouseover') {
                     self.activate($(this).parent());
                 } else {
@@ -44,7 +44,7 @@ if(typeof jQuery != 'undefined') {
             }).appendTo('body', doc);
 
             // handle time input events
-            self.element.keypress(function(event) {
+            self.element.bind('keypress.timepicker keydown.timepicker', function(event) {
                 var next = null;
                 switch (event.keyCode) {
                     case self.keyCode.ENTER:
@@ -67,9 +67,9 @@ if(typeof jQuery != 'undefined') {
                         self.close();
                         break;
                 }
-            }).focus(function() {
+            }).bind('focus.timepicker', function() {
                 self.open();
-            }).change(function(event) {
+            }).bind('change.timepicker', function(event) {
                 if (self.closed) {
                     self.setTime($.fn.timepicker.parseTime(self.element.val()));
                 }
@@ -338,6 +338,10 @@ if(typeof jQuery != 'undefined') {
                 return self.element
             },
 
+            destroy: function() {
+                return this.element.unbind('.timepicker').data('TimePicker', null);
+            },
+
             getTime: function() {
                 if (this.selectedTime) {
                     return this.selectedTime
@@ -347,12 +351,14 @@ if(typeof jQuery != 'undefined') {
 
             setTime: function(time) {
                 var self = this;
-                // user should provided a Date object, no checks for null or undefined.
-                self.element.val($.fn.timepicker.formatTime(self.options.timeFormat, time));
-                self.selectedTime = time;
-                
-                if (self.options.onChange && $.isFunction(self.options.onChange)) {
-                    self.options.onChange(time);
+
+                if (time && time.getMinutes) {
+                    self.element.val($.fn.timepicker.formatTime(self.options.timeFormat, time));
+                    self.selectedTime = time;
+                    
+                    if (self.options.change && $.isFunction(self.options.change)) {
+                        self.options.change(time);
+                    }
                 }
             }
         }
@@ -369,7 +375,8 @@ if(typeof jQuery != 'undefined') {
             startMinute: 0,
             startTime: null,
             interval: 30,
-            onChange: null
+            // callbacks
+            change: function(time) {}
         };
 
         $.fn.timepicker = function(options) {
@@ -382,9 +389,9 @@ if(typeof jQuery != 'undefined') {
             if (this.data('TimePicker')) {
                 return this.data('TimePicker');
             }
-
+            
             var globals = $.extend({}, $.TimePicker.defaults, options);
-
+            
             return this.each(function(){
                 (new $.TimePicker(this, globals));
             });
@@ -393,11 +400,11 @@ if(typeof jQuery != 'undefined') {
         /**
          * TODO: write documentation
          */
-        $.fn.timepicker.formatTime = function(format, date) {
-            var hours = date.getHours(),
+        $.fn.timepicker.formatTime = function(format, time) {
+            var hours = time.getHours(),
                 hours12 = hours % 12,
-                minutes = date.getMinutes(),
-                seconds = date.getSeconds(),
+                minutes = time.getMinutes(),
+                seconds = time.getSeconds(),
                 replacements = {
                     hh: pad((hours12 == 0 ? 12 : hours12).toString(), '0', 2),
                     HH: pad(hours.toString(), '0', 2),
@@ -462,50 +469,21 @@ if(typeof jQuery != 'undefined') {
                     [/^:(\d+)/, '$1'],
                     // 6:06, 5:59, 5:8
                     [/^(\d):([7-9])$/, '0$10$2'],
-                    [/^(\d):(\d)$/, '0$1$20'],
                     [/^(\d):(\d\d)$/, '$1$2'],
+                    [/^(\d):(\d{1,})$/, '0$1$20'],
                     // 10:8, 10:10, 10:34
                     [/^(\d\d):([7-9])$/, '$10$2'],
                     [/^(\d\d):(\d)$/, '$1$20'],
                     [/^(\d\d):(\d*)$/, '$1$2'],
                     // 123:4, 1234:456
                     [/^(\d{3,}):(\d)$/, '$10$2'],
-                    [/^(\d{3,}):(\d{2,})/, '$1$2']];
-
-            // testing
-            /*setTimeout(function() {
-                console.time('Test parseTime()');
-                var input = [
-                        '1', '11', '111', '1234', '12345', '123456',
-                        ':1', ':2', ':3', ':4', ':5', ':6', ':7', ':8', ':9',
-                        ':12', ':123', ':1234', ':12345', ':123456', ':1234567', ':61', ':62', ':1261',
-                        '1:7', '2:8', '3:9',
-                        '1:1', '6:1', '1:6', '7:1',
-                        '8:60', '8:59', '7:35', '3:45',
-                        '10:7', '21:08',
-                        '10:10', '10:60',
-                        '10:1', '10:3', '10:5',
-                        '6:0660', '6:032',
-                        '1:23','2:345', '3:4567', '4:56012',
-                        '123:4', '1234:5',
-                        '123:45', '1234:56'],
-                    k = 0, i = 0, str, formated, date, f = $.fn.timepicker.parseTime;
-
-                for (k in input) {
-                    for (i in patterns) {
-                        if (patterns[i][0].test(input[k])) {
-                            str = input[k].replace(patterns[i][0], patterns[i][1]);
-                            date = f(str);
-                            formated = date ? $.fn.timepicker.formatTime('hh:mm p', date) : 'Oops!';
-                            console.log(input[k], patterns[i][0], str, formated);
-                        }
-                    }
-                }
-                console.timeEnd('Test parseTime()');
-            }, 1000);*/
+                    [/^(\d{3,}):(\d{2,})/, '$1$2'],
+                    //
+                    [/^(\d):(\d):(\d)$/, '0$10$20$3'],
+                    [/^(\d{1,2}):(\d):(\d\d)/, '$10$2$3']];
 
             return function(str) {
-                var date = new Date(),
+                var time = new Date(),
                     am = false, pm = false, h = false, m = false, s = false, k = 0;
                 str = str.toLowerCase();
                 am = /a/.test(str);
@@ -518,6 +496,7 @@ if(typeof jQuery != 'undefined') {
                         break;
                     }
                 }
+                str = str.replace(/:/g, '');
 
                 if (str.length == 1) {
                     h = str;
@@ -555,8 +534,8 @@ if(typeof jQuery != 'undefined') {
                 if (h > 24 && (h % 10) <= 6 && m <= 60 && s <= 60) {
                     return $.fn.timepicker.parseTime(str + '0' + (am ? 'a' : '') + (pm ? 'p' : ''));
                 } else if (h <= 24 && m <= 60 && s <= 60) {
-                    date.setHours(h, m, s);
-                    return date;
+                    time.setHours(h, m, s);
+                    return time;
                 } else {
                     return false;
                 }

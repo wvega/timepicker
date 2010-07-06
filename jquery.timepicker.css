@@ -1,0 +1,10 @@
+.ui-timepicker {
+    position: absolute;
+    padding: 2px;
+    height: 200px;
+    text-align: center;
+    overflow: auto;
+}
+/*.ui-timepicker:focus {
+    outline: 0;
+}*/
