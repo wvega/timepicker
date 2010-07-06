@@ -1,8 +1,8 @@
 /**
  * TimePicker
  *
- * A jQuery plugin to enhacen standard form input fields in order to select (or
- * type) times.
+ * A jQuery plugin to enhacen standard form input fields helpings users to
+ * select (or type) times.
  *
  * @author Willington Vega <wvega@sinapsis.com.co>
  * @url: http://github.com/wvega/timepicker
@@ -41,7 +41,7 @@ if(typeof jQuery != 'undefined') {
             }).delegate('a', 'click', function(event) {
                 event.preventDefault();
                 self.select($(this).parent());
-            }).insertAfter('body', doc);
+            }).appendTo('body', doc);
 
             // handle time input events
             self.element.keypress(function(event) {
