@@ -7,7 +7,13 @@ A jQuery plugin to enhance standard form input fields helpings users to select
 Usage
 -----
 
-    $('input.timepicker').timepicker();
+    # Include jquery.timepicker.js file.
+    # Include jquery.timepicker.css file.
+    # Initialize the plugin when the DOM is ready:
+
+        $(document).ready(function(){
+            $('input.timepicker').timepicker({});
+        });
 
 Options
 -------
