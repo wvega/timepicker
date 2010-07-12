@@ -1,15 +1,28 @@
-/**
- * TimePicker
- *
- * A jQuery plugin to enhacen standard form input fields helpings users to
- * select (or type) times.
- *
- * @author Willington Vega <wvega@wvega.com>
- * @url: http://github.com/wvega/timepicker
- * @ducumentation: coming soon...
- * @published: soon...
- * @updated: right now
- */
+// jQuery TimePicker plugin
+//
+// A jQuery plugin to enhance standard form input fields helpings users to select
+// (or type) times.
+//
+// Copyright (c) 2010 Willington Vega, http://wvega.com/
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 if(typeof jQuery != 'undefined') {
     (function($){
         var pad  = function(str, ch, length) {
@@ -21,31 +34,26 @@ if(typeof jQuery != 'undefined') {
 
             self.element = $(element).data("TimePicker", self).attr('autocomplete', 'off');
             self.selectedTime = $.fn.timepicker.parseTime(self.element.val());
-
             self.options = $.metadata ? $.extend({}, options, self.element.metadata()) : options;
 
             if (self.element.attr('id').length === 0) {
                 self.element.attr('id', 'timepicker-field-' + (new Date()).getTime());
             }
-
-            // TODO: rename timepicker to menu
-            // build the timepicker element
             self._build();
 
             self.timepicker.delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
                 if (event.type == 'mouseover') {
-                    self.activate($(this).parent());
+                    self._activate($(this).parent());
                 } else {
-                    self.deactivate();
+                    self._deactivate();
                 }
             }).delegate('a', 'click', function(event) {
                 event.preventDefault();
-                self.select($(this).parent());
+                self._select($(this).parent());
             }).appendTo('body', doc);
 
-            // handle time input events
-            self.element.bind('keypress.timepicker keydown.timepicker', function(event) {
-                var next = null;
+            // handle input field events
+            self.element.bind('keypress.timepicker', function(event) {
                 switch (event.keyCode) {
                     case self.keyCode.ENTER:
                     case self.keyCode.NUMPAD_ENTER:
@@ -53,7 +61,7 @@ if(typeof jQuery != 'undefined') {
                         if (self.closed) {
                             self.element.change();
                         } else {
-                            self.select(self.active);
+                            self._select(self.active);
                         }
                         break;
                     case self.keyCode.UP:
@@ -92,10 +100,7 @@ if(typeof jQuery != 'undefined') {
                 TAB: 9,
                 UP: 38
             },
-
-            /**
-             * TODO: is there a better way?
-             */
+            
             _isValidTime: function(time) {
                 var self = this, min = null, max = null;
 
@@ -141,10 +146,7 @@ if(typeof jQuery != 'undefined') {
 
                 return true;
             },
-
-            /**
-             * TODO: is there a better way?
-             */
+            
             _populate: function(startTime) {
                 var self = this, item = null,
                     ticks = 60 / self.options.interval,
@@ -179,8 +181,8 @@ if(typeof jQuery != 'undefined') {
                         limitTick = lastTick;
                     }
                     for (var i=startTick; i < limitTick; i++) {
-                        hour = pad((h % 24).toString(), '0', 2)
-                        min = pad(((i % ticks) * self.options.interval).toString(), '0', 2)
+                        hour = pad((h % 24).toString(), '0', 2);
+                        min = pad(((i % ticks) * self.options.interval).toString(), '0', 2);
                         time.setHours(hour, min);
                         if (self._isValidTime(time)) {
                             item = $('<li>')
@@ -205,6 +207,60 @@ if(typeof jQuery != 'undefined') {
                 this._populate();
             },
 
+            _hasScroll: function() {
+                return this.timepicker.height() < this.timepicker.attr('scrollHeight');
+            },
+
+            _activate: function(item) {
+                this._deactivate();
+                if (this._hasScroll()) {
+                    var offset = item.offset().top - this.timepicker.offset().top,
+                        scroll = this.timepicker.scrollTop(),
+                        height = this.timepicker.height();
+                    if (offset < 0) {
+                        this.timepicker.scrollTop(scroll + offset);
+                    } else if (offset > height) {
+                        this.timepicker.scrollTop(scroll + offset - height + item.height());
+                    }
+                }
+                this.active = item.eq(0)
+                    .children('a')
+                        .addClass('ui-state-hover')
+                        .attr('id', 'ui-active-item')
+                    .end();
+            },
+
+            _deactivate: function() {
+                if (!this.active) {return;}
+                this.active.children('a')
+                    .removeClass('ui-state-hover')
+                    .removeAttr('id');
+                this.active = null;
+            },
+
+            _select: function(item) {
+                // update fields value
+                this.setTime($.fn.timepicker.parseTime( item.children('a').text() ));
+                // close menu
+                this.close();
+            },
+
+            _move: function(direction, edge) {
+                if (this.closed) {
+                    this.open();
+                }
+                if (!this.active) {
+                    this._activate(this.timepicker.children(edge));
+                    return;
+                }
+                var next = this.active[direction + 'All']('.ui-menu-item').eq(0);
+                if (next.length) {
+                    this._activate(next);
+                } else {
+                    this._activate(this.timepicker.children(edge));
+                }
+            },
+
             option: function(key, value) {
                 if (arguments.length > 1) {
                     if (this.options.hasOwnProperty(key)) {
@@ -215,46 +271,11 @@ if(typeof jQuery != 'undefined') {
                 return this.options[key];
             },
 
-            select: function(item) {
-                // update fields value
-                this.setTime($.fn.timepicker.parseTime( item.children('a').text() ));
-                // close menu
-                this.close();
-            },
-
             /**
-             * activate, deactivate, first, last, next, previous, _move and
+             * _activate, _deactivate, first, last, next, previous, _move and
              * _hasScroll were extracted from jQuery UI Menu
              * http://github,com/jquery/jquery-ui/blob/menu/ui/jquery.ui.menu.js
              */
-            
-            activate: function(item) {
-                this.deactivate();
-                if (this._hasScroll()) {
-                    var offset = item.offset().top - this.timepicker.offset().top,
-                        scroll = this.timepicker.scrollTop(),
-                        height = this.timepicker.height();
-                    if (offset < 0) {
-                        this.timepicker.scrollTop(scroll + offset);
-                    } else if (offset > height) {
-                        console.log(scroll + offset - height + item.height());
-                        this.timepicker.scrollTop(scroll + offset - height + item.height());
-                    }
-                }
-                this.active = item.eq(0)
-                    .children('a')
-                        .addClass('ui-state-hover')
-                        .attr('id', 'ui-active-item')
-                    .end();
-            },
-            
-            deactivate: function() {
-                if (!this.active) { return; }
-                this.active.children('a')
-                    .removeClass('ui-state-hover')
-                    .removeAttr('id');
-                this.active = null;
-            },
 
             next: function() {
                 this._move('next', '.ui-menu-item:first');
@@ -272,24 +293,8 @@ if(typeof jQuery != 'undefined') {
                 return this.active && !this.active.nextAll('.ui-menu-item').length;
             },
 
-            _move: function(direction, edge) {
-                if (this.closed) {
-                    this.open();
-                }
-                if (!this.active) {
-                    this.activate(this.timepicker.children(edge));
-                    return;
-                }
-                var next = this.active[direction + 'All']('.ui-menu-item').eq(0);
-                if (next.length) {
-                    this.activate(next);
-                } else {
-                    this.activate(this.timepicker.children(edge));
-                }
-            },
-
-            _hasScroll: function() {
-                return this.timepicker.height() < this.timepicker.attr('scrollHeight');
+            selected: function() {
+                return this.active ? this.active : null;
             },
 
             open: function() {
@@ -308,7 +313,7 @@ if(typeof jQuery != 'undefined') {
                     self.timepicker.css(properties);
 
                     self.timepicker.removeClass('ui-helper-hidden').addClass('ui-menu');
-                    $('body').bind('focusin.timepicker click.timepicker', function(event) {
+                    $('html').bind('focusin.timepicker click.timepicker', function(event) {
                         var target = $(event.target),
                             parent = target.closest('#' + self.timepicker.attr('id'));
                         // Do nothing if the target is within the timepicker,
@@ -335,7 +340,7 @@ if(typeof jQuery != 'undefined') {
                     self.closed = true;
                 }
                 // don't break chain
-                return self.element
+                return self.element;
             },
 
             destroy: function() {
@@ -344,7 +349,7 @@ if(typeof jQuery != 'undefined') {
 
             getTime: function() {
                 if (this.selectedTime) {
-                    return this.selectedTime
+                    return this.selectedTime;
                 }
                 return null;
             },
@@ -361,7 +366,7 @@ if(typeof jQuery != 'undefined') {
                     }
                 }
             }
-        }
+        };
 
         $.TimePicker.defaults =  {
             timeFormat: 'hh:mm p',
@@ -406,11 +411,11 @@ if(typeof jQuery != 'undefined') {
                 minutes = time.getMinutes(),
                 seconds = time.getSeconds(),
                 replacements = {
-                    hh: pad((hours12 == 0 ? 12 : hours12).toString(), '0', 2),
+                    hh: pad((hours12 === 0 ? 12 : hours12).toString(), '0', 2),
                     HH: pad(hours.toString(), '0', 2),
                     mm: pad(minutes.toString(), '0', 2),
                     ss: pad(seconds.toString(), '0', 2),
-                    h: (hours12 == 0 ? 12 : hours12),
+                    h: (hours12 === 0 ? 12 : hours12),
                     H: hours,
                     m: minutes,
                     s: seconds,
@@ -418,8 +423,9 @@ if(typeof jQuery != 'undefined') {
                 },
                 str = format, k = '';
             for (k in replacements) {
-                //console.log(str, new RegExp(k,'g'), replacements[k], str.replace(k, replacements[k]));
-                str = str.replace(new RegExp(k,'g'), replacements[k]);
+                if (replacements.hasOwnProperty(k)) {
+                    str = str.replace(new RegExp(k,'g'), replacements[k]);
+                }
             }
             return str;
         };
@@ -539,7 +545,7 @@ if(typeof jQuery != 'undefined') {
                 } else {
                     return false;
                 }
-            }
+            };
         })();
     })(jQuery);
 }
