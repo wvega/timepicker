@@ -110,14 +110,14 @@ if(typeof jQuery != 'undefined') {
                     min = new Date();
                     min.setTime(time.valueOf());
                     min.setHours(self.options.minTime.getHours(), self.options.minTime.getMinutes(), 0, 0);
-                } else if (self.options.minHour !== null || self.options.minMinute !== null) {
+                } else if (self.options.minHour !== null || self.options.minMinutes !== null) {
                     min = new Date();
                     min.setTime(time.valueOf());
                     if (self.options.minHour !== null) {
                         min.setHours(self.options.minHour, 0, 0, 0);
                     }
-                    if (self.options.minMinute !== null) {
-                        min.setMinutes(self.options.minMinute, 0, 0);
+                    if (self.options.minMinutes !== null) {
+                        min.setMinutes(self.options.minMinutes, 0, 0);
                     }
                 }
 
@@ -125,14 +125,14 @@ if(typeof jQuery != 'undefined') {
                     max = new Date();
                     max.setTime(time.valueOf());
                     max.setHours(self.options.maxTime.getHours(), self.options.maxTime.getMinutes(), 0, 0);
-                } else if (self.options.maxHour !== null || self.options.maxMinute !== null) {
+                } else if (self.options.maxHour !== null || self.options.maxMinutes !== null) {
                     max = new Date();
                     max.setTime(time.valueOf());
                     if (self.options.maxHour !== null) {
                         max.setHours(self.options.maxHour, 0, 0, 0);
                     }
-                    if (self.options.maxMinute !== null) {
-                        max.setMinutes(self.options.maxMinute, 0, 0);
+                    if (self.options.maxMinutes !== null) {
+                        max.setMinutes(self.options.maxMinutes, 0, 0);
                     }
                 }
 
@@ -161,7 +161,7 @@ if(typeof jQuery != 'undefined') {
                     startTick = Math.ceil(self.options.startTime.getMinutes() / self.options.interval);
                 } else {
                     startHour = self.options.startHour;
-                    startTick = Math.ceil(self.options.startMinute / self.options.interval);
+                    startTick = Math.ceil(self.options.startMinutes / self.options.interval);
                 }
                 // if startTick is not zero some times may be lost, we need to
                 // add those at the end of the list. WTF :S?
@@ -371,13 +371,13 @@ if(typeof jQuery != 'undefined') {
         $.TimePicker.defaults =  {
             timeFormat: 'hh:mm p',
             minHour: null,
-            minMinute: null,
+            minMinutes: null,
             minTime: null,
             maxHour: null,
-            maxMinute: null,
+            maxMinutes: null,
             maxTime: null,
             startHour: 7,
-            startMinute: 0,
+            startMinutes: 0,
             startTime: null,
             interval: 30,
             // callbacks
