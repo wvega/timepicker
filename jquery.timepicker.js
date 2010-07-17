@@ -1,4 +1,4 @@
-// jQuery TimePicker plugin
+// jQuery TimePicker plugin - http://github.com/wvega/timepicker
 //
 // A jQuery plugin to enhance standard form input fields helping users to select
 // (or type) times.
@@ -403,7 +403,7 @@ if(typeof jQuery != 'undefined') {
         };
         
         /**
-         * TODO: write documentation
+         * TODO: documentation
          */
         $.fn.timepicker.formatTime = function(format, time) {
             var hours = time.getHours(),
@@ -431,8 +431,6 @@ if(typeof jQuery != 'undefined') {
         };
 
         /**
-         * TODO: Handle 10p:1 -> 10:10pm, 10:01p -> 10:01 pm, 10:00:01p 10:00 pm
-         *
          * Convert a string representing a given time into a Date object.
          *
          * The Date object will have attributes others than hours, minutes and
@@ -464,6 +462,9 @@ if(typeof jQuery != 'undefined') {
          * '95' is treated as '950' and converted to 09:50:00 am
          * '46' is treated as '460' and converted to 05:00:00 am
          * '57' can't be converted and the function returns false.
+         *
+         * For a detailed list of supported formats check the unit tests at
+         * http://github.com/wvega/timepicker/tree/master/tests/
          */
         $.fn.timepicker.parseTime = (function() {
             var patterns = [
