@@ -1,7 +1,7 @@
 jQuery TimePicker plugin
 ========================
 
-A jQuery plugin to enhance standard form input fields helpings users to select
+A jQuery plugin to enhance standard form input fields helping users to select
 (or type) times.
 
 Usage
