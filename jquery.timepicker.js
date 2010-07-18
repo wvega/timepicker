@@ -41,7 +41,7 @@ if(typeof jQuery != 'undefined') {
             }
             self._build();
 
-            self.timepicker.delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
+            self.menu.delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
                 if (event.type == 'mouseover') {
                     self._activate($(this).parent());
                 } else {
@@ -53,8 +53,8 @@ if(typeof jQuery != 'undefined') {
             }).appendTo('body', doc);
 
             // handle input field events
-            self.element.bind('keypress.timepicker', function(event) {
-                switch (event.keyCode) {
+            self.element.bind('keydown.timepicker', function(event) {
+                switch (event.which) {
                     case self.keyCode.ENTER:
                     case self.keyCode.NUMPAD_ENTER:
                         event.preventDefault();
@@ -175,7 +175,7 @@ if(typeof jQuery != 'undefined') {
                 lastTick = startTick;
                 limitTick = ticks;
 
-                self.timepicker.empty();
+                self.menu.empty();
                 for (var h = startHour; h < limitHour; h++) {
                     if (h == limitHour -1) {
                         limitTick = lastTick;
@@ -187,7 +187,7 @@ if(typeof jQuery != 'undefined') {
                         if (self._isValidTime(time)) {
                             item = $('<li>')
                                 .addClass('ui-menu-item')
-                                .appendTo(self.timepicker);
+                                .appendTo(self.menu);
                             $('<a>')
                                 .addClass('ui-corner-all')
                                 .text($.fn.timepicker.formatTime(self.options.timeFormat, time))
@@ -199,7 +199,7 @@ if(typeof jQuery != 'undefined') {
             },
             
             _build: function() {
-                this.timepicker = $('<ul>', {id: 'timepícker-' + (new Date()).getTime()})
+                this.menu = $('<ul>', {id: 'timepicker-' + (new Date()).getTime()})
                     .addClass('ui-timepicker ui-widget ui-widget-content')
                     .addClass('ui-corner-all ui-helper-hidden');
                 this.closed = true;
@@ -208,19 +208,19 @@ if(typeof jQuery != 'undefined') {
             },
 
             _hasScroll: function() {
-                return this.timepicker.height() < this.timepicker.attr('scrollHeight');
+                return this.menu.height() < this.menu.attr('scrollHeight');
             },
 
             _activate: function(item) {
                 this._deactivate();
                 if (this._hasScroll()) {
-                    var offset = item.offset().top - this.timepicker.offset().top,
-                        scroll = this.timepicker.scrollTop(),
-                        height = this.timepicker.height();
+                    var offset = item.offset().top - this.menu.offset().top,
+                        scroll = this.menu.scrollTop(),
+                        height = this.menu.height();
                     if (offset < 0) {
-                        this.timepicker.scrollTop(scroll + offset);
+                        this.menu.scrollTop(scroll + offset);
                     } else if (offset > height) {
-                        this.timepicker.scrollTop(scroll + offset - height + item.height());
+                        this.menu.scrollTop(scroll + offset - height + item.height());
                     }
                 }
                 this.active = item.eq(0)
@@ -250,14 +250,14 @@ if(typeof jQuery != 'undefined') {
                     this.open();
                 }
                 if (!this.active) {
-                    this._activate(this.timepicker.children(edge));
+                    this._activate(this.menu.children(edge));
                     return;
                 }
                 var next = this.active[direction + 'All']('.ui-menu-item').eq(0);
                 if (next.length) {
                     this._activate(next);
                 } else {
-                    this._activate(this.timepicker.children(edge));
+                    this._activate(this.menu.children(edge));
                 }
             },
 
@@ -300,7 +300,7 @@ if(typeof jQuery != 'undefined') {
             open: function() {
                 var self = this;
                 if (self.closed) {
-                    // if a date is already selected arrange the items in the list
+                    // if a date is already selected, arrange the items in the list
                     // so the first item is cronologically right after the selected
                     // date.
                     if (self.selectedTime) {
@@ -310,19 +310,20 @@ if(typeof jQuery != 'undefined') {
                     var properties = self.element.offset();
                     properties.top = properties.top + self.element.outerHeight();
                     properties.width = self.element.innerWidth();
-                    self.timepicker.css(properties);
+                    self.menu.css(properties);
 
-                    self.timepicker.removeClass('ui-helper-hidden').addClass('ui-menu');
+                    self.menu.removeClass('ui-helper-hidden').addClass('ui-menu');
                     $('html').bind('focusin.timepicker click.timepicker', function(event) {
                         var target = $(event.target),
-                            parent = target.closest('#' + self.timepicker.attr('id'));
+                            parent = target.closest('#' + self.menu.attr('id'));
                         // Do nothing if the target is within the timepicker,
                         // is the timepicker or is the associated input field.
                         if (parent.length > 0 || target.attr('id') === self.element.attr('id')) {
-                            //console.log('Not closing...', event);
+                            // pass
                         } else {
-                            //console.log('Closing...', event);
-                            self.close();
+                            setTimeout(function() {
+                                self.close();
+                            }, 50);
                         }
                     });
                     self.closed = false;
@@ -334,9 +335,9 @@ if(typeof jQuery != 'undefined') {
             close: function() {
                 var self = this;
                 if (!self.closed) {
-                    self.timepicker.scrollTop(0).addClass('ui-helper-hidden').removeClass('ui-menu');
-                    self.timepicker.children().removeClass('ui-state-hover');
-                    $('body').unbind('.timepciker');
+                    self.menu.scrollTop(0).addClass('ui-helper-hidden').removeClass('ui-menu');
+                    self.menu.children().removeClass('ui-state-hover');
+                    $('html').unbind('.timepciker');
                     self.closed = true;
                 }
                 // don't break chain

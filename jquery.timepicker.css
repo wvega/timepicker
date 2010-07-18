@@ -48,6 +48,7 @@
     height: 200px;
     text-align: center;
     overflow: auto;
+    overflow-x: hidden; /* IE */
 }
 
 .ui-helper-clearfix {
@@ -57,4 +58,5 @@
 }
 .ui-corner-all {
     -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
 }
