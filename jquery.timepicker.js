@@ -3,7 +3,7 @@
 // A jQuery plugin to enhance standard form input fields helping users to select
 // (or type) times.
 //
-// Copyright (c) 2010 Willington Vega, http://wvega.com/
+// Copyright (c) 2010 Willington Vega <wvega@wvega.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+
+// Define a cross-browser window.console.log method.
+// For IE and FF without Firebug, fallback to using an alert.
+//if (!window.console) {
+//    var log = window.opera ? window.opera.postError : alert;
+//    window.console = { log: function(str) { log(str) } };
+//}
+
 if(typeof jQuery != 'undefined') {
     (function($){
         var pad  = function(str, ch, length) {
@@ -41,20 +49,24 @@ if(typeof jQuery != 'undefined') {
             }
             self._build();
 
-            self.menu.delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
+            self.menu.appendTo('body', doc)
+            .delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
                 if (event.type == 'mouseover') {
                     self._activate($(this).parent());
                 } else {
                     self._deactivate();
                 }
-            }).delegate('a', 'click', function(event) {
+            }).delegate('a', 'click.timepicker', function(event) {
+                clearTimeout(self.closing);
                 event.preventDefault();
                 self._select($(this).parent());
-            }).appendTo('body', doc);
+            }).bind('click.timepicker, scroll.timepicker', function(event) {
+                clearTimeout(self.closing);
+            });
 
             // handle input field events
             self.element.bind('keydown.timepicker', function(event) {
-                switch (event.which) {
+                switch (event.which || event.keyCode) {
                     case self.keyCode.ENTER:
                     case self.keyCode.NUMPAD_ENTER:
                         event.preventDefault();
@@ -75,8 +87,12 @@ if(typeof jQuery != 'undefined') {
                         self.close();
                         break;
                 }
-            }).bind('focus.timepicker', function() {
+            }).bind('focus.timepicker', function(event) {
                 self.open();
+            }).bind('blur.timepicker', function(event) {
+                self.closing = setTimeout(function(){
+                    self.close();
+                }, 150);
             }).bind('change.timepicker', function(event) {
                 if (self.closed) {
                     self.setTime($.fn.timepicker.parseTime(self.element.val()));
@@ -219,7 +235,7 @@ if(typeof jQuery != 'undefined') {
                         height = this.menu.height();
                     if (offset < 0) {
                         this.menu.scrollTop(scroll + offset);
-                    } else if (offset > height) {
+                    } else if (offset >= height) {
                         this.menu.scrollTop(scroll + offset - height + item.height());
                     }
                 }
@@ -239,9 +255,7 @@ if(typeof jQuery != 'undefined') {
             },
 
             _select: function(item) {
-                // update fields value
                 this.setTime($.fn.timepicker.parseTime( item.children('a').text() ));
-                // close menu
                 this.close();
             },
 
@@ -278,10 +292,12 @@ if(typeof jQuery != 'undefined') {
              */
 
             next: function() {
+//                console.log('next');
                 this._move('next', '.ui-menu-item:first');
             },
 
             previous: function() {
+//                console.log('previous');
                 this._move('prev', '.ui-menu-item:last');
             },
 
@@ -310,37 +326,22 @@ if(typeof jQuery != 'undefined') {
                     var properties = self.element.offset();
                     properties.top = properties.top + self.element.outerHeight();
                     properties.width = self.element.innerWidth();
-                    self.menu.css(properties);
-
-                    self.menu.removeClass('ui-helper-hidden').addClass('ui-menu');
-                    $('html').bind('focusin.timepicker click.timepicker', function(event) {
-                        var target = $(event.target),
-                            parent = target.closest('#' + self.menu.attr('id'));
-                        // Do nothing if the target is within the timepicker,
-                        // is the timepicker or is the associated input field.
-                        if (parent.length > 0 || target.attr('id') === self.element.attr('id')) {
-                            // pass
-                        } else {
-                            setTimeout(function() {
-                                self.close();
-                            }, 50);
-                        }
-                    });
+                    self.menu.css(properties).removeClass('ui-helper-hidden').addClass('ui-menu');
                     self.closed = false;
                 }
-                // don't break chain
+                // don't break the chain
                 return self.element;
             },
 
             close: function() {
                 var self = this;
+                clearTimeout(self.closing);
                 if (!self.closed) {
                     self.menu.scrollTop(0).addClass('ui-helper-hidden').removeClass('ui-menu');
                     self.menu.children().removeClass('ui-state-hover');
                     $('html').unbind('.timepciker');
                     self.closed = true;
                 }
-                // don't break chain
                 return self.element;
             },
 
