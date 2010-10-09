@@ -1,0 +1,11 @@
+* Fri Oct 08 2010 - Version 1.0.2
+- Add support for jQuery 1.3 and superior (thanks to Brian Link)
+
+
+* Thu Oct 07 2010 - Version 1.0.1
+- Fix selection issue in some versions of IE.
+  http://github.com/wvega/timepicker/issues/closed/#issue/3
+  
+
+* Wed Jul 17 2010 - Version 1.0.0
+- jQuery Timepicker official release

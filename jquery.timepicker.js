@@ -49,22 +49,34 @@ if(typeof jQuery != 'undefined') {
             }
             self._build();
 
-            self.menu.appendTo('body', doc)
-            .delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
-                if (event.type == 'mouseover') {
-                    self._activate($(this).parent());
-                } else {
-                    self._deactivate();
-                }
-            }).delegate('a', 'click.timepicker', function(event) {
-                clearTimeout(self.closing);
-                event.preventDefault();
-                self._select($(this).parent());
-            }).bind('click.timepicker, scroll.timepicker', function(event) {
-                clearTimeout(self.closing);
-            });
+            //
+            // handle menu events
+            //
 
+            self.menu.appendTo('body', doc);
+
+            if ($.fn.jquery >= '1.4.2') {
+                self.menu.delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
+                    if (event.type == 'mouseover') {
+                        self._activate($(this).parent());
+                    } else {
+                        self._deactivate();
+                    }
+                }).delegate('a', 'click.timepicker', function(event) {
+                    clearTimeout(self.closing);
+                    event.preventDefault();
+                    self._select($(this).parent());
+                });
+            }
+            
+            self.menu.bind('click.timepicker, scroll.timepicker', function(event) {
+                clearTimeout(self.closing);
+            })
+
+            //
             // handle input field events
+            //
+            
             self.element.bind('keydown.timepicker', function(event) {
                 switch (event.which || event.keyCode) {
                     case self.keyCode.ENTER:
@@ -212,6 +224,23 @@ if(typeof jQuery != 'undefined') {
                     }
                     startTick=0;
                 }
+
+                // handle menu events when using jQuery versions previous to
+                // 1.4.2 (thanks to Brian Link)
+                // http://github.com/wvega/timepicker/issues#issue/4
+                if ($.fn.jquery < '1.4.2') {
+                    $('a', self.menu).bind('mouseover.timepicker', function(event) {
+                        self._activate($(this).parent());
+                    });
+                    $('a', self.menu).bind('mouseout.timepicker', function(event) {
+                        self._deactivate();
+                    });
+                    $('a', self.menu).bind('click.timepicker', function(event) {
+                        clearTimeout(self.closing);
+                        event.preventDefault();
+                        self._select($(this).parent());
+                    });
+                }
             },
             
             _build: function() {
@@ -339,7 +368,6 @@ if(typeof jQuery != 'undefined') {
                 if (!self.closed) {
                     self.menu.scrollTop(0).addClass('ui-helper-hidden').removeClass('ui-menu');
                     self.menu.children().removeClass('ui-state-hover');
-                    $('html').unbind('.timepciker');
                     self.closed = true;
                 }
                 return self.element;
@@ -388,7 +416,7 @@ if(typeof jQuery != 'undefined') {
 
         $.fn.timepicker = function(options) {
             // TODO: see if it works with previous versions
-            if ($.fn.jquery < '1.4.1') {
+            if ($.fn.jquery < '1.3') {
                 return this;
             }
             
