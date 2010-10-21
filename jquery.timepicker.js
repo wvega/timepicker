@@ -38,7 +38,7 @@ if(typeof jQuery != 'undefined') {
         };
         
         $.TimePicker = function(element, options) {
-            var self = this, doc = element.ownerDocument;
+            var self = this;
 
             self.element = $(element).data("TimePicker", self).attr('autocomplete', 'off');
             self.selectedTime = $.fn.timepicker.parseTime(self.element.val());
@@ -53,7 +53,7 @@ if(typeof jQuery != 'undefined') {
             // handle menu events
             //
 
-            self.menu.appendTo('body', doc);
+            self.menu.appendTo('body');
 
             if ($.fn.jquery >= '1.4.2') {
                 self.menu.delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
@@ -321,12 +321,10 @@ if(typeof jQuery != 'undefined') {
              */
 
             next: function() {
-//                console.log('next');
                 this._move('next', '.ui-menu-item:first');
             },
 
             previous: function() {
-//                console.log('previous');
                 this._move('prev', '.ui-menu-item:last');
             },
 
