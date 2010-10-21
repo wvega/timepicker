@@ -56,12 +56,10 @@ if(typeof jQuery != 'undefined') {
             self.menu.appendTo('body');
 
             if ($.fn.jquery >= '1.4.2') {
-                self.menu.delegate('a', 'mouseenter.timepicker mouseleave.timepicker', function(event) {
-                    if (event.type == 'mouseover') {
-                        self._activate($(this).parent());
-                    } else {
-                        self._deactivate();
-                    }
+                self.menu.delegate('a', 'mouseenter.timepicker', function(event) {
+                    self._activate($(this).parent());
+                }).delegate('a', 'mouseleave.timepicker', function(event) {
+                    self._deactivate();
                 }).delegate('a', 'click.timepicker', function(event) {
                     clearTimeout(self.closing);
                     event.preventDefault();
