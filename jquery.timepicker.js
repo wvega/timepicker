@@ -341,10 +341,10 @@ if(typeof jQuery != 'undefined') {
             open: function() {
                 var self = this;
                 if (self.closed) {
-                    // if a date is already selected, arrange the items in the list
-                    // so the first item is cronologically right after the selected
-                    // date.
-                    if (self.selectedTime) {
+                    // if a date is already selected and options.dynamic is true,
+                    // arrange the items in the list so the first item is
+                    // cronologically right after the selected date.
+                    if (self.options.dynamic && self.selectedTime) {
                         self._populate(self.selectedTime);
                     }
 
@@ -406,6 +406,7 @@ if(typeof jQuery != 'undefined') {
             startMinutes: 0,
             startTime: null,
             interval: 30,
+            dynamic: true,
             // callbacks
             change: function(time) {}
         };
