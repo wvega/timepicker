@@ -32,88 +32,63 @@
 //}
 
 if(typeof jQuery != 'undefined') {
-    (function($){
-        var pad  = function(str, ch, length) {
+    (function($, undefined){
+
+        function pad(str, ch, length) {
             return Array(length + 1 - str.length).join(ch) + str;
-        };
-        
-        $.TimePicker = function(element, options) {
-            var self = this;
+        }
 
-            self.element = $(element).data("TimePicker", self).attr('autocomplete', 'off');
-            self.selectedTime = $.fn.timepicker.parseTime(self.element.val());
-            self.options = $.metadata ? $.extend({}, options, self.element.metadata()) : options;
-
-            if (self.element.attr('id').length === 0) {
-                self.element.attr('id', 'timepicker-field-' + (new Date()).getTime());
+        function normalize() {
+            if (arguments.length == 1) {
+                return new Date(1988, 7, 24, arguments[0].getHours(), arguments[0].getMinutes(), 00);
+            } else if (arguments.length == 2) {
+                return new Date(1988, 7, 24, arguments[0], arguments[1], 00);
+            } else {
+                return new Date(1988, 7, 24);
             }
-            self._build();
-
-            //
-            // handle menu events
-            //
-
-            self.menu.appendTo('body');
+        }
+        
+        $.TimePicker = function() {
+            var widget = this;
+            
+            widget.ui = $('<ul></ul>').addClass('ui-timepicker ui-timepicker-hidden')
+                                    .addClass('ui-widget ui-widget-content ui-menu')
+                                    .addClass('ui-corner-all ui-helper-hidden')
+                                    .appendTo('body');
 
             if ($.fn.jquery >= '1.4.2') {
-                self.menu.delegate('a', 'mouseenter.timepicker', function(event) {
-                    self._activate($(this).parent());
+                widget.ui.delegate('a', 'mouseenter.timepicker', function(event) {
+                    // passing false instead of an instance object tells the function
+                    // to use the current instance
+                    widget.activate(false, $(this).parent());
                 }).delegate('a', 'mouseleave.timepicker', function(event) {
-                    self._deactivate();
+                    widget.deactivate(false);
                 }).delegate('a', 'click.timepicker', function(event) {
-                    clearTimeout(self.closing);
                     event.preventDefault();
-                    self._select($(this).parent());
+                    widget.select(false, $(this).parent());
                 });
             }
-            
-            self.menu.bind('click.timepicker, scroll.timepicker', function(event) {
-                clearTimeout(self.closing);
-            })
 
-            //
-            // handle input field events
-            //
-            
-            self.element.bind('keydown.timepicker', function(event) {
-                switch (event.which || event.keyCode) {
-                    case self.keyCode.ENTER:
-                    case self.keyCode.NUMPAD_ENTER:
-                        event.preventDefault();
-                        if (self.closed) {
-                            self.element.change();
-                        } else {
-                            self._select(self.active);
-                        }
-                        break;
-                    case self.keyCode.UP:
-                        self.previous();
-                        break;
-                    case self.keyCode.DOWN:
-                        self.next();
-                        break;
-                    // TODO: always close?
-                    default:
-                        self.close();
-                        break;
-                }
-            }).bind('focus.timepicker', function(event) {
-                self.open();
-            }).bind('blur.timepicker', function(event) {
-                self.closing = setTimeout(function(){
-                    self.close();
-                }, 150);
-            }).bind('change.timepicker', function(event) {
-                if (self.closed) {
-                    self.setTime($.fn.timepicker.parseTime(self.element.val()));
-                }
+            widget.ui.bind('click.timepicker, scroll.timepicker', function(event) {
+                clearTimeout(widget.closing);
             });
         };
+
+        $.TimePicker.count = 0;
+        $.TimePicker.instance = function() {
+            if (!$.TimePicker._instance) {
+                $.TimePicker._instance = new $.TimePicker();
+            }
+            return $.TimePicker._instance;
+        }
 
         $.TimePicker.prototype = {
             // extracted from from jQuery UI Core
             // http://github,com/jquery/jquery-ui/blob/master/ui/jquery.ui.core.js
             keyCode: {
+                ALT: 18,
+                BLOQ_MAYUS: 20,
+                CTRL: 17,
                 DOWN: 40,
                 END: 35,
                 ENTER: 13,
@@ -123,43 +98,50 @@ if(typeof jQuery != 'undefined') {
                 PAGE_DOWN: 34,
                 PAGE_UP: 33,
                 RIGHT: 39,
+                SHIFT: 16,
                 TAB: 9,
                 UP: 38
             },
             
-            _isValidTime: function(time) {
-                var self = this, min = null, max = null;
+            _items: function(i, startTime) {
+                var widget = this, ul = $('<ul></ul>'), item = null, time, end;
 
-                time.setSeconds(0, 0);
+                if (startTime) {
+                    time = normalize(startTime);
+                } else if (i.options.startTime) {
+                    time = normalize(i.options.startTime);
+                } else {
+                    time = normalize(i.options.startHour, i.options.startMinutes)
+                }
+                
+                end = new Date(time.getTime() + 24 * 60 * 60 * 1000);
 
-                if (self.options.minTime !== null) {
-                    min = new Date();
-                    min.setTime(time.valueOf());
-                    min.setHours(self.options.minTime.getHours(), self.options.minTime.getMinutes(), 0, 0);
-                } else if (self.options.minHour !== null || self.options.minMinutes !== null) {
-                    min = new Date();
-                    min.setTime(time.valueOf());
-                    if (self.options.minHour !== null) {
-                        min.setHours(self.options.minHour, 0, 0, 0);
+                while(time < end) {
+                    if (widget._isValidTime(i, time)) {
+                        item = $('<li>').addClass('ui-menu-item').appendTo(ul);
+                        $('<a>').addClass('ui-corner-all').text($.fn.timepicker.formatTime(i.options.timeFormat, time)).appendTo(item);
                     }
-                    if (self.options.minMinutes !== null) {
-                        min.setMinutes(self.options.minMinutes, 0, 0);
-                    }
+                    time = new Date(time.getTime() + i.options.interval * 60 * 1000);
                 }
 
-                if (self.options.maxTime !== null) {
-                    max = new Date();
-                    max.setTime(time.valueOf());
-                    max.setHours(self.options.maxTime.getHours(), self.options.maxTime.getMinutes(), 0, 0);
-                } else if (self.options.maxHour !== null || self.options.maxMinutes !== null) {
-                    max = new Date();
-                    max.setTime(time.valueOf());
-                    if (self.options.maxHour !== null) {
-                        max.setHours(self.options.maxHour, 0, 0, 0);
-                    }
-                    if (self.options.maxMinutes !== null) {
-                        max.setMinutes(self.options.maxMinutes, 0, 0);
-                    }
+                return ul.children();
+            },
+            
+            _isValidTime: function(i, time) {
+                var min = null, max = null;
+
+                time = normalize(time);
+
+                if (i.options.minTime !== null) {
+                    min = normalize(i.options.minTime);
+                } else if (i.options.minHour !== null || i.options.minMinutes !== null) {
+                    min = normalize(i.options.minHour, i.options.minMinutes);
+                }
+
+                if (i.options.maxTime !== null) {
+                    max = normalize(i.options.maxTime)
+                } else if (i.options.maxHour !== null || i.options.maxMinutes !== null) {
+                    max = normalize(i.options.maxHour, i.options.maxMinutes);
                 }
 
                 if (min !== null && max !== null) {
@@ -172,145 +154,150 @@ if(typeof jQuery != 'undefined') {
 
                 return true;
             },
-            
-            _populate: function(startTime) {
-                var self = this, item = null,
-                    ticks = 60 / self.options.interval,
-                    startHour, limitHour, startTick, lastTick, limitTick,
-                    hour='', min='', time = new Date();
-
-                if (startTime) {
-                    startHour = startTime.getHours();
-                    startTick = Math.ceil(startTime.getMinutes() / self.options.interval);
-                } else if (self.options.startTime) {
-                    startHour = self.options.startTime.getHours();
-                    startTick = Math.ceil(self.options.startTime.getMinutes() / self.options.interval);
-                } else {
-                    startHour = self.options.startHour;
-                    startTick = Math.ceil(self.options.startMinutes / self.options.interval);
-                }
-                // if startTick is not zero some times may be lost, we need to
-                // add those at the end of the list. WTF :S?
-                limitHour = startHour + 24 + 1; // +1 is need
-
-                if (startTick >= ticks) {
-                    startHour += 1;
-                    limitHour += 1;
-                    startTick -= ticks;
-                }
-                lastTick = startTick;
-                limitTick = ticks;
-
-                self.menu.empty();
-                for (var h = startHour; h < limitHour; h++) {
-                    if (h == limitHour -1) {
-                        limitTick = lastTick;
-                    }
-                    for (var i=startTick; i < limitTick; i++) {
-                        hour = pad((h % 24).toString(), '0', 2);
-                        min = pad(((i % ticks) * self.options.interval).toString(), '0', 2);
-                        time.setHours(hour, min);
-                        if (self._isValidTime(time)) {
-                            item = $('<li>')
-                                .addClass('ui-menu-item')
-                                .appendTo(self.menu);
-                            $('<a>')
-                                .addClass('ui-corner-all')
-                                .text($.fn.timepicker.formatTime(self.options.timeFormat, time))
-                                .appendTo(item);
-                        }
-                    }
-                    startTick=0;
-                }
-
-                // handle menu events when using jQuery versions previous to
-                // 1.4.2 (thanks to Brian Link)
-                // http://github.com/wvega/timepicker/issues#issue/4
-                if ($.fn.jquery < '1.4.2') {
-                    $('a', self.menu).bind('mouseover.timepicker', function(event) {
-                        self._activate($(this).parent());
-                    });
-                    $('a', self.menu).bind('mouseout.timepicker', function(event) {
-                        self._deactivate();
-                    });
-                    $('a', self.menu).bind('click.timepicker', function(event) {
-                        clearTimeout(self.closing);
-                        event.preventDefault();
-                        self._select($(this).parent());
-                    });
-                }
-            },
-            
-            _build: function() {
-                this.menu = $('<ul>', {id: 'timepicker-' + (new Date()).getTime()})
-                    .addClass('ui-timepicker ui-widget ui-widget-content')
-                    .addClass('ui-corner-all ui-helper-hidden');
-                this.closed = true;
-                // populate timepicker with time items
-                this._populate();
-            },
 
             _hasScroll: function() {
-                return this.menu.height() < this.menu.attr('scrollHeight');
+                return this.ui.height() < this.ui.attr('scrollHeight');
             },
 
-            _activate: function(item) {
-                this._deactivate();
-                if (this._hasScroll()) {
-                    var offset = item.offset().top - this.menu.offset().top,
-                        scroll = this.menu.scrollTop(),
-                        height = this.menu.height();
-                    if (offset < 0) {
-                        this.menu.scrollTop(scroll + offset);
-                    } else if (offset >= height) {
-                        this.menu.scrollTop(scroll + offset - height + item.height());
-                    }
+            /**
+             * TODO: Write me!
+             *
+             * @param i
+             * @param direction
+             * @param edge
+             * */
+            _move: function(i, direction, edge) {
+                var widget = this;
+                if (widget.closed()) {
+                    widget.open(i);
                 }
-                this.active = item.eq(0)
-                    .children('a')
-                        .addClass('ui-state-hover')
-                        .attr('id', 'ui-active-item')
-                    .end();
-            },
-
-            _deactivate: function() {
-                if (!this.active) {return;}
-                this.active.children('a')
-                    .removeClass('ui-state-hover')
-                    .removeAttr('id');
-                this.active = null;
-            },
-
-            _select: function(item) {
-                this.setTime($.fn.timepicker.parseTime( item.children('a').text() ));
-                this.close();
-            },
-
-            _move: function(direction, edge) {
-                if (this.closed) {
-                    this.open();
-                }
-                if (!this.active) {
-                    this._activate(this.menu.children(edge));
+                if (!widget.active) {
+                    widget.activate(i, widget.ui.children(edge));
                     return;
                 }
-                var next = this.active[direction + 'All']('.ui-menu-item').eq(0);
+                var next = widget.active[direction + 'All']('.ui-menu-item').eq(0);
                 if (next.length) {
-                    this._activate(next);
+                    widget.activate(i, next);
                 } else {
-                    this._activate(this.menu.children(edge));
+                    widget.activate(i, widget.ui.children(edge));
                 }
             },
 
-            option: function(key, value) {
-                if (arguments.length > 1) {
-                    if (this.options.hasOwnProperty(key)) {
-                        this.options[key] = value;
+            //
+            // protected methods
+            //
+
+            register: function(node, options) {
+                var widget = this, i = {};// timepicker instance object
+
+                i.element = $(node);
+                
+                if (i.element.data('TimePicker')) { return; }
+                
+                i.element.data('TimePicker', i);
+                i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : options;
+                i.widget = widget;
+
+                // proxy functions for the exposed api methods
+                $.extend(i, {
+                    next: function() {return widget.next(i);},
+                    previous: function() {return widget.previous(i);},
+                    first: function() {return widget.first(i);},
+                    last: function() {return widget.last(i);},
+                    selected: function() {return widget.selected(i);},
+                    open: function() {return widget.open(i);},
+                    close: function(force) {return widget.close(i, force);},
+                    closed: function() {return widget.closed(i);},
+                    destroy: function() {return widget.destroy(i)},
+                    getTime: function() {return widget.getTime(i);},
+                    setTime: function(time) {return widget.setTime(i, time);}
+                });
+
+                i.element.bind('keydown.timepicker', function(event) {
+                    switch (event.which || event.keyCode) {
+                        case widget.keyCode.ENTER:
+                        case widget.keyCode.NUMPAD_ENTER:
+                            event.preventDefault();
+                            if (widget.closed()) {
+                                i.element.trigger('change.timepicker');
+                            } else {
+                                // TODO rename _select to select
+                                widget.select(i, widget.active);
+                            }
+                            break;
+                        case widget.keyCode.UP:
+                            i.previous();
+                            break;
+                        case widget.keyCode.DOWN:
+                            i.next();
+                            break;
+                        default:
+                            if (!widget.closed()) {
+                                i.close(true);
+                            }
+                            break;
                     }
-                    return this;
-                }
-                return this.options[key];
+                }).bind('focus.timepicker', function(event) {
+                    i.open();
+                }).bind('blur.timepicker', function(event) {
+                    i.close();
+                }).bind('change.timepicker', function(event) {
+                    if (i.closed()) {
+                        i.setTime($.fn.timepicker.parseTime(i.element.val()));
+                    }
+                });
             },
+
+            select: function(i, item) {
+                var widget = this, instance = i === false ? widget.instance : i;
+                clearTimeout(widget.closing);
+                widget.setTime(instance, $.fn.timepicker.parseTime(item.children('a').text()));
+                widget.close(instance, true);
+            },
+
+            activate: function(i, item) {
+                var widget = this, instance = i === false ? widget.instance : i;
+                
+                if (instance !== widget.instance) {
+                    return;
+                } else {
+                    widget.deactivate();
+                }
+
+                if (widget._hasScroll()) {
+                    var offset = item.offset().top - widget.ui.offset().top,
+                        scroll = widget.ui.scrollTop(),
+                        height = widget.ui.height();
+                    if (offset < 0) {
+                        widget.ui.scrollTop(scroll + offset);
+                    } else if (offset >= height) {
+                        widget.ui.scrollTop(scroll + offset - height + item.height());
+                    }
+                }
+
+                widget.active = item.eq(0).children('a').addClass('ui-state-hover')
+                                                        .attr('id', 'ui-active-item')
+                                          .end();
+            },
+
+            deactivate: function() {
+                var widget = this;
+                if (!widget.active) { return; }                
+                widget.active.children('a').removeClass('ui-state-hover').removeAttr('id');
+                widget.active = null;
+            },
+
+//            option: function(key, value) {
+//                var self = this;
+//                // TODO: handle variable updates
+//                if (arguments.length > 1) {
+//                    if (self.options.hasOwnProperty(key)) {
+//                        self.options[key] = value;
+//                    }
+//                    return self;
+//                }
+//                return self.options[key];
+//            },
 
             /**
              * _activate, _deactivate, first, last, next, previous, _move and
@@ -318,77 +305,145 @@ if(typeof jQuery != 'undefined') {
              * http://github,com/jquery/jquery-ui/blob/menu/ui/jquery.ui.menu.js
              */
 
-            next: function() {
-                this._move('next', '.ui-menu-item:first');
-            },
+            //
+            // public methods
+            //
 
-            previous: function() {
-                this._move('prev', '.ui-menu-item:last');
-            },
-
-            first: function() {
-                return this.active && !this.active.prevAll('.ui-menu-item').length;
-            },
-
-            last: function() {
-                return this.active && !this.active.nextAll('.ui-menu-item').length;
-            },
-
-            selected: function() {
-                return this.active ? this.active : null;
-            },
-
-            open: function() {
-                var self = this;
-                if (self.closed) {
-                    // if a date is already selected and options.dynamic is true,
-                    // arrange the items in the list so the first item is
-                    // cronologically right after the selected date.
-                    if (self.options.dynamic && self.selectedTime) {
-                        self._populate(self.selectedTime);
-                    }
-
-                    var properties = self.element.offset();
-                    properties.top = properties.top + self.element.outerHeight();
-                    properties.width = self.element.innerWidth();
-                    self.menu.css(properties).removeClass('ui-helper-hidden').addClass('ui-menu');
-                    self.closed = false;
+            next: function(i) {
+                if (this.closed() || this.instance === i) {
+                    this._move(i, 'next', '.ui-menu-item:first');
                 }
-                // don't break the chain
-                return self.element;
             },
 
-            close: function() {
-                var self = this;
-                clearTimeout(self.closing);
-                if (!self.closed) {
-                    self.menu.scrollTop(0).addClass('ui-helper-hidden').removeClass('ui-menu');
-                    self.menu.children().removeClass('ui-state-hover');
-                    self.closed = true;
+            previous: function(i) {
+                if (this.closed() || this.instance === i) {
+                    this._move(i, 'prev', '.ui-menu-item:last');
                 }
-                return self.element;
             },
 
-            destroy: function() {
-                return this.element.unbind('.timepicker').data('TimePicker', null);
+            first: function(i) {
+                if (this.instance === i) {
+                    return this.active && !this.active.prevAll('.ui-menu-item').length;
+                }
+                return false;
             },
 
-            getTime: function() {
-                if (this.selectedTime) {
-                    return this.selectedTime;
+            last: function(i) {
+                if (this.instance === i) {
+                    return this.active && !this.active.nextAll('.ui-menu-item').length;
+                }
+                return false;
+            },
+
+            selected: function(i) {
+                if (this.instance === i)  {
+                    return this.active ? this.active : null;
                 }
                 return null;
             },
 
-            setTime: function(time) {
-                var self = this;
+            open: function(i) {
+                var widget = this, zindex;
 
+                // if a date is already selected and options.dynamic is true,
+                // arrange the items in the list so the first item is
+                // cronologically right after the selected date.
+                // TODO: set selectedTime
+                if (!i.items || (i.options.dynamic && i.selectedTime)) {
+                    i.items = widget._items(i);
+                }
+
+                // remove old li elements but keep associated events, then append
+                // the new li elements to the ul
+                if (widget.instance !== i) {
+
+                    // handle menu events when using jQuery versions previous to
+                    // 1.4.2 (thanks to Brian Link)
+                    // http://github.com/wvega/timepicker/issues#issue/4
+                    if ($.fn.jquery < '1.4.2') {
+                        widget.ui.children().remove();
+                        widget.ui.append(i.items);
+                        widget.ui.find('a').bind('mouseover.timepicker', function(event) {
+                            widget.activate(i, $(this).parent());
+                        }).bind('mouseout.timepicker', function(event) {
+                            widget.deactivate(i);
+                        }).bind('click.timepicker', function(event) {
+                            event.preventDefault();
+                            widget.select(i, $(this).parent());
+                        });
+                    } else {
+                        widget.ui.children().detach();
+                        widget.ui.append(i.items);
+                    }
+                }
+
+                // theme
+                widget.ui.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners');
+
+                switch (i.options.theme) {
+                    case 'standard':
+                        widget.ui.addClass('ui-timepicker-standard');
+                        break;
+                    case 'standard-rounded-corners':
+                        widget.ui.addClass('ui-timepicker-standard ui-timepicker-corners');
+                        break;
+                    default:
+                        break;
+                }
+
+                // position
+                // zindex = i.element.offsetParent().css('z-index'); zindex == 'auto' ? 'auto' : parseInt(zindex, 10) + 1
+                widget.ui.css($.extend(i.element.offset(), {
+                    width: i.element.innerWidth(),
+                    zIndex: i.element.offsetParent().css('z-index')
+                }));
+                widget.ui.css('top', parseInt(widget.ui.css('top'), 10) + i.element.outerHeight());
+
+                widget.instance = i;
+
+                // don't break the chain
+                return i.element;
+            },
+
+            close: function(i, force) {
+                var widget = this;
+                if (widget.closed() || force) {
+                    clearTimeout(widget.closing);
+                    if (widget.instance === i) {
+                        widget.ui.scrollTop(0).addClass('ui-helper-hidden ui-timepicker-hidden');
+                        widget.ui.children().removeClass('ui-state-hover');
+                    }
+                } else {
+                    widget.closing = setTimeout(function() {
+                        widget.close(i, true);
+                    }, 150);
+                }
+                return i.element;
+            },
+
+            closed: function() {
+                return this.ui.is(':hidden');
+            },
+
+            destroy: function(i) {
+                var widget = this;
+                widget.close(i, true);
+                return i.element.unbind('.timepicker').data('TimePicker', null);
+            },
+
+            getTime: function(i) {
+                return i.selectedTime ? i.selectedTime : null;
+            },
+
+            setTime: function(i, time) {
+                var widget = this;
                 if (time && time.getMinutes) {
-                    self.element.val($.fn.timepicker.formatTime(self.options.timeFormat, time));
-                    self.selectedTime = time;
-                    
-                    if (self.options.change && $.isFunction(self.options.change)) {
-                        self.options.change(time);
+                    i.selectedTime = time;
+                    i.element.val($.fn.timepicker.formatTime(i.options.timeFormat, time));
+                    // custom change event and change callback
+                    i.element.trigger('time-change', [time]);
+                    if ($.isFunction(i.options.change)) {
+                        i.options.change.apply(i.element, [time]);
                     }
                 }
             }
@@ -402,11 +457,12 @@ if(typeof jQuery != 'undefined') {
             maxHour: null,
             maxMinutes: null,
             maxTime: null,
-            startHour: 7,
-            startMinutes: 0,
+            startHour: null,
+            startMinutes: null,
             startTime: null,
             interval: 30,
             dynamic: true,
+            theme: 'standard',
             // callbacks
             change: function(time) {}
         };
@@ -418,14 +474,14 @@ if(typeof jQuery != 'undefined') {
             }
             
             // Calling the constructor again returns a reference to a TimePicker object.
-            if (this.data('TimePicker')) {
+            if (this.length == 1 && this.data('TimePicker')) {
                 return this.data('TimePicker');
             }
             
             var globals = $.extend({}, $.TimePicker.defaults, options);
             
-            return this.each(function(){
-                (new $.TimePicker(this, globals));
+            return this.each(function() {
+                $.TimePicker.instance().register(this, globals);
             });
         };
         

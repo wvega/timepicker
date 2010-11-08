@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>jQuery TimePicker Unit Tests</title>
+
+	<script type="text/javascript" src="../external/jquery-1.4.3.min.js"></script>
+	<script type="text/javascript" src="../jquery.timepicker.js"></script>
+
+    <link rel="stylesheet" href="../external/jquery-ui-1.8.2.custom.css" type="text/css"/>
+    <link rel="stylesheet" href="../jquery.timepicker.css" type="text/css"/>
+
+    <script type="text/javascript">
+        (function($) {
+            $(function() { 
+                $('#timepicker-1').timepicker({interval: 50});
+                $('#timepicker-2').timepicker({timeFormat: 'HH:mm'});
+                $('.timepicker').timepicker({interval: 10});
+            });
+        })(jQuery);
+    </script>
+</head>
+<body>
+
+<h1>jQuery TimePicker Visual Test</h1>
+
+<div id="main" style="position: relative;">
+    <div style=""><input id="timepicker-3" class="timepicker"/></div>
+    <div style="position: absolute; top: 30px; z-index: 94"><input id="timepicker-6" class="timepicker"/></div>
+    <div style="position: absolute; top: 60px; z-index: 95"><input id="timepicker-5" class="timepicker"/></div>
+    <div style="position: absolute; top: 90px; z-index: 97"><input id="timepicker-4" class="timepicker"/></div>
+    <div style="position: absolute; top: 120px; z-index: 100"><input id="timepicker-1" class="timepicker"/></div>
+    <div style="position: absolute; top: 150px; z-index: 100"><input id="timepicker-2" class="timepicker"/></div>
+</div>
+
+</body>
+</html>
