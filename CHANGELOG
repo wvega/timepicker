@@ -1,3 +1,10 @@
+* Mon Nov 08 2010 - Version 1.1.0
+- Use input field's z-index.
+- Do not use rounded corners by default.
+- Use a single UL element for all timepicker in the same page.
+- Interval greather than 60 minutes are now supported.
+- Add time-change custom event.
+
 * Fri Oct 29 2010 - Version 1.0.3
 - Add dynamic option
 
