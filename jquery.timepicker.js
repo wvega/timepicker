@@ -50,28 +50,31 @@ if(typeof jQuery != 'undefined') {
         
         $.TimePicker = function() {
             var widget = this;
-            
-            widget.ui = $('<ul></ul>').addClass('ui-timepicker ui-timepicker-hidden')
+
+            widget.ui = $('ul.ui-timepicker');
+            if (widget.ui.length == 0) {
+                widget.ui = $('<ul></ul>').addClass('ui-timepicker ui-timepicker-hidden')
                                     .addClass('ui-widget ui-widget-content ui-menu')
                                     .addClass('ui-corner-all ui-helper-hidden')
                                     .appendTo('body');
 
-            if ($.fn.jquery >= '1.4.2') {
-                widget.ui.delegate('a', 'mouseenter.timepicker', function(event) {
-                    // passing false instead of an instance object tells the function
-                    // to use the current instance
-                    widget.activate(false, $(this).parent());
-                }).delegate('a', 'mouseleave.timepicker', function(event) {
-                    widget.deactivate(false);
-                }).delegate('a', 'click.timepicker', function(event) {
-                    event.preventDefault();
-                    widget.select(false, $(this).parent());
+                if ($.fn.jquery >= '1.4.2') {
+                    widget.ui.delegate('a', 'mouseenter.timepicker', function(event) {
+                        // passing false instead of an instance object tells the function
+                        // to use the current instance
+                        widget.activate(false, $(this).parent());
+                    }).delegate('a', 'mouseleave.timepicker', function(event) {
+                        widget.deactivate(false);
+                    }).delegate('a', 'click.timepicker', function(event) {
+                        event.preventDefault();
+                        widget.select(false, $(this).parent());
+                    });
+                }
+
+                widget.ui.bind('click.timepicker, scroll.timepicker', function(event) {
+                    clearTimeout(widget.closing);
                 });
             }
-
-            widget.ui.bind('click.timepicker, scroll.timepicker', function(event) {
-                clearTimeout(widget.closing);
-            });
         };
 
         $.TimePicker.count = 0;
