@@ -123,6 +123,7 @@ if(typeof jQuery != 'undefined') {
                     if (widget._isValidTime(i, time)) {
                         item = $('<li>').addClass('ui-menu-item').appendTo(ul);
                         $('<a>').addClass('ui-corner-all').text($.fn.timepicker.formatTime(i.options.timeFormat, time)).appendTo(item);
+                        item.data('time-value', time);
                     }
                     time = new Date(time.getTime() + i.options.interval * 60 * 1000);
                 }
@@ -195,11 +196,13 @@ if(typeof jQuery != 'undefined') {
 
                 i.element = $(node);
                 
-                if (i.element.data('TimePicker')) { return; }
-                
+                if (i.element.data('TimePicker')) {return;}
+
+
                 i.element.data('TimePicker', i);
                 i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : options;
                 i.widget = widget;
+                i.selectedTime = $.fn.timepicker.parseTime(i.element.val());
 
                 // proxy functions for the exposed api methods
                 $.extend(i, {
@@ -224,7 +227,6 @@ if(typeof jQuery != 'undefined') {
                             if (widget.closed()) {
                                 i.element.trigger('change.timepicker');
                             } else {
-                                // TODO rename _select to select
                                 widget.select(i, widget.active);
                             }
                             break;
@@ -285,7 +287,7 @@ if(typeof jQuery != 'undefined') {
 
             deactivate: function() {
                 var widget = this;
-                if (!widget.active) { return; }                
+                if (!widget.active) {return;}                
                 widget.active.children('a').removeClass('ui-state-hover').removeAttr('id');
                 widget.active = null;
             },
@@ -358,7 +360,7 @@ if(typeof jQuery != 'undefined') {
 
                 // remove old li elements but keep associated events, then append
                 // the new li elements to the ul
-                if (widget.instance !== i) {
+                if (widget.instance !== i || (i.options.dynamic && i.selectedTime)) {
 
                     // handle menu events when using jQuery versions previous to
                     // 1.4.2 (thanks to Brian Link)
@@ -379,9 +381,9 @@ if(typeof jQuery != 'undefined') {
                         widget.ui.append(i.items);
                     }
                 }
-
+                
                 // theme
-                widget.ui.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners');
+                widget.ui.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners').show();
 
                 switch (i.options.theme) {
                     case 'standard':
@@ -404,6 +406,28 @@ if(typeof jQuery != 'undefined') {
 
                 widget.instance = i;
 
+                // try to match input field's current value with an item in the
+                // dropdown
+                if (i.selectedTime) {
+                    i.items.each(function() {
+                        var item = $(this), time;
+
+                        if ($.fn.jquery < '1.4.2') {
+                            time = $.fn.timepicker.parseTime(item.find('a').text());
+                        } else {
+                            time = item.data('time-value');
+                        }
+
+                        if (time.getTime() == i.selectedTime.getTime()) {
+                            widget.activate(i, item);
+                            return false;
+                        }
+                        return true;
+                    });
+                } else {
+                    widget.deactivate(i);
+                }
+
                 // don't break the chain
                 return i.element;
             },
@@ -413,7 +437,7 @@ if(typeof jQuery != 'undefined') {
                 if (widget.closed() || force) {
                     clearTimeout(widget.closing);
                     if (widget.instance === i) {
-                        widget.ui.scrollTop(0).addClass('ui-helper-hidden ui-timepicker-hidden');
+                        widget.ui.scrollTop(0).addClass('ui-helper-hidden ui-timepicker-hidden').hide();
                         widget.ui.children().removeClass('ui-state-hover');
                     }
                 } else {
@@ -448,6 +472,8 @@ if(typeof jQuery != 'undefined') {
                     if ($.isFunction(i.options.change)) {
                         i.options.change.apply(i.element, [time]);
                     }
+                } else {
+                    i.selectedTime = null;
                 }
             }
         };
@@ -552,7 +578,7 @@ if(typeof jQuery != 'undefined') {
          * For a detailed list of supported formats check the unit tests at
          * http://github.com/wvega/timepicker/tree/master/tests/
          */
-        $.fn.timepicker.parseTime = (function() {
+        $.fn.timepicker.parseTime = (function(str) {
             var patterns = [
                     // 1, 12, 123, 1234, 12345, 123456
                     [/^(\d+)$/, '$1'],
@@ -576,7 +602,7 @@ if(typeof jQuery != 'undefined') {
                     [/^(\d{1,2}):(\d):(\d\d)/, '$10$2$3']];
 
             return function(str) {
-                var time = new Date(),
+                var time = normalize(new Date()),
                     am = false, pm = false, h = false, m = false, s = false, k = 0;
                 str = str.toLowerCase();
                 am = /a/.test(str);
