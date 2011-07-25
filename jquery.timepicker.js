@@ -400,7 +400,7 @@ if(typeof jQuery != 'undefined') {
                 // zindex = i.element.offsetParent().css('z-index'); zindex == 'auto' ? 'auto' : parseInt(zindex, 10) + 1
                 widget.ui.css($.extend(i.element.offset(), {
                     width: i.element.innerWidth(),
-                    zIndex: i.element.offsetParent().css('z-index')
+                    zIndex: i.options.zindex ? i.options.zindex : i.element.offsetParent().css('z-index')
                 }));
                 widget.ui.css('top', parseInt(widget.ui.css('top'), 10) + i.element.outerHeight());
 
@@ -492,6 +492,7 @@ if(typeof jQuery != 'undefined') {
             interval: 30,
             dynamic: true,
             theme: 'standard',
+            zindex: null,
             // callbacks
             change: function(time) {}
         };
