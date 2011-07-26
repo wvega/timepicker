@@ -1,6 +1,9 @@
-* Tue Jul 26 2011 - Version 1.1.1
+* Tue Jul 26 2011 - Version 1.1.2
 - Released under MIT and GPL Version 2 licenses.
 - Add zindex option to override input field's z-index (thanks to Ian Enders).
+
+* Tue Nov 23 2010 - Version 1.1.1
+- Fix Issue #11 (https://github.com/wvega/timepicker/issues/11)
 
 * Mon Nov 08 2010 - Version 1.1.0
 - Use input field's z-index.
