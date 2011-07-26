@@ -34,7 +34,7 @@ Options
 - startMinutes: int. Ignored if startTime is set.
 - interval: int. Time separation in minutes between each time entry.
 - zindex: the zindex for the dropdown menu. If not present, uses the offsetParent's zindex.
-- change: a callback called when the value of the input field changes. A Date
+- change: a function called when the value of the input field changes. A Date
     object with the selected time is passed to the callback.
 
         function(time) { ... }
