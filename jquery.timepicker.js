@@ -382,7 +382,7 @@ if(typeof jQuery != 'undefined') {
                 // position
                 // zindex = i.element.offsetParent().css('z-index'); zindex == 'auto' ? 'auto' : parseInt(zindex, 10) + 1
                 widget.ui.css($.extend(i.element.offset(), {
-                    width: i.element.innerWidth(),
+                    width: i.element.outerWidth() - (widget.ui.outerWidth() - widget.ui.width())
                     zIndex: i.options.zindex ? i.options.zindex : i.element.offsetParent().css('z-index')
                 }));
                 widget.ui.css('top', parseInt(widget.ui.css('top'), 10) + i.element.outerHeight());
@@ -583,7 +583,8 @@ if(typeof jQuery != 'undefined') {
                     [/^(\d{3,}):(\d{2,})/, '$1$2'],
                     //
                     [/^(\d):(\d):(\d)$/, '0$10$20$3'],
-                    [/^(\d{1,2}):(\d):(\d\d)/, '$10$2$3']];
+                    [/^(\d{1,2}):(\d):(\d\d)/, '$10$2$3']],
+                length = patterns.length;
 
             return function(str) {
                 var time = normalize(new Date()),
@@ -593,7 +594,7 @@ if(typeof jQuery != 'undefined') {
                 pm = am ? false : /p/.test(str);
                 str = str.replace(/[^0-9:]/g, '').replace(/:+/g, ':');
 
-                for (k in patterns) {
+                for (var k = 0; k < length; k++) {
                     if (patterns[k][0].test(str)) {
                         str = str.replace(patterns[k][0], patterns[k][1]);
                         break;
