@@ -382,7 +382,7 @@ if(typeof jQuery != 'undefined') {
                 // position
                 // zindex = i.element.offsetParent().css('z-index'); zindex == 'auto' ? 'auto' : parseInt(zindex, 10) + 1
                 widget.ui.css($.extend(i.element.offset(), {
-                    width: i.element.outerWidth() - (widget.ui.outerWidth() - widget.ui.width())
+                    width: i.element.outerWidth() - (widget.ui.outerWidth() - widget.ui.width()),
                     zIndex: i.options.zindex ? i.options.zindex : i.element.offsetParent().css('z-index')
                 }));
                 widget.ui.css('top', parseInt(widget.ui.css('top'), 10) + i.element.outerHeight());
