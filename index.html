@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="topbar">
+        <div class="fill">
+            <div class="container">
+                <a class="brand" href="">jQuery TimePicker</a>
+                <ul class="nav" data-tabs="tabs">
+                    <li class="active"><a href="#about">About</a></li>
+                    <li><a href="#options">Options</a></li>
+                    <li><a href="#demos">Demos</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="tab-content">
+            <div id="about" class="active">
+                <article>
+                    <header>
+                        <h1>jQuery TimePicker plugin</h1>
+                    </header>
+
+                    <p>jQuery TimePicker is a plugin to help users easily input time entries. It works by allowing the user to type times in a free format or selecting them from a dropdown menu.</p>
+
+                    <p>The plugin will automatically convert all time entries to a format that can be changed passing the <code>timeFormat</code> option; the default value is hh:mm p which will give something like <code>02:16 PM</code>.</p>
+
+                    <p>The following are a few examples of the strings an user can type and how the plugin understands them:</p>
+
+                    <table class="zebra-striped">
+                        <thead>
+                            <tr>
+                                <th>Input</th>
+                                <th>Output (using the default format)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1234</td><td>12:34 AM</td></tr>
+                            <tr><td>1234p</td><td>12:34 PM</td></tr>
+                            <tr><td>456</td><td>04:56 AM</td></tr>
+                            <tr><td>1656</td><td>04:56 PM</td></tr>
+                            <tr><td>1:1 P</td><td>1:10 PM</td></tr>
+                            <tr><td>1:9 A</td><td>1:09 AM</td></tr>
+                            <tr><td>8:59</td><td>8:59 AM</td></tr>
+                            <tr><td>12030</td><td>1:20:30 AM</td></tr>
+                            <tr><td>46</td><td>05:00 AM (it's interpreted as 4 hours plus 60 minutes)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p>There are other supported formats, all inspired by the behavior of a similar timepicker used in Google Calendar. To see more, <a href="#demos" title="jQuery TimePicker demos">try the demos</a>.
+
+                    <h2>How to Use</h2>
+
+                    <p>To use jQuery TimePicker you'll need to include two files: <code>jquery.timepicker.js</code> and <code>jquery.timepicker.css</code>. Then, assuming you have an <code>&lt;input&gt;</code> element in your document, you can use the following code to initialize the plugin:</p>
+
+                    <pre>$(document).ready(function(){
+    $('input.timepicker').timepicker({});
+});</pre>
+
+                    <p>Refere to the <a href="#options" title="jQuery TimePicker options page">options page</a> for a detailed description about configuration options available.</p>
+
+                    <h2>Bugs Reports</h2>
+
+                    <p>Bugs reports, comments and features suggestions are always welcome at <a href="" title="jQuery TimePicker at GitHub">GitHub</a> or sent directly to <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#118;&#101;&#103;&#97;&#64;&#119;&#118;&#101;&#103;&#97;&#46;&#99;&#111;&#109;'>&#119;&#118;&#101;&#103;&#97;&#64;&#119;&#118;&#101;&#103;&#97;&#46;&#99;&#111;&#109;</a>.</p>
+
+                    <h2>Download</h2>
+
+                    <p>Latest version of jQuery TimePicker is available for download from GitHub. <a class="btn primary" href="http://github.com/wvega/timepicker/downloads" title="Download jQuery TimePicker">Download</a></p>
+                </article>
+            </div>
+            <div id="options">
+                Options
+            </div>
+            <div id="demos"></div>
+        </div>
+    </div>
+    
+    <a href="https://github.com/wvega/timepicker"><img style="position: fixed; top: 40px; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-tabs.js"></script>
+</body>
+</html>
