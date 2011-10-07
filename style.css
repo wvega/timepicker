@@ -1,3 +1,9 @@
 body {
   padding: 60px 0 40px;
 }
+.page-header {
+  padding-top: 30px;
+}
+#options .label {
+  text-transform: none;
+}

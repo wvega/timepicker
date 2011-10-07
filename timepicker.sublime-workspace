@@ -15,7 +15,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 1159,
+				"buffer_size": 5084,
 				"line_ending": "Unix"
 			}
 		},
@@ -23,7 +23,7 @@
 			"file": "style.less",
 			"settings":
 			{
-				"buffer_size": 31,
+				"buffer_size": 34,
 				"line_ending": "Unix"
 			}
 		}
@@ -52,6 +52,9 @@
 	},
 	"file_history":
 	[
+		"/home/wvega/Projects/mine/timepicker/style.css",
+		"/home/wvega/Projects/mine/timepicker/style.less",
+		"/home/wvega/Projects/mine/timepicker/index.html",
 		"/home/wvega/.config/sublime-text-2/Packages/Default/Base File.sublime-settings",
 		"/home/wvega/.config/sublime-text-2/Packages/Default/Global.sublime-settings"
 	],
@@ -100,15 +103,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 1159,
+						"buffer_size": 5084,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								940,
-								940
+								5058,
+								5058
 							]
 						],
 						"settings":
@@ -118,36 +121,30 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 480.0,
+						"translation.y": 1200.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 0,
-			"sheets":
-			[
+				},
 				{
 					"buffer": 1,
 					"file": "style.less",
 					"settings":
 					{
-						"buffer_size": 31,
+						"buffer_size": 34,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								31,
-								31
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/CSS/CSS.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -155,16 +152,6 @@
 					},
 					"type": "text"
 				}
-			]
-		},
-		{
-			"sheets":
-			[
-			]
-		},
-		{
-			"sheets":
-			[
 			]
 		}
 	],
@@ -185,36 +172,16 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
-			],
-			[
-				0,
-				1,
-				1,
-				2
-			],
-			[
-				1,
-				1,
-				2,
-				2
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
 		[
 			0.0,
-			0.5,
 			1.0
 		]
 	},
@@ -244,6 +211,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 219.0,
 	"status_bar_visible": true
 }
