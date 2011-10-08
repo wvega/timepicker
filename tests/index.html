@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery TimePicker</title>
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <header><div class="page-header"><h1>jQuery TimePicker Unit Tests</h1></div></header>
+        <div class="row">
+            <div class="span4 columns">
+                <form class="form-stacked" action="playground.html" method="get" target="playground">
+
+                    <div class="clearfix">
+                        <label for="jquery-version">jQuery version</label>
+                        <div class="input">
+                            <select id="jquery-version" name="jquery-version">
+                                <option value='1.6.4'>jQuery 1.6.4</option>
+                                <option value='1.6.2'>jQuery 1.6.2</option>
+                                <option value='1.5.1'>jQuery 1.5.1</option>
+                                <option value='1.4.2'>jQuery 1.4.2</option>
+                                <option value='1.3.2'>jQuery 1.3.2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <label for="jquery-ui-version">jQuery UI version</label>
+                        <div class="input">
+                            <select id="jquery-ui-version" name="jquery-ui-version">
+                                <option value='1.8.2'>jQuery UI 1.8.2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <label for="timepicker">TimePicker</label>
+                        <div class="input">
+                            <select id="timepicker" name="timepicker">
+                                <option value='normal'>Normal</option>
+                                <option value='minified'>Minified</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <label for="test">Test</label>
+                        <div class="input">
+                            <select id="test" name="test">
+                                <option value='core'>Core</option>
+                                <option value='visual'>Visual</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="btn primary" type="submit">Run Tests</button>
+
+                </form>
+            </div>
+            <div class="span12 columns">
+                <iframe id="playground-iframe" name="playground" src="playground.html" width="700px" height="500px" style="border:none;"></iframe>
+            </div>
+        </div>
+    </div>
+</body>

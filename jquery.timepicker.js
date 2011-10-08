@@ -39,7 +39,8 @@ if(typeof jQuery != 'undefined') {
                 widget.ui = $('<ul></ul>').addClass('ui-timepicker ui-timepicker-hidden')
                                     .addClass('ui-widget ui-widget-content ui-menu')
                                     .addClass('ui-corner-all ui-helper-hidden')
-                                    .appendTo('body');
+                                    .appendTo('body')
+                                    .hide();
 
                 if ($.fn.jquery >= '1.4.2') {
                     widget.ui.delegate('a', 'mouseenter.timepicker', function(event) {
@@ -175,14 +176,14 @@ if(typeof jQuery != 'undefined') {
             //
 
             register: function(node, options) {
-                var widget = this, i = {};// timepicker instance object
+                var widget = this, i = {}; // timepicker instance object
 
                 i.element = $(node);
                 
-                if (i.element.data('TimePicker')) {return;}
-
+                if (i.element.data('TimePicker')) { return; }
 
                 i.element.data('TimePicker', i);
+                // TODO: use $.fn.data()
                 i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : options;
                 i.widget = widget;
                 i.selectedTime = $.fn.timepicker.parseTime(i.element.val());
