@@ -10,10 +10,10 @@
         <div class="fill">
             <div class="container">
                 <a class="brand" href="">jQuery TimePicker</a>
-                <ul class="nav" data-tabs="tabs">
-                    <li class="active"><a href="#about">About</a></li>
+                <ul class="nav">
+                    <li><a href="#about">About</a></li>
                     <li><a href="#options">Options</a></li>
-                    <li><a href="#demos">Demos</a></li>
+                    <!--<li><a href="#demos">Demos</a></li>-->
                 </ul>
             </div>
         </div>
@@ -21,7 +21,7 @@
     <div class="container">
         <div class="tab-content">
 
-            <div id="about" class="active">
+            <div id="about">
                 <article>
                     <header><h1>jQuery TimePicker</h1></header>
 
@@ -123,21 +123,21 @@
     $('input.timepicker').timepicker({ timeFormat: 'h:mm:ss p'});
 });</pre>
 
-                            <form><input class="timepicker" data-timeFormat="h:mm:ss p" /></form>
+                            <form><input id="time-format-option-timepicker" class="timepicker" data-timepicker="timepicker" data-timeFormat="h:mm:ss p"/></form>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="span4 columns"><code>minTime</code></div>
                         <div class="span12 columns">
-                            <p>a <span class="label important">Date</span> object. Only the time parts (getHours, getMinutes) of the object are important. Time entries before minTime won't be displayed/allowed.</p>
+                            <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. Only the time parts (getHours, getMinutes) of the object are important. Time entries before minTime won't be displayed/allowed.</p>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="span4 columns"><code>minHour</code></div>
                         <div class="span12 columns">
-                            <p><span class="label important">int</span>. Time entries with an hour part before <code>minHour</code> won't be displayed/allowed. Ignored if <code>minTime</code> is set.</p>
+                            <p><span class="label important">int</span>. Time entries with an 24-hour part before <code>minHour</code> won't be displayed/allowed. Ignored if <code>minTime</code> is set.</p>
                         </div>
                     </div>
 
@@ -151,14 +151,14 @@
                     <div class="row">
                         <div class="span4 columns"><code>maxTime</code></div>
                         <div class="span12 columns">
-                            <p>a <span class="label important">Date</span> object. Only the time parts (getHours, getMinutes) of the object are important. Time entries after minTime won't be displayed/allowed.</p>
+                            <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. Only the time parts (getHours, getMinutes) of the object are important. Time entries after minTime won't be displayed/allowed.</p>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="span4 columns"><code>maxHour</code></div>
                         <div class="span12 columns">
-                            <p><span class="label important">int</span>. Time entries with an hour part after <code>maxHour</code> won't be displayed/allowed. Ignored if <code>maxTime</code> is set.</p>
+                            <p><span class="label important">int</span>. Time entries with an 24-hour part after <code>maxHour</code> won't be displayed/allowed. Ignored if <code>maxTime</code> is set.</p>
                         </div>
                     </div>
 
@@ -172,14 +172,14 @@
                     <div class="row">
                         <div class="span4 columns"><code>startTime</code></div>
                         <div class="span12 columns">
-                            <p>a <span class="label important">Date</span> object. The time of the first item in the combobox when the input field is empty. If the input field is not empty the first item will be the next allowed time entry.</p>
+                            <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. The time of the first item in the combobox when the input field is empty. If the input field is not empty the first item will be the next allowed time entry.</p>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="span4 columns"><code>startHour</code></div>
                         <div class="span12 columns">
-                            <p><span class="label important">int</span>. The hour part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
+                            <p><span class="label important">int</span>. The 24-hour part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
                         </div>
                     </div>
 
@@ -193,15 +193,20 @@
                     <div class="row">
                         <div class="span4 columns"><code>interval</code></div>
                         <div class="span12 columns">
-                            <p><span class="label important">int</span>. </p>
+                            <p><span class="label important">int</span>. Separation in minutes between time entries in the dropdown menu.</p>
 
                             <pre>$(document).ready(function(){
-    $('input.timepicker').timepicker({ 
-        timeFormat: 'h:mm:ss p'
+    $('input.timepicker').timepicker({
+        timeFormat: 'HH:mm:ss',
+        minTime: new Date(0,0,0,11,45,0) // 11:45:00 AM,
+        maxHour: 20,
+        maxMinutes: 30,
+        startTime: new Date(0,0,0,12,0,0) // 12:00:00 PM - noon
+        interval: 15 // 15 minutos
     });
 });</pre>
 
-                            <form><input class="timepicker" data-timeFormat="h:mm:ss p" /></form>
+                            <form><input id="time-options-timepicker" class="timepicker" data-timepicker="timepicker" data-timeFormat="HH:mm:ss" data-minTime="11:45:00" data-maxHour="20" data-maxMinutes="30" data-startTime="12p" data-interval="15"/></form>
                         </div>
                     </div>
 
@@ -209,12 +214,31 @@
 
                     <div class="row">
                         <div class="span4 columns"><code>change</code></div>
-                        <div class="span12 columns"></div>
+                        <div class="span12 columns">
+                            <p>Event triggerd when the value of the input field changes. A Date object containing the selected time is passed as the first argument of the callback.</p>
+
+                            <pre>$(document).ready(function(){
+    $('input.timepicker').timepicker({
+        change: function(time) {
+            // the input field
+            var element = $(this), text;
+            // get access to this TimePicker instance
+            var timepicker = element.data('timepicker');
+            text = 'Selected time is: ' + timepicker.format(time);
+            element.siblings('span.help-line').text(text);
+        }
+    });
+});</pre>
+                            <form>
+                                <input id="change-event-timepicker" class="timepicker" data-timepicker="timepicker"/>
+                                <span class="help-line"></span>
+                            </form>
+                        </div>    
                     </div>
                 </article>
             </div>
 
-            <div id="demos"></div>
+            <!--<div id="demos"></div>-->
 
         </div>
     </div>
@@ -222,8 +246,8 @@
     <a href="https://github.com/wvega/timepicker"><img style="position: fixed; top: 40px; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-tabs.js"></script>
-    <script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-scrollspy.js"></script>
-    <script type="text/javascript"></script>
+    <script type="text/javascript" src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
+    <!--<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-scrollspy.js"></script>-->
+    <script type="text/javascript" src="timepicker.page.js"></script>
 </body>
 </html>
