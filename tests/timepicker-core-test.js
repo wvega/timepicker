@@ -161,13 +161,7 @@ $.fn.timepicker.test = function() {
         });
 
         system.queue('test', function(next) { start(); }).dequeue('test');
-    });   
-
-    test('options', function() {
-        var timepicker = $('#timepicker').timepicker(),
-            instance = timepicker.timepicker();
-        ok(false, '');
-    });
+    });  
 
     test('parse', function() {
         var timepicker = $('#timepicker').timepicker(),
@@ -246,8 +240,8 @@ $.fn.timepicker.test = function() {
             value = input[k]; expected = input[k+1];
             t = instance.parse(value);
             result = t ? time(t.getHours(), t.getMinutes(), t.getSeconds()) : false;
-            parsed = result ? result.toTimeString() : false;
-            expectedMessage = expected ? expected.toTimeString() : 'false';
+            parsed = result ? result.toLocaleTimeString() : false;
+            expectedMessage = expected ? expected.toLocaleTimeString() : 'false';
 
             ok(result >= expected && result <= expected, 'Input:' + value + ' | Parsed: ' + parsed + ' | Expected: ' + expectedMessage);
         }
@@ -259,13 +253,6 @@ $.fn.timepicker.test = function() {
             time = new Date(1988, 8, 24, 19, 30, 0), 
             k, n, formats, result, format, expected;
 
-        function formatTimeTest(time, format, expected) {
-            test('timeFormat(\'' + format + '\')', 1, function() {
-                var result = $.fn.timepicker.formatTime(format, time);
-                ok(result == expected, time.toTimeString() + ' | ' + result);
-            });
-        }
-
         formats = [['hh:mm:ss p', '07:30:00 PM'], 
                    ['HH:mm:ss', '19:30:00'],
                    ['h:m:s p', '7:30:0 PM'], 
@@ -275,9 +262,38 @@ $.fn.timepicker.test = function() {
             format = formats[k][0]; expected = formats[k][1];
             result = instance.format(time, format);
 
-            ok(result == expected, 'Object: ' + time.toTimeString() + ' | Format: ' + format + ' | Result: ' + result);
-            formatTimeTest(time, formats[k][0], formats[k][1]);
+            ok(result == expected, 'Object: ' + time.toLocaleTimeString() + ' | Format: ' + format + ' | Result: ' + result);
         }
+    }); 
+
+    test('getTime/setTime', function() {
+        var timepicker = $('#timepicker').timepicker(),
+            instance = timepicker.timepicker(), 
+            date = new Date(0,0,0,12,50,34);
+            
+        instance.setTime(date);
+        ok(timepicker.val() == '12:50 PM', 'passing a Date object to setTime.');
+
+        ok(instance.getTime().toLocaleTimeString() == date.toLocaleTimeString(), 'getTime return the time set by setTime using a Date object.');
+
+        instance.setTime('1:20p');
+        ok(timepicker.val() == '01:20 PM', 'passing a string to setTime.');
+
+        date = new Date(0,0,0,13,20,00);
+        ok(instance.getTime().toLocaleTimeString() == date.toLocaleTimeString(), 'getTime return the time set by setTime using a string.');
+    });
+
+    test('option', function() {
+        var timepicker = $('#timepicker').timepicker(),
+            instance = timepicker.timepicker();
+
+        instance.setTime('11:40');
+
+        ok(instance.option('timeFormat') === 'hh:mm p', 'timeFormat: value succesfully retrieved.');
+
+        instance.option('timeFormat', 'h p');
+        ok(instance.format(instance.getTime()) == '11 AM', 'timeFormat: value succesfully updated.');
+        ok(timepicker.val() == '11 AM', 'timeFormat: input field value was properly updated with the new format.');
     });
 
 

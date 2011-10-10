@@ -23,9 +23,11 @@ if(typeof jQuery != 'undefined') {
 
         function normalize() {
             if (arguments.length == 1) {
-                return new Date(1988, 7, 24, arguments[0].getHours(), arguments[0].getMinutes(), 00);
+                return new Date(1988, 7, 24, arguments[0].getHours(), arguments[0].getMinutes(), arguments[0].getSeconds());
+            } else if (arguments.length == 3) {
+                return new Date(1988, 7, 24, arguments[0], arguments[1], arguments[2]);
             } else if (arguments.length == 2) {
-                return new Date(1988, 7, 24, arguments[0], arguments[1], 00);
+                return new Date(1988, 7, 24, arguments[0], arguments[1], 0);
             } else {
                 return new Date(1988, 7, 24);
             }
@@ -198,9 +200,13 @@ if(typeof jQuery != 'undefined') {
                     open: function() {return widget.open(i);},
                     close: function(force) {return widget.close(i, force);},
                     closed: function() {return widget.closed(i);},
-                    destroy: function() {return widget.destroy(i)},
+                    destroy: function() {return widget.destroy(i);},
+
+                    parse: function(str) {return widget.parse(i, str);},
+                    format: function(time, format) { return widget.format(i, time, format); },
                     getTime: function() {return widget.getTime(i);},
-                    setTime: function(time) {return widget.setTime(i, time);}
+                    setTime: function(time, silent) {return widget.setTime(i, time, silent); },
+                    option: function(name, value) { return widget.option(i, name, value); }
                 });
 
                 i.element.bind('keydown.timepicker', function(event) {
@@ -442,22 +448,80 @@ if(typeof jQuery != 'undefined') {
                 return i.element.unbind('.timepicker').data('TimePicker', null);
             },
 
+            // 
+
+            parse: function(i, str) {
+                return $.fn.timepicker.parseTime(str);
+            },
+
+            format: function(i, time, format) {
+                format = format || i.options.timeFormat;
+                return $.fn.timepicker.formatTime(format, time);
+            },
+
             getTime: function(i) {
                 return i.selectedTime ? i.selectedTime : null;
             },
 
-            setTime: function(i, time) {
+            setTime: function(i, time, silent) {
                 var widget = this;
-                if (time && time.getMinutes) {
+
+                if (typeof time === 'string') {
+                    time = i.parse(time);
+                }
+
+                if (time && time.getMinutes && widget._isValidTime(i, time)) {
+                    time = normalize(time);
                     i.selectedTime = time;
-                    i.element.val($.fn.timepicker.formatTime(i.options.timeFormat, time));
+                    i.element.val(i.format(time, i.options.timeFormat));
+
+                    // TODO: add documentaion about setTime being chainable
+                    if (silent) { return i; }
+
                     // custom change event and change callback
+                    // TODO: add documentation about this event
                     i.element.trigger('time-change', [time]);
                     if ($.isFunction(i.options.change)) {
                         i.options.change.apply(i.element, [time]);
                     }
                 } else {
                     i.selectedTime = null;
+                }
+
+                return i;
+            },
+
+            option: function(i, name, value) {
+                if (typeof value === 'undefined') {
+                    return i.options[name];
+                }
+
+                var widget = this, options = {}, 
+                    rebuild = false, set = false;
+
+                if (typeof name === 'string') {
+                    options[name] = value;
+                } else {
+                    options = name;
+                }
+
+                // some options require rebuilding the dropdown items
+                destructive = ['minHour', 'minMinutes', 'minTime',
+                               'maxHour', 'maxMinutes', 'maxTime',
+                               'startHour', 'startMinutes', 'startTime',
+                               'timeFormat', 'interval'];
+
+                $.each(i.options, function(name, value) {
+                    if (typeof options[name] !== 'undefined') {
+                        i.options[name] = options[name];
+                        if (!rebuild && $.inArray(name, destructive) > -1) {
+                            rebuild = true;
+                        }
+                    }
+                });
+
+                if (rebuild) {
+                    i.setTime(i.getTime());
                 }
             }
         };
