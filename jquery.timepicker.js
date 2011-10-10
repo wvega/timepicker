@@ -344,13 +344,13 @@ if(typeof jQuery != 'undefined') {
                 // arrange the items in the list so the first item is
                 // cronologically right after the selected date.
                 // TODO: set selectedTime
-                if (!i.items || (i.options.dynamic && i.selectedTime)) {
+                if (i.rebuild || !i.items || (i.options.dynamic && i.selectedTime)) {
                     i.items = widget._items(i);
                 }
 
                 // remove old li elements but keep associated events, then append
                 // the new li elements to the ul
-                if (widget.instance !== i || (i.options.dynamic && i.selectedTime)) {
+                if (i.rebuild || widget.instance !== i || (i.options.dynamic && i.selectedTime)) {
 
                     // handle menu events when using jQuery versions previous to
                     // 1.4.2 (thanks to Brian Link)
@@ -371,6 +371,8 @@ if(typeof jQuery != 'undefined') {
                         widget.ui.append(i.items);
                     }
                 }
+
+                i.rebuild = false;
                 
                 // theme
                 widget.ui.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners').show();
@@ -496,8 +498,7 @@ if(typeof jQuery != 'undefined') {
                     return i.options[name];
                 }
 
-                var widget = this, options = {}, 
-                    rebuild = false, set = false;
+                var widget = this, options = {};
 
                 if (typeof name === 'string') {
                     options[name] = value;
@@ -514,15 +515,13 @@ if(typeof jQuery != 'undefined') {
                 $.each(i.options, function(name, value) {
                     if (typeof options[name] !== 'undefined') {
                         i.options[name] = options[name];
-                        if (!rebuild && $.inArray(name, destructive) > -1) {
-                            rebuild = true;
+                        if (!i.rebuild && $.inArray(name, destructive) > -1) {
+                            i.rebuild = true;
                         }
                     }
                 });
 
-                if (rebuild) {
-                    i.setTime(i.getTime());
-                }
+                if (i.rebuild) { i.setTime(i.getTime()); }
             }
         };
 

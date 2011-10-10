@@ -294,6 +294,7 @@ $.fn.timepicker.test = function() {
         instance.option('timeFormat', 'h p');
         ok(instance.format(instance.getTime()) == '11 AM', 'timeFormat: value succesfully updated.');
         ok(timepicker.val() == '11 AM', 'timeFormat: input field value was properly updated with the new format.');
+        // TODO: works only if the dropdown hasn't been generated
     });
 
 
