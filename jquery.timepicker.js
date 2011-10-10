@@ -186,7 +186,7 @@ if(typeof jQuery != 'undefined') {
 
                 i.element.data('TimePicker', i);
                 // TODO: use $.fn.data()
-                i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : options;
+                i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : $.extend({}, options);
                 i.widget = widget;
                 i.selectedTime = $.fn.timepicker.parseTime(i.element.val());
 
@@ -281,18 +281,6 @@ if(typeof jQuery != 'undefined') {
                 widget.active.children('a').removeClass('ui-state-hover').removeAttr('id');
                 widget.active = null;
             },
-
-//            option: function(key, value) {
-//                var self = this;
-//                // TODO: handle variable updates
-//                if (arguments.length > 1) {
-//                    if (self.options.hasOwnProperty(key)) {
-//                        self.options[key] = value;
-//                    }
-//                    return self;
-//                }
-//                return self.options[key];
-//            },
 
             /**
              * _activate, _deactivate, first, last, next, previous, _move and
@@ -550,7 +538,37 @@ if(typeof jQuery != 'undefined') {
                 return this;
             }
             
-            // Calling the constructor again returns a reference to a TimePicker object.
+            // support calling API methods using the following syntax:
+            //   $(...).timepicker('parse', '11p');
+            if (typeof options === 'string') {
+                var args = Array.prototype.slice.call(arguments, 1), result;
+
+                // chainable API methods
+                if (options === 'setTime' || (options === 'option' && arguments.length > 2)) {
+                    method = 'each';
+                // API methods that return a value
+                } else {
+                    method = 'map';
+                }
+
+                result = this[method](function() {
+                    var element = $(this), i = element.data('TimePicker');
+                    if (typeof i === 'object') {
+                        return i[options].apply(i, args)
+                    }
+                });
+
+                if (method === 'map' && this.length == 1) {
+                    return $.makeArray(result).shift();
+                } else if (method === 'map') {
+                    return $.makeArray(result);
+                } else {
+                    return result;
+                }
+            }
+
+            // calling the constructor again on a jQuery object with a single 
+            // element returns a reference to a TimePicker object.
             if (this.length == 1 && this.data('TimePicker')) {
                 return this.data('TimePicker');
             }

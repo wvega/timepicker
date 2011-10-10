@@ -112,8 +112,6 @@ $.fn.timepicker.test = function() {
 
     $('body').append('<div id="main" style="position: absolute; top: -10000px; left: -10000px"><div><input id="timepicker" class="timepicker"/></div></div>');
 
-
-
     module("TimePicker API", {
         teardown: function() {
             $('#timepicker').timepicker().destroy();
@@ -267,34 +265,41 @@ $.fn.timepicker.test = function() {
     }); 
 
     test('getTime/setTime', function() {
-        var timepicker = $('#timepicker').timepicker(),
-            instance = timepicker.timepicker(), 
+        var element = $('#timepicker').timepicker(),
+            instance = element.timepicker(), 
             date = new Date(0,0,0,12,50,34);
             
         instance.setTime(date);
-        ok(timepicker.val() == '12:50 PM', 'passing a Date object to setTime.');
+        ok(element.val() == '12:50 PM', 'passing a Date object to setTime.');
 
         ok(instance.getTime().toLocaleTimeString() == date.toLocaleTimeString(), 'getTime return the time set by setTime using a Date object.');
 
-        instance.setTime('1:20p');
-        ok(timepicker.val() == '01:20 PM', 'passing a string to setTime.');
+        element.timepicker('setTime', '1:20p');
+        ok(element.val() == '01:20 PM', 'passing a string to setTime.');
 
         date = new Date(0,0,0,13,20,00);
         ok(instance.getTime().toLocaleTimeString() == date.toLocaleTimeString(), 'getTime return the time set by setTime using a string.');
     });
 
     test('option', function() {
-        var timepicker = $('#timepicker').timepicker(),
-            instance = timepicker.timepicker();
+        var element = $('#timepicker').timepicker(),
+            instance = element.timepicker();
 
         instance.setTime('11:40');
 
-        ok(instance.option('timeFormat') === 'hh:mm p', 'timeFormat: value succesfully retrieved.');
+
+        ok(instance.option('timeFormat') === 'hh:mm p', 'timeFormat: value succesfully retrieved (instance).');
 
         instance.option('timeFormat', 'h p');
-        ok(instance.format(instance.getTime()) == '11 AM', 'timeFormat: value succesfully updated.');
-        ok(timepicker.val() == '11 AM', 'timeFormat: input field value was properly updated with the new format.');
-        // TODO: works only if the dropdown hasn't been generated
+        ok(instance.format(instance.getTime()) == '11 AM', 'timeFormat: value succesfully updated (instance).');
+        ok(element.val() == '11 AM', 'timeFormat: input field value was properly updated with the new format (instance).');
+
+
+        ok(element.timepicker('option', 'timeFormat') === 'h p', 'timeFormat: value succesfully retrieved (plugin).');
+
+        element.timepicker('option', 'timeFormat', 'h:m p');
+        ok(instance.format(instance.getTime()) == '11:40 AM', 'timeFormat: value succesfully updated (plugin).');
+        ok(element.val() == '11:40 AM', 'timeFormat: input field value was properly updated with the new format (plugin).');
     });
 
 
