@@ -1,0 +1,29 @@
+* Tue Jul 26 2011 - Version 1.1.2
+- Released under MIT and GPL Version 2 licenses.
+- Add zindex option to override input field's z-index (thanks to Ian Enders).
+
+* Tue Nov 23 2010 - Version 1.1.1
+- Fix Issue #11 (https://github.com/wvega/timepicker/issues/11)
+
+* Mon Nov 08 2010 - Version 1.1.0
+- Use input field's z-index.
+- Do not use rounded corners by default.
+- Use a single UL element for all timepicker in the same page.
+- Interval greather than 60 minutes are now supported.
+- Add time-change custom event.
+
+* Fri Oct 29 2010 - Version 1.0.3
+- Add dynamic option
+
+* Fri Oct 08 2010 - Version 1.0.2
+- Add support for jQuery 1.3 and superior (thanks to Brian Link)
+- Fix bug with jQuery 1.4.3
+
+
+* Thu Oct 07 2010 - Version 1.0.1
+- Fix selection issue in some versions of IE.
+  http://github.com/wvega/timepicker/issues/closed/#issue/3
+  
+
+* Wed Jul 17 2010 - Version 1.0.0
+- jQuery Timepicker official release

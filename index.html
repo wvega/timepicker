@@ -4,6 +4,7 @@
     <title>jQuery TimePicker</title>
     <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="jquery-timepicker/jquery.timepicker-1.1.2.css">
 </head>
 <body>
     <div class="topbar">
@@ -123,7 +124,7 @@
     $('input.timepicker').timepicker({ timeFormat: 'h:mm:ss p'});
 });</pre>
 
-                            <form><input id="time-format-option-timepicker" class="timepicker" data-timepicker="timepicker" data-timeFormat="h:mm:ss p"/></form>
+                            <form><input id="options-time-format"/></form>
                         </div>
                     </div>
 
@@ -206,7 +207,7 @@
     });
 });</pre>
 
-                            <form><input id="time-options-timepicker" class="timepicker" data-timepicker="timepicker" data-timeFormat="HH:mm:ss" data-minTime="11:45:00" data-maxHour="20" data-maxMinutes="30" data-startTime="12p" data-interval="15"/></form>
+                            <form><input id="options-time-constraints"/></form>
                         </div>
                     </div>
 
@@ -217,7 +218,7 @@
                         <div class="span12 columns">
                             <p>Event triggerd when the value of the input field changes. A Date object containing the selected time is passed as the first argument of the callback.</p>
 
-                            <pre>$(document).ready(function(){
+                            <pre>$(document).ready({
     $('input.timepicker').timepicker({
         change: function(time) {
             // the input field
@@ -230,7 +231,7 @@
     });
 });</pre>
                             <form>
-                                <input id="change-event-timepicker" class="timepicker" data-timepicker="timepicker"/>
+                                <input id="options-change-event"/>
                                 <span class="help-line"></span>
                             </form>
                         </div>    
@@ -248,6 +249,7 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
     <!--<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-scrollspy.js"></script>-->
+    <script type="text/javascript" src="jquery-timepicker/jquery.timepicker-1.1.2.js"></script>
     <script type="text/javascript" src="timepicker.page.js"></script>
 </body>
 </html>
