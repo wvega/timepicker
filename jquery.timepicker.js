@@ -328,6 +328,9 @@ if(typeof jQuery != 'undefined') {
             open: function(i) {
                 var widget = this, zindex;
 
+                // return if dropdown is disabled
+                if (!i.options.dropdown) return i.element;
+
                 // if a date is already selected and options.dynamic is true,
                 // arrange the items in the list so the first item is
                 // cronologically right after the selected date.
@@ -498,7 +501,7 @@ if(typeof jQuery != 'undefined') {
                 destructive = ['minHour', 'minMinutes', 'minTime',
                                'maxHour', 'maxMinutes', 'maxTime',
                                'startHour', 'startMinutes', 'startTime',
-                               'timeFormat', 'interval'];
+                               'timeFormat', 'interval', 'dropdown'];
 
                 $.each(i.options, function(name, value) {
                     if (typeof options[name] !== 'undefined') {
@@ -528,6 +531,7 @@ if(typeof jQuery != 'undefined') {
             dynamic: true,
             theme: 'standard',
             zindex: null,
+            dropdown: true,
             // callbacks
             change: function(time) {}
         };

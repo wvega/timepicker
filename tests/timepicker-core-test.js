@@ -310,6 +310,19 @@ $.fn.timepicker.test = function() {
         }
     });
 
+    test('dropdown', function() {
+        var timepicker, instance;
+        timepicker = $('#timepicker').timepicker({ dropdown: false });
+        instance = timepicker.timepicker();
+        timepicker.focus();
+        ok(instance.closed(), 'dropdown is not opened if dropdown was set to false.');
+        timepicker.blur();
+
+        instance.option('dropdown', true);
+        timepicker.focus();
+        ok(!instance.closed(), 'dropdown is opened if dropdown was set to true.');
+    });
+
     test('callbacks', function() {
         var first = false, expected = 1, timepicker;
         
