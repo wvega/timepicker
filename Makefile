@@ -1,4 +1,4 @@
-VERSION=1.2.0
+VERSION=1.2.1
 NAME=jquery.timepicker-${VERSION}
 
 SOURCES=${NAME}.js ${NAME}.css
