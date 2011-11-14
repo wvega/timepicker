@@ -3,7 +3,7 @@
 // A jQuery plugin to enhance standard form input fields helping users to select
 // (or type) times.
 //
-// Copyright (c) 2010 Willington Vega <wvega@wvega.com>
+// Copyright (c) 2011 Willington Vega <wvega@wvega.com>
 // Dual licensed under the MIT or GPL Version 2 licenses.
 
 
@@ -399,7 +399,7 @@ if(typeof jQuery != 'undefined') {
                 // padding at the end of the process.
                 var paddingRight = parseInt(widget.ui.css('paddingRight')),
                     decoration, zindex;
-                if (widget.ui.hasClass('ui-no-scrollbar')) {
+                if (widget.ui.hasClass('ui-no-scrollbar') && !i.options.scrollbar) {
                     widget.ui.css({ paddingRight: paddingRight - 40 });
                 }
 
@@ -412,16 +412,16 @@ if(typeof jQuery != 'undefined') {
                 widget.container.css($.extend(i.element.offset(), { 
                     height: widget.ui.outerHeight(),
                     width: widget.ui.outerWidth(), 
-                    zIndex: zindex,
+                    zIndex: zindex
                 }));
 
                 decoration = i.items.eq(0).outerWidth() - i.items.eq(0).width();
                 i.items.css('width', widget.ui.width() - decoration);
 
                 // here we add the padding again
-                if (widget.ui.hasClass('ui-no-scrollbar')) {
+                if (widget.ui.hasClass('ui-no-scrollbar') && !i.options.scrollbar) {
                     widget.ui.css({ paddingRight: paddingRight });
-                } else {
+                } else if (!i.options.scrollbar) {
                     widget.ui.css({ paddingRight: paddingRight + 40 }).addClass('ui-no-scrollbar');
                 }
 
@@ -574,6 +574,7 @@ if(typeof jQuery != 'undefined') {
             theme: 'standard',
             zindex: null,
             dropdown: true,
+            scrollbar: false,
             // callbacks
             change: function(time) {}
         };
