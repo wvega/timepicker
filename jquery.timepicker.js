@@ -23,6 +23,9 @@ if(typeof jQuery != 'undefined') {
 
         function normalize() {
             if (arguments.length == 1) {
+                if (typeof arguments[0] === 'string') {
+                    arguments[0] = $.fn.timepicker.parseTime(arguments[0]);
+                }
                 return new Date(1988, 7, 24, arguments[0].getHours(), arguments[0].getMinutes(), arguments[0].getSeconds());
             } else if (arguments.length == 3) {
                 return new Date(1988, 7, 24, arguments[0], arguments[1], arguments[2]);

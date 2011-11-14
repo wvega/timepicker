@@ -310,6 +310,12 @@ $.fn.timepicker.test = function() {
         }
     });
 
+    test('minTime', function() {
+        var timepicker, instance;
+        timepicker = $('#timepicker').timepicker({ minTime: '2p' });
+        timepicker.focus();
+    })
+
     test('dropdown', function() {
         var timepicker, instance;
         timepicker = $('#timepicker').timepicker({ dropdown: false });
