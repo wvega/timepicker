@@ -18,7 +18,7 @@ $(function() {
     	minTime: "11:45:00",
     	maxHour: 20,
     	maxMinutes: 30,
-    	startTime: "12p",
+    	startTime: new Date(0,0,0,15,0,0),
     	interval: 15
     });
 

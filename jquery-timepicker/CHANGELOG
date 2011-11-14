@@ -1,3 +1,6 @@
+* Mon Nov 14 2011 - Version 1.2.1
+- Fix strings support for startTime, minTime and maxTime options.
+
 * Sun Nov 13 2011 - Version 1.2.0
 - Add support for calling API methods using the plugin function, 
   passing the method's name as first argument and options as
