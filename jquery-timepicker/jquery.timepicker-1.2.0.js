@@ -3,7 +3,7 @@
 // A jQuery plugin to enhance standard form input fields helping users to select
 // (or type) times.
 //
-// Copyright (c) 2010 Willington Vega <wvega@wvega.com>
+// Copyright (c) 2011 Willington Vega <wvega@wvega.com>
 // Dual licensed under the MIT or GPL Version 2 licenses.
 
 
@@ -23,9 +23,11 @@ if(typeof jQuery != 'undefined') {
 
         function normalize() {
             if (arguments.length == 1) {
-                return new Date(1988, 7, 24, arguments[0].getHours(), arguments[0].getMinutes(), 00);
+                return new Date(1988, 7, 24, arguments[0].getHours(), arguments[0].getMinutes(), arguments[0].getSeconds());
+            } else if (arguments.length == 3) {
+                return new Date(1988, 7, 24, arguments[0], arguments[1], arguments[2]);
             } else if (arguments.length == 2) {
-                return new Date(1988, 7, 24, arguments[0], arguments[1], 00);
+                return new Date(1988, 7, 24, arguments[0], arguments[1], 0);
             } else {
                 return new Date(1988, 7, 24);
             }
@@ -34,12 +36,18 @@ if(typeof jQuery != 'undefined') {
         $.TimePicker = function() {
             var widget = this;
 
-            widget.ui = $('ul.ui-timepicker');
+            widget.container = $('.ui-timepicker-container');
+            widget.ui = widget.container.find('.ui-timepícker');
+
             if (widget.ui.length == 0) {
-                widget.ui = $('<ul></ul>').addClass('ui-timepicker ui-timepicker-hidden')
+                widget.container = $('<div></div>').addClass('ui-timepicker-container')
+                                    .addClass('ui-timepicker-hidden ui-helper-hidden')
+                                    .appendTo('body')
+                                    .hide();                    
+                widget.ui = $('<ul></ul>').addClass('ui-timepicker')
                                     .addClass('ui-widget ui-widget-content ui-menu')
-                                    .addClass('ui-corner-all ui-helper-hidden')
-                                    .appendTo('body');
+                                    .addClass('ui-corner-all')
+                                    .appendTo(widget.container);
 
                 if ($.fn.jquery >= '1.4.2') {
                     widget.ui.delegate('a', 'mouseenter.timepicker', function(event) {
@@ -175,15 +183,15 @@ if(typeof jQuery != 'undefined') {
             //
 
             register: function(node, options) {
-                var widget = this, i = {};// timepicker instance object
+                var widget = this, i = {}; // timepicker instance object
 
                 i.element = $(node);
                 
-                if (i.element.data('TimePicker')) {return;}
-
+                if (i.element.data('TimePicker')) { return; }
 
                 i.element.data('TimePicker', i);
-                i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : options;
+                // TODO: use $.fn.data()
+                i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : $.extend({}, options);
                 i.widget = widget;
                 i.selectedTime = $.fn.timepicker.parseTime(i.element.val());
 
@@ -197,9 +205,13 @@ if(typeof jQuery != 'undefined') {
                     open: function() {return widget.open(i);},
                     close: function(force) {return widget.close(i, force);},
                     closed: function() {return widget.closed(i);},
-                    destroy: function() {return widget.destroy(i)},
+                    destroy: function() {return widget.destroy(i);},
+
+                    parse: function(str) {return widget.parse(i, str);},
+                    format: function(time, format) { return widget.format(i, time, format); },
                     getTime: function() {return widget.getTime(i);},
-                    setTime: function(time) {return widget.setTime(i, time);}
+                    setTime: function(time, silent) {return widget.setTime(i, time, silent); },
+                    option: function(name, value) { return widget.option(i, name, value); }
                 });
 
                 i.element.bind('keydown.timepicker', function(event) {
@@ -228,7 +240,7 @@ if(typeof jQuery != 'undefined') {
                 }).bind('focus.timepicker', function(event) {
                     i.open();
                 }).bind('blur.timepicker', function(event) {
-                    i.close();
+                    //i.close();
                 }).bind('change.timepicker', function(event) {
                     if (i.closed()) {
                         i.setTime($.fn.timepicker.parseTime(i.element.val()));
@@ -274,18 +286,6 @@ if(typeof jQuery != 'undefined') {
                 widget.active.children('a').removeClass('ui-state-hover').removeAttr('id');
                 widget.active = null;
             },
-
-//            option: function(key, value) {
-//                var self = this;
-//                // TODO: handle variable updates
-//                if (arguments.length > 1) {
-//                    if (self.options.hasOwnProperty(key)) {
-//                        self.options[key] = value;
-//                    }
-//                    return self;
-//                }
-//                return self.options[key];
-//            },
 
             /**
              * _activate, _deactivate, first, last, next, previous, _move and
@@ -333,17 +333,20 @@ if(typeof jQuery != 'undefined') {
             open: function(i) {
                 var widget = this, zindex;
 
+                // return if dropdown is disabled
+                if (!i.options.dropdown) return i.element;
+
                 // if a date is already selected and options.dynamic is true,
                 // arrange the items in the list so the first item is
                 // cronologically right after the selected date.
                 // TODO: set selectedTime
-                if (!i.items || (i.options.dynamic && i.selectedTime)) {
+                if (i.rebuild || !i.items || (i.options.dynamic && i.selectedTime)) {
                     i.items = widget._items(i);
                 }
 
                 // remove old li elements but keep associated events, then append
                 // the new li elements to the ul
-                if (widget.instance !== i || (i.options.dynamic && i.selectedTime)) {
+                if (i.rebuild || widget.instance !== i || (i.options.dynamic && i.selectedTime)) {
 
                     // handle menu events when using jQuery versions previous to
                     // 1.4.2 (thanks to Brian Link)
@@ -364,28 +367,66 @@ if(typeof jQuery != 'undefined') {
                         widget.ui.append(i.items);
                     }
                 }
+
+                i.rebuild = false;
                 
                 // theme
-                widget.ui.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners').show();
+                widget.container.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners').show();
 
                 switch (i.options.theme) {
                     case 'standard':
-                        widget.ui.addClass('ui-timepicker-standard');
+                        widget.container.addClass('ui-timepicker-standard');
+                        //widget.ui.addClass('ui-timepicker-standard');
                         break;
                     case 'standard-rounded-corners':
-                        widget.ui.addClass('ui-timepicker-standard ui-timepicker-corners');
+                        widget.container.addClass('ui-timepicker-standard ui-timepicker-corners');
+                        //widget.ui.addClass('ui-timepicker-standard ui-timepicker-corners');
                         break;
                     default:
                         break;
                 }
 
-                // position
-                // zindex = i.element.offsetParent().css('z-index'); zindex == 'auto' ? 'auto' : parseInt(zindex, 10) + 1
-                widget.ui.css($.extend(i.element.offset(), {
-                    width: i.element.innerWidth(),
-                    zIndex: i.options.zindex ? i.options.zindex : i.element.offsetParent().css('z-index')
+                /* resize ui */
+
+                // we are hiding the scrollbar in the dropdown menu adding a 40px
+                // padding to the UL element making the scrollbar appear in the 
+                // part of the UL that's hidden by the container (a DIV).
+                //
+                // In order to calculate the position, width and height for the UI
+                // elements regardless of the CSS styles  that could have been
+                // applied to them we need to substract the additional padding,
+                // calculate the measuraments with the default styles and add the
+                // padding at the end of the process.
+                var paddingRight = parseInt(widget.ui.css('paddingRight')),
+                    decoration, zindex;
+                if (widget.ui.hasClass('ui-no-scrollbar') && !i.options.scrollbar) {
+                    widget.ui.css({ paddingRight: paddingRight - 40 });
+                }
+
+                decoration = (widget.ui.outerWidth() - widget.ui.width()) +
+                             (widget.container.outerWidth() - widget.container.width()),
+                zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css('z-index');
+
+                // width + padding + border = input field's outer width
+                widget.ui.css({ width: i.element.outerWidth() - decoration });
+                widget.container.css($.extend(i.element.offset(), { 
+                    height: widget.ui.outerHeight(),
+                    width: widget.ui.outerWidth(), 
+                    zIndex: zindex
                 }));
-                widget.ui.css('top', parseInt(widget.ui.css('top'), 10) + i.element.outerHeight());
+
+                decoration = i.items.eq(0).outerWidth() - i.items.eq(0).width();
+                i.items.css('width', widget.ui.width() - decoration);
+
+                // here we add the padding again
+                if (widget.ui.hasClass('ui-no-scrollbar') && !i.options.scrollbar) {
+                    widget.ui.css({ paddingRight: paddingRight });
+                } else if (!i.options.scrollbar) {
+                    widget.ui.css({ paddingRight: paddingRight + 40 }).addClass('ui-no-scrollbar');
+                }
+
+                // position
+                widget.container.css('top', parseInt(widget.container.css('top'), 10) + i.element.outerHeight());
 
                 widget.instance = i;
 
@@ -420,7 +461,8 @@ if(typeof jQuery != 'undefined') {
                 if (widget.closed() || force) {
                     clearTimeout(widget.closing);
                     if (widget.instance === i) {
-                        widget.ui.scrollTop(0).addClass('ui-helper-hidden ui-timepicker-hidden').hide();
+                        widget.container.addClass('ui-helper-hidden ui-timepicker-hidden').hide();
+                        widget.ui.scrollTop(0);
                         widget.ui.children().removeClass('ui-state-hover');
                     }
                 } else {
@@ -441,16 +483,38 @@ if(typeof jQuery != 'undefined') {
                 return i.element.unbind('.timepicker').data('TimePicker', null);
             },
 
+            // 
+
+            parse: function(i, str) {
+                return $.fn.timepicker.parseTime(str);
+            },
+
+            format: function(i, time, format) {
+                format = format || i.options.timeFormat;
+                return $.fn.timepicker.formatTime(format, time);
+            },
+
             getTime: function(i) {
                 return i.selectedTime ? i.selectedTime : null;
             },
 
-            setTime: function(i, time) {
+            setTime: function(i, time, silent) {
                 var widget = this;
-                if (time && time.getMinutes) {
+
+                if (typeof time === 'string') {
+                    time = i.parse(time);
+                }
+
+                if (time && time.getMinutes && widget._isValidTime(i, time)) {
+                    time = normalize(time);
                     i.selectedTime = time;
-                    i.element.val($.fn.timepicker.formatTime(i.options.timeFormat, time));
+                    i.element.val(i.format(time, i.options.timeFormat));
+
+                    // TODO: add documentaion about setTime being chainable
+                    if (silent) { return i; }
+
                     // custom change event and change callback
+                    // TODO: add documentation about this event
                     i.element.trigger('time-change', [time]);
                     if ($.isFunction(i.options.change)) {
                         i.options.change.apply(i.element, [time]);
@@ -458,6 +522,39 @@ if(typeof jQuery != 'undefined') {
                 } else {
                     i.selectedTime = null;
                 }
+
+                return i;
+            },
+
+            option: function(i, name, value) {
+                if (typeof value === 'undefined') {
+                    return i.options[name];
+                }
+
+                var widget = this, options = {};
+
+                if (typeof name === 'string') {
+                    options[name] = value;
+                } else {
+                    options = name;
+                }
+
+                // some options require rebuilding the dropdown items
+                destructive = ['minHour', 'minMinutes', 'minTime',
+                               'maxHour', 'maxMinutes', 'maxTime',
+                               'startHour', 'startMinutes', 'startTime',
+                               'timeFormat', 'interval', 'dropdown'];
+
+                $.each(i.options, function(name, value) {
+                    if (typeof options[name] !== 'undefined') {
+                        i.options[name] = options[name];
+                        if (!i.rebuild && $.inArray(name, destructive) > -1) {
+                            i.rebuild = true;
+                        }
+                    }
+                });
+
+                if (i.rebuild) { i.setTime(i.getTime()); }
             }
         };
 
@@ -476,6 +573,8 @@ if(typeof jQuery != 'undefined') {
             dynamic: true,
             theme: 'standard',
             zindex: null,
+            dropdown: true,
+            scrollbar: false,
             // callbacks
             change: function(time) {}
         };
@@ -486,7 +585,37 @@ if(typeof jQuery != 'undefined') {
                 return this;
             }
             
-            // Calling the constructor again returns a reference to a TimePicker object.
+            // support calling API methods using the following syntax:
+            //   $(...).timepicker('parse', '11p');
+            if (typeof options === 'string') {
+                var args = Array.prototype.slice.call(arguments, 1), result;
+
+                // chainable API methods
+                if (options === 'setTime' || (options === 'option' && arguments.length > 2)) {
+                    method = 'each';
+                // API methods that return a value
+                } else {
+                    method = 'map';
+                }
+
+                result = this[method](function() {
+                    var element = $(this), i = element.data('TimePicker');
+                    if (typeof i === 'object') {
+                        return i[options].apply(i, args)
+                    }
+                });
+
+                if (method === 'map' && this.length == 1) {
+                    return $.makeArray(result).shift();
+                } else if (method === 'map') {
+                    return $.makeArray(result);
+                } else {
+                    return result;
+                }
+            }
+
+            // calling the constructor again on a jQuery object with a single 
+            // element returns a reference to a TimePicker object.
             if (this.length == 1 && this.data('TimePicker')) {
                 return this.data('TimePicker');
             }
@@ -583,7 +712,8 @@ if(typeof jQuery != 'undefined') {
                     [/^(\d{3,}):(\d{2,})/, '$1$2'],
                     //
                     [/^(\d):(\d):(\d)$/, '0$10$20$3'],
-                    [/^(\d{1,2}):(\d):(\d\d)/, '$10$2$3']];
+                    [/^(\d{1,2}):(\d):(\d\d)/, '$10$2$3']],
+                length = patterns.length;
 
             return function(str) {
                 var time = normalize(new Date()),
@@ -593,7 +723,7 @@ if(typeof jQuery != 'undefined') {
                 pm = am ? false : /p/.test(str);
                 str = str.replace(/[^0-9:]/g, '').replace(/:+/g, ':');
 
-                for (k in patterns) {
+                for (var k = 0; k < length; k++) {
                     if (patterns[k][0].test(str)) {
                         str = str.replace(patterns[k][0], patterns[k][1]);
                         break;

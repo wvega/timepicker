@@ -1,3 +1,13 @@
+* Sun Nov 13 2011 - Version 1.2.0
+- Add support for calling API methods using the plugin function, 
+  passing the method's name as first argument and options as
+  subsequent arguments.
+- Add an option() method to allow changing options values after 
+  initialization.
+- Add dropdown option to control whether the dropdown is displayed or not.
+- Add scrollbar option to control whether the scrollbars are displayed or not.
+- Aceept strings as values for the minTime, maxTime and startTime options.
+
 * Tue Jul 26 2011 - Version 1.1.2
 - Released under MIT and GPL Version 2 licenses.
 - Add zindex option to override input field's z-index (thanks to Ian Enders).

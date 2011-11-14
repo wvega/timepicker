@@ -27,7 +27,7 @@ $(function() {
             // the input field
             var element = $(this), text;
             // get access to this TimePicker instance
-            var timepicker = element.data('timepicker');
+            var timepicker = element.timepicker();
             text = 'Selected time is: ' + timepicker.format(time);
             element.siblings('span.help-line').text(text);
         }
