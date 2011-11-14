@@ -36,13 +36,18 @@ if(typeof jQuery != 'undefined') {
         $.TimePicker = function() {
             var widget = this;
 
-            widget.ui = $('ul.ui-timepicker');
+            widget.container = $('.ui-timepicker-container');
+            widget.ui = widget.container.find('.ui-timepícker');
+
             if (widget.ui.length == 0) {
-                widget.ui = $('<ul></ul>').addClass('ui-timepicker ui-timepicker-hidden')
-                                    .addClass('ui-widget ui-widget-content ui-menu')
-                                    .addClass('ui-corner-all ui-helper-hidden')
+                widget.container = $('<div></div>').addClass('ui-timepicker-container')
+                                    .addClass('ui-timepicker-hidden ui-helper-hidden')
                                     .appendTo('body')
-                                    .hide();
+                                    .hide();                    
+                widget.ui = $('<ul></ul>').addClass('ui-timepicker')
+                                    .addClass('ui-widget ui-widget-content ui-menu')
+                                    .addClass('ui-corner-all')
+                                    .appendTo(widget.container);
 
                 if ($.fn.jquery >= '1.4.2') {
                     widget.ui.delegate('a', 'mouseenter.timepicker', function(event) {
@@ -235,7 +240,7 @@ if(typeof jQuery != 'undefined') {
                 }).bind('focus.timepicker', function(event) {
                     i.open();
                 }).bind('blur.timepicker', function(event) {
-                    i.close();
+                    //i.close();
                 }).bind('change.timepicker', function(event) {
                     if (i.closed()) {
                         i.setTime($.fn.timepicker.parseTime(i.element.val()));
@@ -366,26 +371,62 @@ if(typeof jQuery != 'undefined') {
                 i.rebuild = false;
                 
                 // theme
-                widget.ui.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners').show();
+                widget.container.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners').show();
 
                 switch (i.options.theme) {
                     case 'standard':
-                        widget.ui.addClass('ui-timepicker-standard');
+                        widget.container.addClass('ui-timepicker-standard');
+                        //widget.ui.addClass('ui-timepicker-standard');
                         break;
                     case 'standard-rounded-corners':
-                        widget.ui.addClass('ui-timepicker-standard ui-timepicker-corners');
+                        widget.container.addClass('ui-timepicker-standard ui-timepicker-corners');
+                        //widget.ui.addClass('ui-timepicker-standard ui-timepicker-corners');
                         break;
                     default:
                         break;
                 }
 
-                // position
-                // zindex = i.element.offsetParent().css('z-index'); zindex == 'auto' ? 'auto' : parseInt(zindex, 10) + 1
-                widget.ui.css($.extend(i.element.offset(), {
-                    width: i.element.outerWidth() - (widget.ui.outerWidth() - widget.ui.width()),
-                    zIndex: i.options.zindex ? i.options.zindex : i.element.offsetParent().css('z-index')
+                /* resize ui */
+
+                // we are hiding the scrollbar in the dropdown menu adding a 40px
+                // padding to the UL element making the scrollbar appear in the 
+                // part of the UL that's hidden by the container (a DIV).
+                //
+                // In order to calculate the position, width and height for the UI
+                // elements regardless of the CSS styles  that could have been
+                // applied to them we need to substract the additional padding,
+                // calculate the measuraments with the default styles and add the
+                // padding at the end of the process.
+                var paddingRight = parseInt(widget.ui.css('paddingRight')),
+                    decoration, zindex;
+                if (widget.ui.hasClass('ui-no-scrollbar')) {
+                    widget.ui.css({ paddingRight: paddingRight - 40 });
+                }
+
+                decoration = (widget.ui.outerWidth() - widget.ui.width()) +
+                             (widget.container.outerWidth() - widget.container.width()),
+                zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css('z-index');
+
+                // width + padding + border = input field's outer width
+                widget.ui.css({ width: i.element.outerWidth() - decoration });
+                widget.container.css($.extend(i.element.offset(), { 
+                    height: widget.ui.outerHeight(),
+                    width: widget.ui.outerWidth(), 
+                    zIndex: zindex,
                 }));
-                widget.ui.css('top', parseInt(widget.ui.css('top'), 10) + i.element.outerHeight());
+
+                decoration = i.items.eq(0).outerWidth() - i.items.eq(0).width();
+                i.items.css('width', widget.ui.width() - decoration);
+
+                // here we add the padding again
+                if (widget.ui.hasClass('ui-no-scrollbar')) {
+                    widget.ui.css({ paddingRight: paddingRight });
+                } else {
+                    widget.ui.css({ paddingRight: paddingRight + 40 }).addClass('ui-no-scrollbar');
+                }
+
+                // position
+                widget.container.css('top', parseInt(widget.container.css('top'), 10) + i.element.outerHeight());
 
                 widget.instance = i;
 
@@ -420,7 +461,8 @@ if(typeof jQuery != 'undefined') {
                 if (widget.closed() || force) {
                     clearTimeout(widget.closing);
                     if (widget.instance === i) {
-                        widget.ui.scrollTop(0).addClass('ui-helper-hidden ui-timepicker-hidden').hide();
+                        widget.container.addClass('ui-helper-hidden ui-timepicker-hidden').hide();
+                        widget.ui.scrollTop(0);
                         widget.ui.children().removeClass('ui-state-hover');
                     }
                 } else {
