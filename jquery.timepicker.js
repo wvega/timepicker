@@ -400,7 +400,7 @@ if(typeof jQuery != 'undefined') {
                 var paddingRight = parseInt(widget.ui.css('paddingRight')),
                     decoration, zindex;
                 if (widget.ui.hasClass('ui-no-scrollbar') && !i.options.scrollbar) {
-                    widget.ui.css({ paddingRight: paddingRight - 40 });
+                    widget.ui.css({ paddingRight: paddingRight - 40 }); 
                 }
 
                 decoration = (widget.ui.outerWidth() - widget.ui.width()) +
