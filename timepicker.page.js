@@ -14,16 +14,16 @@ $(function() {
     $('#options-time-format').timepicker({ timeFormat: 'h:mm:ss p' });
 
     $('#options-time-constraints').timepicker({
-    	timeFormat: "HH:mm:ss",
-    	minTime: "11:45:00",
-    	maxHour: 20,
-    	maxMinutes: 30,
-    	startTime: new Date(0,0,0,15,0,0),
-    	interval: 15
+        timeFormat: "HH:mm:ss",
+        minTime: "11:45:00",
+        maxHour: 20,
+        maxMinutes: 30,
+        startTime: new Date(0,0,0,15,0,0),
+        interval: 15
     });
 
     $('#options-change-event').timepicker({
-    	change: function(time) {
+        change: function(time) {
             // the input field
             var element = $(this), text;
             // get access to this TimePicker instance
