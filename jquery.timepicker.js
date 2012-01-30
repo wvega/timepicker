@@ -155,7 +155,9 @@ if(typeof jQuery != 'undefined') {
             },
 
             _hasScroll: function() {
-                return this.ui.height() < this.ui.attr('scrollHeight');
+                // fix for jQuery 1.6 new prop method
+                m = typeof this.ui.prop !== 'undefined' ? 'prop' : 'attr';
+                return this.ui.height() < this.ui[m]('scrollHeight');
             },
 
             /**
