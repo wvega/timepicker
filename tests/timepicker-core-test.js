@@ -159,7 +159,7 @@ $.fn.timepicker.test = function() {
         });
 
         system.queue('test', function(next) { start(); }).dequeue('test');
-    });  
+    });
 
     test('parse', function() {
         var timepicker = $('#timepicker').timepicker(),
@@ -167,11 +167,11 @@ $.fn.timepicker.test = function() {
             now = new Date(), k, n, value, expected;
 
         function time(hours, minutes, seconds) {
-            hours = hours || 0;minutes = minutes || 0;seconds = seconds || 0;
-            var time = new Date();
-            time.setTime(now.valueOf());
-            time.setHours(hours, minutes, seconds, 0, 0);
-            return time;
+            hours = hours || 0; minutes = minutes || 0; seconds = seconds || 0;
+            var t = new Date();
+            t.setTime(now.valueOf());
+            t.setHours(hours, minutes, seconds, 0, 0);
+            return t;
         }
 
         var input = ['1', time(1),
@@ -232,7 +232,8 @@ $.fn.timepicker.test = function() {
                      '1:2:30', time(1,2,30),
                      '10:2:30', time(10,2,30),
                      '1:20:30', time(1,20,30),
-                     '11:15:03', time(11,15,3)];
+                     '11:15:03', time(11,15,3),
+                     undefined, null];
 
         for (k = 0, n = input.length; k < n; k = k+2) {
             value = input[k]; expected = input[k+1];
@@ -248,12 +249,12 @@ $.fn.timepicker.test = function() {
     test('format', function() {
         var timepicker = $('#timepicker').timepicker(),
             instance = timepicker.timepicker(),
-            time = new Date(1988, 8, 24, 19, 30, 0), 
+            time = new Date(1988, 8, 24, 19, 30, 0),
             k, n, formats, result, format, expected;
 
-        formats = [['hh:mm:ss p', '07:30:00 PM'], 
+        formats = [['hh:mm:ss p', '07:30:00 PM'],
                    ['HH:mm:ss', '19:30:00'],
-                   ['h:m:s p', '7:30:0 PM'], 
+                   ['h:m:s p', '7:30:0 PM'],
                    ['H:m:s', '19:30:0']];
 
         for (k = 0, n = formats.length; k < n; k++) {
@@ -262,11 +263,11 @@ $.fn.timepicker.test = function() {
 
             ok(result == expected, 'Object: ' + time.toLocaleTimeString() + ' | Format: ' + format + ' | Result: ' + result);
         }
-    }); 
+    });
 
     test('getTime/setTime', function() {
         var element = $('#timepicker').timepicker(),
-            instance = element.timepicker(), 
+            instance = element.timepicker(),
             date = new Date(0,0,0,12,50,34);
             
         instance.setTime(date);
@@ -277,7 +278,7 @@ $.fn.timepicker.test = function() {
         element.timepicker('setTime', '1:20p');
         ok(element.val() == '01:20 PM', 'passing a string to setTime.');
 
-        date = new Date(0,0,0,13,20,00);
+        date = new Date(0,0,0,13,20,0);
         ok(instance.getTime().toLocaleTimeString() == date.toLocaleTimeString(), 'getTime return the time set by setTime using a string.');
     });
 
@@ -314,7 +315,7 @@ $.fn.timepicker.test = function() {
         var timepicker, instance;
         timepicker = $('#timepicker').timepicker({ minTime: '2p' });
         timepicker.focus();
-    })
+    });
 
     test('dropdown', function() {
         var timepicker, instance;

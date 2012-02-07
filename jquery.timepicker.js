@@ -724,6 +724,9 @@ if(typeof jQuery != 'undefined') {
             return function(str) {
                 var time = normalize(new Date()),
                     am = false, pm = false, h = false, m = false, s = false;
+
+                if (typeof b === 'undefined' || !b.toLowerCase) { return null; }
+
                 str = str.toLowerCase();
                 am = /a/.test(str);
                 pm = am ? false : /p/.test(str);
