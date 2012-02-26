@@ -1,4 +1,4 @@
-VERSION=1.2.1
+VERSION=1.2.2
 NAME=jquery.timepicker-${VERSION}
 
 SOURCES=${NAME}.js ${NAME}.css
@@ -26,5 +26,5 @@ ${NAME}.css:
 	curl http://mabblog.com/cssoptimizer/service.php \
 		 -F "data=<jquery.timepicker.css" > jquery.timepicker-${VERSION}.min.css
 
-cleanup:
+clean:
 	rm ${SOURCES} ${COMPRESSED}

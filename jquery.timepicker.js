@@ -725,7 +725,7 @@ if(typeof jQuery != 'undefined') {
                 var time = normalize(new Date()),
                     am = false, pm = false, h = false, m = false, s = false;
 
-                if (typeof b === 'undefined' || !b.toLowerCase) { return null; }
+                if (typeof str === 'undefined' || !str.toLowerCase) { return null; }
 
                 str = str.toLowerCase();
                 am = /a/.test(str);
@@ -765,7 +765,7 @@ if(typeof jQuery != 'undefined') {
                     return false;
                 }
 
-                h = parseInt(h, 10);m = parseInt(m, 10);s = parseInt(s, 10);
+                h = parseInt(h, 10); m = parseInt(m, 10); s = parseInt(s, 10);
 
                 if (am && h == 12) {
                     h = 0;
@@ -774,7 +774,11 @@ if(typeof jQuery != 'undefined') {
                 }
 
                 if (h > 24 && (h % 10) <= 6 && m <= 60 && s <= 60) {
-                    return $.fn.timepicker.parseTime(str + '0' + (am ? 'a' : '') + (pm ? 'p' : ''));
+                    if (str.length >= 6) {
+                        return $.fn.timepicker.parseTime(str.substr(0,5));
+                    } else {
+                        return $.fn.timepicker.parseTime(str + '0' + (am ? 'a' : '') + (pm ? 'p' : ''));
+                    }
                 } else if (h <= 24 && m <= 60 && s <= 60) {
                     time.setHours(h, m, s);
                     return time;
