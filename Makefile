@@ -20,11 +20,13 @@ ${NAME}.js:
 	     -d output_format=text \
 	     -d output_info=compiled_code \
 	     --data-urlencode js_code@jquery.timepicker.js \
-	     http://closure-compiler.appspot.com/compile > jquery.timepicker-${VERSION}.min.js
+	     http://closure-compiler.appspot.com/compile > jquery.timepicker.min.js
+	cp jquery.timepicker.min.js jquery.timepicker-${VERSION}.min.js
 
 ${NAME}.css:
 	curl http://mabblog.com/cssoptimizer/service.php \
-		 -F "data=<jquery.timepicker.css" > jquery.timepicker-${VERSION}.min.css
+		 -F "data=<jquery.timepicker.css" > jquery.timepicker.min.css
+	cp jquery.timepicker.min.css jquery.timepicker-${VERSION}.min.css
 
 clean:
 	rm ${SOURCES} ${COMPRESSED}
