@@ -15,7 +15,7 @@
 //}
 
 if(typeof jQuery != 'undefined') {
-    (function($, undefined){
+    (function($, undefined) {
 
         function pad(str, ch, length) {
             return Array(length + 1 - str.length).join(ch) + str;
@@ -23,10 +23,11 @@ if(typeof jQuery != 'undefined') {
 
         function normalize() {
             if (arguments.length == 1) {
-                if (typeof arguments[0] === 'string') {
-                    arguments[0] = $.fn.timepicker.parseTime(arguments[0]);
+                var date = arguments[0];
+                if (typeof date === 'string') {
+                    date = $.fn.timepicker.parseTime(date);
                 }
-                return new Date(1988, 7, 24, arguments[0].getHours(), arguments[0].getMinutes(), arguments[0].getSeconds());
+                return new Date(1988, 7, 24, date.getHours(), date.getMinutes(), date.getSeconds());
             } else if (arguments.length == 3) {
                 return new Date(1988, 7, 24, arguments[0], arguments[1], arguments[2]);
             } else if (arguments.length == 2) {
@@ -42,11 +43,11 @@ if(typeof jQuery != 'undefined') {
             widget.container = $('.ui-timepicker-container');
             widget.ui = widget.container.find('.ui-timepícker');
 
-            if (widget.ui.length == 0) {
+            if (widget.ui.length === 0) {
                 widget.container = $('<div></div>').addClass('ui-timepicker-container')
                                     .addClass('ui-timepicker-hidden ui-helper-hidden')
                                     .appendTo('body')
-                                    .hide();                    
+                                    .hide();
                 widget.ui = $('<ul></ul>').addClass('ui-timepicker')
                                     .addClass('ui-widget ui-widget-content ui-menu')
                                     .addClass('ui-corner-all')
@@ -77,7 +78,7 @@ if(typeof jQuery != 'undefined') {
                 $.TimePicker._instance = new $.TimePicker();
             }
             return $.TimePicker._instance;
-        }
+        };
 
         $.TimePicker.prototype = {
             // extracted from from jQuery UI Core
@@ -108,7 +109,7 @@ if(typeof jQuery != 'undefined') {
                 } else if (i.options.startTime) {
                     time = normalize(i.options.startTime);
                 } else {
-                    time = normalize(i.options.startHour, i.options.startMinutes)
+                    time = normalize(i.options.startHour, i.options.startMinutes);
                 }
                 
                 end = new Date(time.getTime() + 24 * 60 * 60 * 1000);
@@ -137,7 +138,7 @@ if(typeof jQuery != 'undefined') {
                 }
 
                 if (i.options.maxTime !== null) {
-                    max = normalize(i.options.maxTime)
+                    max = normalize(i.options.maxTime);
                 } else if (i.options.maxHour !== null || i.options.maxMinutes !== null) {
                     max = normalize(i.options.maxHour, i.options.maxMinutes);
                 }
@@ -154,7 +155,9 @@ if(typeof jQuery != 'undefined') {
             },
 
             _hasScroll: function() {
-                return this.ui.height() < this.ui.attr('scrollHeight');
+                // fix for jQuery 1.6 new prop method
+                m = typeof this.ui.prop !== 'undefined' ? 'prop' : 'attr';
+                return this.ui.height() < this.ui[m]('scrollHeight');
             },
 
             /**
@@ -243,7 +246,7 @@ if(typeof jQuery != 'undefined') {
                 }).bind('focus.timepicker', function(event) {
                     i.open();
                 }).bind('blur.timepicker', function(event) {
-                    //i.close();
+                    i.close();
                 }).bind('change.timepicker', function(event) {
                     if (i.closed()) {
                         i.setTime($.fn.timepicker.parseTime(i.element.val()));
@@ -285,7 +288,7 @@ if(typeof jQuery != 'undefined') {
 
             deactivate: function() {
                 var widget = this;
-                if (!widget.active) {return;}                
+                if (!widget.active) { return; }
                 widget.active.children('a').removeClass('ui-state-hover').removeAttr('id');
                 widget.active = null;
             },
@@ -334,7 +337,7 @@ if(typeof jQuery != 'undefined') {
             },
 
             open: function(i) {
-                var widget = this, zindex;
+                var widget = this;
 
                 // return if dropdown is disabled
                 if (!i.options.dropdown) return i.element;
@@ -392,7 +395,7 @@ if(typeof jQuery != 'undefined') {
                 /* resize ui */
 
                 // we are hiding the scrollbar in the dropdown menu adding a 40px
-                // padding to the UL element making the scrollbar appear in the 
+                // padding to the UL element making the scrollbar appear in the
                 // part of the UL that's hidden by the container (a DIV).
                 //
                 // In order to calculate the position, width and height for the UI
@@ -400,21 +403,21 @@ if(typeof jQuery != 'undefined') {
                 // applied to them we need to substract the additional padding,
                 // calculate the measuraments with the default styles and add the
                 // padding at the end of the process.
-                var paddingRight = parseInt(widget.ui.css('paddingRight')),
+                var paddingRight = parseInt(widget.ui.css('paddingRight'), 10),
                     decoration, zindex;
                 if (widget.ui.hasClass('ui-no-scrollbar') && !i.options.scrollbar) {
                     widget.ui.css({ paddingRight: paddingRight - 40 });
                 }
 
                 decoration = (widget.ui.outerWidth() - widget.ui.width()) +
-                             (widget.container.outerWidth() - widget.container.width()),
+                             (widget.container.outerWidth() - widget.container.width());
                 zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css('z-index');
 
                 // width + padding + border = input field's outer width
                 widget.ui.css({ width: i.element.outerWidth() - decoration });
-                widget.container.css($.extend(i.element.offset(), { 
+                widget.container.css($.extend(i.element.offset(), {
                     height: widget.ui.outerHeight(),
-                    width: widget.ui.outerWidth(), 
+                    width: widget.ui.outerWidth(),
                     zIndex: zindex
                 }));
 
@@ -486,7 +489,7 @@ if(typeof jQuery != 'undefined') {
                 return i.element.unbind('.timepicker').data('TimePicker', null);
             },
 
-            // 
+            //
 
             parse: function(i, str) {
                 return $.fn.timepicker.parseTime(str);
@@ -604,7 +607,7 @@ if(typeof jQuery != 'undefined') {
                 result = this[method](function() {
                     var element = $(this), i = element.data('TimePicker');
                     if (typeof i === 'object') {
-                        return i[options].apply(i, args)
+                        return i[options].apply(i, args);
                     }
                 });
 
@@ -617,7 +620,7 @@ if(typeof jQuery != 'undefined') {
                 }
             }
 
-            // calling the constructor again on a jQuery object with a single 
+            // calling the constructor again on a jQuery object with a single
             // element returns a reference to a TimePicker object.
             if (this.length == 1 && this.data('TimePicker')) {
                 return this.data('TimePicker');
@@ -720,7 +723,10 @@ if(typeof jQuery != 'undefined') {
 
             return function(str) {
                 var time = normalize(new Date()),
-                    am = false, pm = false, h = false, m = false, s = false, k = 0;
+                    am = false, pm = false, h = false, m = false, s = false;
+
+                if (typeof str === 'undefined' || !str.toLowerCase) { return null; }
+
                 str = str.toLowerCase();
                 am = /a/.test(str);
                 pm = am ? false : /p/.test(str);
@@ -759,7 +765,7 @@ if(typeof jQuery != 'undefined') {
                     return false;
                 }
 
-                h = parseInt(h, 10);m = parseInt(m, 10);s = parseInt(s, 10);
+                h = parseInt(h, 10); m = parseInt(m, 10); s = parseInt(s, 10);
 
                 if (am && h == 12) {
                     h = 0;
@@ -768,7 +774,11 @@ if(typeof jQuery != 'undefined') {
                 }
 
                 if (h > 24 && (h % 10) <= 6 && m <= 60 && s <= 60) {
-                    return $.fn.timepicker.parseTime(str + '0' + (am ? 'a' : '') + (pm ? 'p' : ''));
+                    if (str.length >= 6) {
+                        return $.fn.timepicker.parseTime(str.substr(0,5));
+                    } else {
+                        return $.fn.timepicker.parseTime(str + '0' + (am ? 'a' : '') + (pm ? 'p' : ''));
+                    }
                 } else if (h <= 24 && m <= 60 && s <= 60) {
                     time.setHours(h, m, s);
                     return time;
