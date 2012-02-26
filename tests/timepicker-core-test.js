@@ -180,6 +180,11 @@ $.fn.timepicker.test = function() {
                      '1234', time(12, 34),
                      '12345', time(1, 23, 45),
                      '123456', time(12, 34, 56),
+                     '441234', time(4, 41, 23),
+                     '4412345', time(4, 41, 23),
+                     '44123456', time(4, 41, 23),
+                     '441234567', time(4, 41, 23),
+                     '446161', false,
                      '46', time(5),
                      ':1', time(10),
                      ':2', time(20),
@@ -242,7 +247,8 @@ $.fn.timepicker.test = function() {
             parsed = result ? result.toLocaleTimeString() : false;
             expectedMessage = expected ? expected.toLocaleTimeString() : 'false';
 
-            ok(result >= expected && result <= expected, 'Input:' + value + ' | Parsed: ' + parsed + ' | Expected: ' + expectedMessage);
+            ok(result >= expected && result <= expected,
+               'Input:' + value + ' | Parsed: ' + parsed + ' | Expected: ' + expectedMessage);
         }
     });
 
@@ -334,7 +340,7 @@ $.fn.timepicker.test = function() {
         var first = false, expected = 1, timepicker;
         
         timepicker = $('#timepicker').timepicker({
-            change: function() {
+            change: function(time) {
                 ok(true, 'change() callback executed.');
                 start();
             }
