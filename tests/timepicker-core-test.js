@@ -289,8 +289,10 @@ $.fn.timepicker.test = function() {
             k, n, formats, result, format, expected;
 
         formats = [['hh:mm:ss p', '07:30:00 PM'],
+                   ['hh:mm:ss a', '07:30:00 pm'],
                    ['HH:mm:ss', '19:30:00'],
                    ['h:m:s p', '7:30:0 PM'],
+                   ['h:m:s a', '7:30:0 pm'],
                    ['H:m:s', '19:30:0']];
 
         for (k = 0, n = formats.length; k < n; k++) {
