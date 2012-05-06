@@ -104,6 +104,12 @@ if(typeof jQuery != 'undefined') {
             _items: function(i, startTime) {
                 var widget = this, ul = $('<ul></ul>'), item = null, time, end;
 
+                // interval should be a multiple of 60 if timeFormat is not
+                // showing minutes
+                if (i.options.timeFormat.indexOf('m') === -1 && i.options.interval % 60 !== 0) {
+                    i.options.interval = Math.max(Math.round(i.options.interval / 60), 1) * 60;
+                }
+
                 if (startTime) {
                     time = normalize(startTime);
                 } else if (i.options.startTime) {

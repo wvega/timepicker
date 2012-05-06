@@ -317,6 +317,28 @@ $.fn.timepicker.test = function() {
         }
     });
 
+    test('interval', function() {
+        var timepicker, instance;
+        timepicker = $('#timepicker').timepicker({ interval:30, timeFormat: 'h' });
+        instance = timepicker.timepicker();
+
+        ok(instance.options.interval == 30, 'interval was properly set to 30.');
+        timepicker.focus();
+        ok(instance.options.interval == 60, 'interval was changed to 60, because the timeFormat does not include m or mm.');
+        timepicker.blur();
+
+        instance.option('interval', 90);
+        timepicker.focus();
+        ok(instance.options.interval == 120, 'interval was changed to 120, after the interval was updated, because the timeFormat does not include m or mm.');
+        timepicker.blur();
+
+        instance.option('interval', 45);
+        instance.option('timeFormat', 'hh:mm');
+        timepicker.focus();
+        ok(instance.options.interval == 45, 'interval was not changed to 60, after the interval and timeFormat were updated, because the timeFormat includes m or mm.');
+        timepicker.blur();
+    });
+
     test('minTime', function() {
         var timepicker, instance;
         timepicker = $('#timepicker').timepicker({ minTime: '2p' });
