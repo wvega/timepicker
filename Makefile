@@ -13,7 +13,7 @@ BUILD=builds/jquery-timepicker-${VERSION}.zip
 build: ${NAME}.js ${NAME}.css
 	cp jquery.timepicker.js ${NAME}.js
 	cp jquery.timepicker.css ${NAME}.css
-	mkdir -p builds
+	mkdir -p `dirname ${BUILD}`
 	zip ${BUILD} ${FILES}
 
 ${NAME}.js:
