@@ -114,7 +114,8 @@ $.fn.timepicker.test = function() {
 
     module("TimePicker API", {
         teardown: function() {
-            $('#timepicker').timepicker().destroy();
+            var instance = $('#timepicker').timepicker();
+            if (instance.destroy) instance.destroy();
         }
     });
 
@@ -123,6 +124,35 @@ $.fn.timepicker.test = function() {
             expected = 1;
         instance = timepicker.timepicker();
         ok(typeof instance.widget !== 'undefined', 'Get access to the instance object.');
+    });
+
+    test('next, previous', function() {
+        var timepicker = $('#timepicker').timepicker(),
+            instance = timepicker.timepicker(),
+            object = null;
+
+        instance.open();
+
+        object = timepicker.timepicker('next');
+        ok(object.jquery, 'next() method returns a jQuery instance.');
+
+        object = timepicker.timepicker('previous');
+        ok(object.jquery, 'previous() method returns a jQuery instance.');
+    });
+
+    test('open, close, destroy', function() {
+        var timepicker = $('#timepicker').timepicker(),
+            instance = timepicker.timepicker(),
+            object = null;
+
+        object = instance.open();
+        ok(object.jquery, 'open() method returns a jQuery instance.');
+
+        object = instance.close();
+        ok(object.jquery, 'close() method returns a jQuery instance.');
+
+        object = instance.destroy();
+        ok(object.jquery, 'destroy() method returns a jQuery instance.');
     });
 
     test('selected, first, last', function() {
@@ -274,9 +304,11 @@ $.fn.timepicker.test = function() {
     test('getTime/setTime', function() {
         var element = $('#timepicker').timepicker(),
             instance = element.timepicker(),
-            date = new Date(0,0,0,12,50,34);
+            date = new Date(0,0,0,12,50,34),
+            object = null;
             
-        instance.setTime(date);
+        object = instance.setTime(date);
+        ok(object.jquery, 'setTime() method returns a jQuery instance');
         ok(element.val() == '12:50 PM', 'passing a Date object to setTime.');
 
         ok(instance.getTime().toLocaleTimeString() == date.toLocaleTimeString(), 'getTime return the time set by setTime using a Date object.');
@@ -294,13 +326,11 @@ $.fn.timepicker.test = function() {
 
         instance.setTime('11:40');
 
-
         ok(instance.option('timeFormat') === 'hh:mm p', 'timeFormat: value succesfully retrieved (instance).');
 
         instance.option('timeFormat', 'h p');
         ok(instance.format(instance.getTime()) == '11 AM', 'timeFormat: value succesfully updated (instance).');
         ok(element.val() == '11 AM', 'timeFormat: input field value was properly updated with the new format (instance).');
-
 
         ok(element.timepicker('option', 'timeFormat') === 'h p', 'timeFormat: value succesfully retrieved (plugin).');
 
@@ -377,7 +407,7 @@ $.fn.timepicker.test = function() {
 
     module('TimePicker Event Handlers');
 
-    test('open/close', function() {
+    test('opened/closed', function() {
         var timepicker = $('#timepicker').timepicker(),
             instance = timepicker.timepicker(),
             selected = null,

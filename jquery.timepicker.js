@@ -41,7 +41,7 @@ if(typeof jQuery != 'undefined') {
             var widget = this;
 
             widget.container = $('.ui-timepicker-container');
-            widget.ui = widget.container.find('.ui-timepícker');
+            widget.ui = widget.container.find('.ui-timepicker');
 
             if (widget.ui.length === 0) {
                 widget.container = $('<div></div>').addClass('ui-timepicker-container')
@@ -209,20 +209,20 @@ if(typeof jQuery != 'undefined') {
 
                 // proxy functions for the exposed api methods
                 $.extend(i, {
-                    next: function() {return widget.next(i);},
-                    previous: function() {return widget.previous(i);},
-                    first: function() {return widget.first(i);},
-                    last: function() {return widget.last(i);},
-                    selected: function() {return widget.selected(i);},
-                    open: function() {return widget.open(i);},
-                    close: function(force) {return widget.close(i, force);},
-                    closed: function() {return widget.closed(i);},
-                    destroy: function() {return widget.destroy(i);},
+                    next: function() {return widget.next(i) ;},
+                    previous: function() {return widget.previous(i) ;},
+                    first: function() { return widget.first(i) ;},
+                    last: function() { return widget.last(i) ;},
+                    selected: function() { return widget.selected(i) ;},
+                    open: function() { return widget.open(i) ;},
+                    close: function(force) { return widget.close(i, force) ;},
+                    closed: function() { return widget.closed(i) ;},
+                    destroy: function() { return widget.destroy(i) ;},
 
-                    parse: function(str) {return widget.parse(i, str);},
+                    parse: function(str) { return widget.parse(i, str) ;},
                     format: function(time, format) { return widget.format(i, time, format); },
-                    getTime: function() {return widget.getTime(i);},
-                    setTime: function(time, silent) {return widget.setTime(i, time, silent); },
+                    getTime: function() { return widget.getTime(i) ;},
+                    setTime: function(time, silent) { return widget.setTime(i, time, silent); },
                     option: function(name, value) { return widget.option(i, name, value); }
                 });
 
@@ -313,12 +313,14 @@ if(typeof jQuery != 'undefined') {
                 if (this.closed() || this.instance === i) {
                     this._move(i, 'next', '.ui-menu-item:first');
                 }
+                return i.element;
             },
 
             previous: function(i) {
                 if (this.closed() || this.instance === i) {
                     this._move(i, 'prev', '.ui-menu-item:last');
                 }
+                return i.element;
             },
 
             first: function(i) {
@@ -535,7 +537,7 @@ if(typeof jQuery != 'undefined') {
                     i.selectedTime = null;
                 }
 
-                return i;
+                return i.element;
             },
 
             option: function(i, name, value) {
@@ -566,7 +568,9 @@ if(typeof jQuery != 'undefined') {
                     }
                 });
 
-                if (i.rebuild) { i.setTime(i.getTime()); }
+                if (i.rebuild) {
+                    i.setTime(i.getTime());
+                }
             }
         };
 
@@ -591,6 +595,17 @@ if(typeof jQuery != 'undefined') {
             change: function(time) {}
         };
 
+        $.TimePicker.methods = {
+            chainable: [
+                'next',
+                'previous',
+                'open',
+                'close',
+                'destroy',
+                'setTime'
+            ]
+        };
+
         $.fn.timepicker = function(options) {
             // TODO: see if it works with previous versions
             if ($.fn.jquery < '1.3') {
@@ -600,10 +615,13 @@ if(typeof jQuery != 'undefined') {
             // support calling API methods using the following syntax:
             //   $(...).timepicker('parse', '11p');
             if (typeof options === 'string') {
-                var args = Array.prototype.slice.call(arguments, 1), result;
+                var args = Array.prototype.slice.call(arguments, 1),
+                    result;
 
                 // chainable API methods
-                if (options === 'setTime' || (options === 'option' && arguments.length > 2)) {
+                if (options === 'option' && arguments.length > 2) {
+                    method = 'each';
+                } else if ($.inArray(options, $.TimePicker.methods.chainable) !== -1) {
                     method = 'each';
                 // API methods that return a value
                 } else {
