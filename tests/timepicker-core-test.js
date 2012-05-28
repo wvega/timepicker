@@ -318,6 +318,9 @@ $.fn.timepicker.test = function() {
 
         date = new Date(0,0,0,13,20,0);
         ok(instance.getTime().toLocaleTimeString() == date.toLocaleTimeString(), 'getTime return the time set by setTime using a string.');
+
+        date = new Date(0,0,0,14,30,0);
+        ok(element.val('2:30 PM').timepicker('getTime').toLocaleTimeString() == date.toLocaleTimeString(), 'getTime return the time set by jQuery.fn.val.');
     });
 
     test('option', function() {
