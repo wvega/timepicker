@@ -674,6 +674,7 @@ if(typeof jQuery != 'undefined') {
                     H: hours,
                     m: minutes,
                     s: seconds,
+                    a: hours > 11 ? 'pm' : 'am',
                     p: hours > 11 ? 'PM' : 'AM'
                 },
                 str = format, k = '';
