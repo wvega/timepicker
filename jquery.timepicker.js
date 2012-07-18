@@ -682,6 +682,8 @@ if(typeof jQuery != 'undefined') {
                     str = str.replace(new RegExp(k,'g'), replacements[k]);
                 }
             }
+            // replacements is not guaranteed to be order and the 'p' can cause problems
+            str = str.replace(new RegExp('a','g'), hours > 11 ? 'pm' : 'am');
             return str;
         };
 
