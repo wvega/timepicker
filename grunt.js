@@ -24,7 +24,12 @@ module.exports = function(grunt) {
       css: {
         src: ['<banner:meta.banner>', '<file_strip_banner:jquery.<%= pkg.name %>.css>'],
         dest: 'dist/jquery.<%= pkg.name %>.css'
-      }
+      },
+      "dist/LICENSE-GPL": "LICENSE-GPL",
+      "dist/LICENSE-MIT": "LICENSE-MIT",
+      "dist/README.md": "README.md",
+      "dist/CHANGELOG": "CHANGELOG",
+      "dist/AUTHORS": "AUTHORS"
     },
     min: {
       dist: {
@@ -42,10 +47,41 @@ module.exports = function(grunt) {
       }
     },
     csslint: {
-      timepicker: {
+      dist: {
         src: ['jquery.<%= pkg.name %>.css'],
         rules: {
           "box-model": false
+        }
+      }
+    },
+    compress: {
+      zip: {
+        options: {
+          mode: "zip",
+          basePath: "dist/"
+        },
+        files: {
+          "builds/jquery-<%= pkg.name %>-<%= pkg.version %>.zip": [
+            "<config:concat.js.dest>",
+            "<config:concat.css.dest>",
+            "<config:min.dist.dest>",
+            "<config:cssmin.dist.dest>",
+            "dist/LICENSE-GPL",
+            "dist/LICENSE-MIT",
+            "dist/README.md",
+            "dist/CHANGELOG",
+            "dist/AUTHORS"
+          ]
+        }
+      }
+    },
+    copy: {
+      legacy: {
+        options: {
+          basePath: "dist/"
+        },
+        files: {
+          ".": ["<config:min.dist.dest>", "<config:cssmin.dist.dest>"]
         }
       }
     },
@@ -78,9 +114,9 @@ module.exports = function(grunt) {
     uglify: {}
   });
 
-  grunt.loadNpmTasksWithRequire('grunt-css');
-  grunt.loadNpmTasksWithRequire('grunt-less');
+  grunt.loadNpmTasks('grunt-css');
+  grunt.loadNpmTasks('grunt-contrib');
 
-  grunt.registerTask('default', 'lint csslint concat min cssmin');
+  grunt.registerTask('default', 'lint csslint concat min cssmin copy:legacy compress');
 
 };

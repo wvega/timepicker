@@ -5,5 +5,7 @@ dist/
 libs/
 src/
 
+jquery.timepicker-*
+
 *~
 *.sample*
