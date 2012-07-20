@@ -1,8 +1,9 @@
 (function() {
-    var parts = location.search.replace(/^\?/, '').split('&'),
+    var jquery, ui, timepicker, test, js, css,
+        parts = location.search.replace(/^\?/, '').split('&'),
         n = parts.length, params = {};
 
-    for (i = 0; n > 1 && i < n; i++) {
+    for (var i = 0; n > 1 && i < n; i++) {
         parts[i] = parts[i].split('=');
         params[parts[i][0]] = parts[i][1];
     }
@@ -16,7 +17,7 @@
           '../external/jquery-ui-'+ui+'/jquery-ui-'+ui+'.custom.min.js',
           '../external/jquery.simulate.js',
           '../external/qunit.js',
-          '../jquery.timepicker'+(timepicker == 'normal' ? '' : '.min')+'.js',
+          '../jquery.timepicker'+(timepicker === 'normal' ? '' : '.min')+'.js',
           'timepicker-'+test+'-test.js'];
 
     css = ['../external/jquery-ui'+ui+'/jquery-ui-'+ui+'.custom.css',
@@ -28,8 +29,8 @@
 
     LazyLoad.js(js, function() {
         // console.log('JS Ready!');
-        if ($.fn.timepicker.test) {
-            $.fn.timepicker.test();
+        if (jQuery.fn.timepicker.test) {
+            jQuery.fn.timepicker.test();
         }
     });
 })();
