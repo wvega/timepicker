@@ -85,6 +85,7 @@ module.exports = function(grunt) {
         }
       }
     },
+    clean: ["dist/*"],
     qunit: {
       files: ['test/playground.html']
     },
@@ -117,6 +118,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-css');
   grunt.loadNpmTasks('grunt-contrib');
 
-  grunt.registerTask('default', 'lint csslint concat min cssmin copy:legacy compress');
+  grunt.registerTask('default', 'lint csslint concat min cssmin copy:legacy compress clean');
 
 };

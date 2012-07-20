@@ -400,8 +400,8 @@ if (typeof jQuery !== 'undefined') {
                 // part of the UL that's hidden by the container (a DIV).
                 //
                 // In order to calculate the position, width and height for the UI
-                // elements regardless of the CSS styles  that could have been
-                // applied to them we need to substract the additional padding,
+                // elements, regardless of the CSS styles  that could have been
+                // applied to them, we need to substract the additional padding,
                 // calculate the measuraments with the default styles and add the
                 // padding at the end of the process.
                 var paddingRight = parseInt(widget.ui.css('paddingRight'), 10),
