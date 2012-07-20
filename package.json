@@ -1,0 +1,12 @@
+{
+  "name": "jquery-timepicker",
+  "version": "1.2.2",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "grunt": "~0.3.11",
+    "grunt-css": ">= 0.2.1"
+  }
+}
