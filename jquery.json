@@ -1,7 +1,7 @@
 {
   "name": "timepicker",
-  "title": "Timepicker",
-  "description": "The best jQuery plugin ever.",
+  "title": "jQuery Timepicker",
+  "description": "A jQuery plugin to enhance standard form input fields helping users to select (or type) times.",
   "version": "1.2.2",
   "homepage": "http://wvega.github.com/timepicker/",
   "author": {
