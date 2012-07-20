@@ -1,20 +1,13 @@
-// jQuery TimePicker plugin - http://github.com/wvega/timepicker
-//
-// A jQuery plugin to enhance standard form input fields helping users to select
-// (or type) times.
-//
-// Copyright (c) 2011 Willington Vega <wvega@wvega.com>
-// Dual licensed under the MIT or GPL Version 2 licenses.
+/**
+ * jQuery Timepicker
+ * http://wvega.github.com/timepicker/
+ *
+ * Enhances standard form input fields helping users to select (or type) times.
+ *
+ * Copyright (c) 2012 Willington Vega; Licensed MIT, GPL
+ */
 
-
-// Define a cross-browser window.console.log method.
-// For IE and FF without Firebug, fallback to using an alert.
-//if (!window.console) {
-//    var log = window.opera ? window.opera.postError : alert;
-//    window.console = { log: function(str) { log(str) } };
-//}
-
-if(typeof jQuery != 'undefined') {
+if (typeof jQuery != 'undefined') {
     (function($, undefined) {
 
         function pad(str, ch, length) {
