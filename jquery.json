@@ -1,0 +1,33 @@
+{
+  "name": "timepicker",
+  "title": "Timepicker",
+  "description": "The best jQuery plugin ever.",
+  "version": "1.2.2",
+  "homepage": "http://wvega.github.com/timepicker/",
+  "author": {
+    "name": "Willington Vega",
+    "email": "wvega@wvega.com",
+    "url": "http://wvega.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wvega/timepicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wvega/timepicker/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://wvega.github.com/timepicker//blob/master/LICENSE-MIT"
+    },
+    {
+      "type": "GPL",
+      "url": "http://wvega.github.com/timepicker//blob/master/LICENSE-GPL"
+    }
+  ],
+  "dependencies": {
+    "jquery": ">= 1.6"
+  },
+  "keywords": []
+}
