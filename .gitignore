@@ -1,4 +1,9 @@
+node_modules/
+
 builds/
-jquery.timepicker-*
-jquery-timepicker*.zip
+dist/
+libs/
+src/
+
 *~
+*.sample*

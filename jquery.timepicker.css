@@ -1,4 +1,13 @@
-.ui-timepicker-container {
+/**
+ * jQuery Timepicker
+ * http://wvega.github.com/timepicker/
+ *
+ * Enhances standard form input fields helping users to select (or type) times.
+ *
+ * Copyright (c) 2012 Willington Vega; Licensed MIT, GPL
+ */
+
+ .ui-timepicker-container {
     position: absolute;
     overflow: hidden;
 }
@@ -59,6 +68,7 @@
  .ui-timepicker-corners, .ui-timepicker-corners .ui-corner-all {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
+    border-radius: 4px;
 }
 .ui-timepicker-hidden {
     /* .ui-helper-hidden */

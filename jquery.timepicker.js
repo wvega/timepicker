@@ -7,23 +7,23 @@
  * Copyright (c) 2012 Willington Vega; Licensed MIT, GPL
  */
 
-if (typeof jQuery != 'undefined') {
+if (typeof jQuery !== 'undefined') {
     (function($, undefined) {
 
         function pad(str, ch, length) {
-            return Array(length + 1 - str.length).join(ch) + str;
+            return (new Array(length + 1 - str.length).join(ch)) + str;
         }
 
         function normalize() {
-            if (arguments.length == 1) {
+            if (arguments.length === 1) {
                 var date = arguments[0];
                 if (typeof date === 'string') {
                     date = $.fn.timepicker.parseTime(date);
                 }
                 return new Date(1988, 7, 24, date.getHours(), date.getMinutes(), date.getSeconds());
-            } else if (arguments.length == 3) {
+            } else if (arguments.length === 3) {
                 return new Date(1988, 7, 24, arguments[0], arguments[1], arguments[2]);
-            } else if (arguments.length == 2) {
+            } else if (arguments.length === 2) {
                 return new Date(1988, 7, 24, arguments[0], arguments[1], 0);
             } else {
                 return new Date(1988, 7, 24);
@@ -155,7 +155,7 @@ if (typeof jQuery != 'undefined') {
 
             _hasScroll: function() {
                 // fix for jQuery 1.6 new prop method
-                m = typeof this.ui.prop !== 'undefined' ? 'prop' : 'attr';
+                var m = typeof this.ui.prop !== 'undefined' ? 'prop' : 'attr';
                 return this.ui.height() < this.ui[m]('scrollHeight');
             },
 
@@ -341,7 +341,7 @@ if (typeof jQuery != 'undefined') {
                 var widget = this;
 
                 // return if dropdown is disabled
-                if (!i.options.dropdown) return i.element;
+                if (!i.options.dropdown) { return i.element; }
 
                 // if a date is already selected and options.dynamic is true,
                 // arrange the items in the list so the first item is
@@ -449,7 +449,7 @@ if (typeof jQuery != 'undefined') {
                             time = item.data('time-value');
                         }
 
-                        if (time.getTime() == i.selectedTime.getTime()) {
+                        if (time.getTime() === i.selectedTime.getTime()) {
                             widget.activate(i, item);
                             return false;
                         }
@@ -538,7 +538,7 @@ if (typeof jQuery != 'undefined') {
                     return i.options[name];
                 }
 
-                var widget = this, options = {};
+                var widget = this, options = {}, destructive;
 
                 if (typeof name === 'string') {
                     options[name] = value;
@@ -609,7 +609,7 @@ if (typeof jQuery != 'undefined') {
             //   $(...).timepicker('parse', '11p');
             if (typeof options === 'string') {
                 var args = Array.prototype.slice.call(arguments, 1),
-                    result;
+                    method, result;
 
                 // chainable API methods
                 if (options === 'option' && arguments.length > 2) {
@@ -628,7 +628,7 @@ if (typeof jQuery != 'undefined') {
                     }
                 });
 
-                if (method === 'map' && this.length == 1) {
+                if (method === 'map' && this.length === 1) {
                     return $.makeArray(result).shift();
                 } else if (method === 'map') {
                     return $.makeArray(result);
@@ -639,7 +639,7 @@ if (typeof jQuery != 'undefined') {
 
             // calling the constructor again on a jQuery object with a single
             // element returns a reference to a TimePicker object.
-            if (this.length == 1 && this.data('TimePicker')) {
+            if (this.length === 1 && this.data('TimePicker')) {
                 return this.data('TimePicker');
             }
             
@@ -759,15 +759,15 @@ if (typeof jQuery != 'undefined') {
                 }
                 str = str.replace(/:/g, '');
 
-                if (str.length == 1) {
+                if (str.length === 1) {
                     h = str;
-                } else if (str.length == 2) {
+                } else if (str.length === 2) {
                     h = str;
-                } else if (str.length == 3 || str.length == 5) {
+                } else if (str.length === 3 || str.length === 5) {
                     h = str.substr(0, 1);
                     m = str.substr(1, 2);
                     s = str.substr(3, 2);
-                } else if (str.length == 4 || str.length > 5) {
+                } else if (str.length === 4 || str.length > 5) {
                     h = str.substr(0, 2);
                     m = str.substr(2, 2);
                     s = str.substr(4, 2);
@@ -786,7 +786,7 @@ if (typeof jQuery != 'undefined') {
 
                 h = parseInt(h, 10); m = parseInt(m, 10); s = parseInt(s, 10);
 
-                if (am && h == 12) {
+                if (am && h === 12) {
                     h = 0;
                 } else if (pm && h < 12) {
                     h = h + 12;

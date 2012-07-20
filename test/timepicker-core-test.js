@@ -340,7 +340,6 @@ if (jQuery.fn.jquery < '1.4') {
             ok(instance.getTime().toLocaleTimeString() === date.toLocaleTimeString(), 'getTime returns the time set by setTime using a string.');
 
             date = new Date(0,0,0,14,30,0);
-            console.log(element.val('2:30 PM').timepicker('getTime').toLocaleTimeString(), date.toLocaleTimeString());
             ok(element.val('2:30 PM').timepicker('getTime').toLocaleTimeString() === date.toLocaleTimeString(), 'getTime returns the time set by jQuery.fn.val.');
         });
 
