@@ -1,1 +1,4 @@
+*.sublime-*
+
 builds/
+node_modules/

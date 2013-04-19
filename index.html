@@ -2,29 +2,28 @@
 <html>
 <head>
     <title>jQuery TimePicker</title>
-    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="jquery-timepicker/jquery.timepicker-1.2.2.css">
+    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/css/style.css">
+    <link rel="stylesheet" href="resources/jquery-timepicker/jquery.timepicker-1.2.2.css">
 </head>
 <body>
-    <div class="topbar">
-        <div class="fill">
+    <div class="navbar navbar-fixed-top navbar-inverse">
+        <div class="navbar-inner">
             <div class="container">
                 <a class="brand" href="">jQuery TimePicker</a>
                 <ul class="nav">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#options">Options</a></li>
-                    <li><a href="#demos">Demos</a></li>
+                    <li><a href="#about" data-toggle="tab">About</a></li>
+                    <li><a href="#options" data-toggle="tab">Options</a></li>
+                    <li><a href="#demos" data-toggle="tab">Demos</a></li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="tab-content">
-
-            <div id="about">
+            <div id="about" class="tab-pane">
                 <article>
-                    <header><h1>jQuery TimePicker</h1></header>
+                    <header class="page-header"><h1>jQuery TimePicker</h1></header>
 
                     <p>jQuery TimePicker is a plugin to help users easily input time entries. It works by allowing the user to type times in a free format or selecting them from a dropdown menu.</p>
 
@@ -32,7 +31,7 @@
 
                     <p>The following are a few examples of the strings an user can type and how the plugin understands them:</p>
 
-                    <table class="zebra-striped">
+                    <table class="table table-bordered table-striped table-hover table-condensed">
                         <thead>
                             <tr>
                                 <th>Input</th>
@@ -52,7 +51,7 @@
                         </tbody>
                     </table>
 
-                    <p>There are other supported formats, all inspired by the behavior of a similar timepicker used in Google Calendar. To see more, <a href="#demos" title="jQuery TimePicker demos">try the demos</a>.
+                    <p>There are other supported formats, all inspired by the behavior of a similar timepicker used in Google Calendar. To see more, <a href="#demos" title="jQuery TimePicker demos" data-toggle="tab">try the demos</a>.
 
                     <div class="page-header"><h2>How to Use</h2></div>
 
@@ -62,7 +61,7 @@
     $('input.timepicker').timepicker({});
 });</pre>
 
-                    <p>Refer to the <a href="#options" title="jQuery TimePicker options page">options page</a> for a detailed description about the available configuration.</p>
+                    <p>Refer to the <a href="#options" data-toggle="tab" title="jQuery TimePicker options page">options page</a> for a detailed description about the available configuration.</p>
 
                     <div class="page-header"><h2>Bugs Reports</h2></div>
 
@@ -70,22 +69,22 @@
 
                     <div class="page-header"><h2>Download</h2></div>
 
-                    <p>Latest version of jQuery TimePicker is available for download from GitHub. <a class="btn primary" href="http://github.com/wvega/timepicker/downloads" title="Download jQuery TimePicker">Download</a></p>
+                    <p>Latest version of jQuery TimePicker is available for download from GitHub. <a class="btn btn-primary" href="http://github.com/wvega/timepicker/downloads" title="Download jQuery TimePicker">Download</a></p>
                 </article>
             </div>
 
-            <div id="options">
+            <div id="options" class="tab-pane">
                 <article>
-                    <header><h1>jQuery TimePicker Options &amp; Events</h1></header>
+                    <header class="page-header"><h1>jQuery TimePicker Options &amp; Events</h1></header>
 
                     <div class="page-header"><h2>jQuery TimePicker options</h2></div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>timeFormat</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>timeFormat</code></div>
+                        <div class="span10 columns">
                             <p>The format of the time string displayed in the input and the menu items in the combobox. Available modifiers are:</p>
 
-                            <table>
+                            <table class="table table-bordered table-striped table-hover table-condensed">
                                 <tbody>
                                     <tr>
                                         <td><code>h</code></td>
@@ -129,71 +128,71 @@
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>minTime</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>minTime</code></div>
+                        <div class="span10 columns">
                             <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. Only the time parts (getHours, getMinutes) of the object are important. Time entries before minTime won't be displayed/allowed.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>minHour</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>minHour</code></div>
+                        <div class="span10 columns">
                             <p><span class="label important">int</span>. Time entries with an 24-hour part before <code>minHour</code> won't be displayed/allowed. Ignored if <code>minTime</code> is set.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>minMinutes</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>minMinutes</code></div>
+                        <div class="span10 columns">
                             <p><span class="label important">int</span> Time entries with minutes part before <code>minMinutes</code> won't be displayed/allowed. Ignored if <code>minTime</code> is set.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>maxTime</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>maxTime</code></div>
+                        <div class="span10 columns">
                             <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. Only the time parts (getHours, getMinutes) of the object are important. Time entries after minTime won't be displayed/allowed.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>maxHour</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>maxHour</code></div>
+                        <div class="span10 columns">
                             <p><span class="label important">int</span>. Time entries with an 24-hour part after <code>maxHour</code> won't be displayed/allowed. Ignored if <code>maxTime</code> is set.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>maxMinutes</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>maxMinutes</code></div>
+                        <div class="span10 columns">
                             <p><span class="label important">int</span>. Time entries with minutes part after <code>maxHour</code> won't be displayed/allowed. Ignored if <code>maxTime</code> is set.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>startTime</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>startTime</code></div>
+                        <div class="span10 columns">
                             <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. The time of the first item in the combobox when the input field is empty. If the input field is not empty the first item will be the next allowed time entry.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>startHour</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>startHour</code></div>
+                        <div class="span10 columns">
                             <p><span class="label important">int</span>. The 24-hour part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>startMinutes</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>startMinutes</code></div>
+                        <div class="span10 columns">
                             <p><span class="label important">int</span>. The minutes part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>interval</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>interval</code></div>
+                        <div class="span10 columns">
                             <p><span class="label important">int</span>. Separation in minutes between time entries in the dropdown menu.</p>
 
                             <pre>$(document).ready(function(){
@@ -212,15 +211,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>dropdown</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>dropdown</code></div>
+                        <div class="span10 columns">
                             <p><span class="label important">boolean</span>. Whether the dropdown should be displayed or not.</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>scrollbar</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>scrollbar</code></div>
+                        <div class="span10 columns">
                             <p><span class="label important">boolean</span>. Whether the scrollbars should be displayed or not.</p>
                         </div>
                     </div>
@@ -228,8 +227,8 @@
                     <div class="page-header"><h2>jQuery TimePicker events</h2></div>
 
                     <div class="row">
-                        <div class="span4 columns"><code>change</code></div>
-                        <div class="span12 columns">
+                        <div class="span2 columns"><code>change</code></div>
+                        <div class="span10 columns">
                             <p>Event triggerd when the value of the input field changes. A Date object containing the selected time is passed as the first argument of the callback.</p>
 
                             <pre>$(document).ready({
@@ -248,14 +247,14 @@
                                 <input id="options-change-event"/>
                                 <span class="help-line"></span>
                             </form>
-                        </div>    
+                        </div>
                     </div>
                 </article>
             </div>
 
-            <div id="about">
+            <div id="demos" class="tab-pane">
                 <article>
-                    <header><h1>jQuery TimePicke - Demos</h1></header>
+                    <header class="page-header"><h1>jQuery TimePicke - Demos</h1></header>
 
                     <p>Overtime I have created some demos at <a href="http://jsfiddle.net">JSFiddle.net</a>, those can be seen below:</p>
 
@@ -284,14 +283,13 @@
 
         </div>
     </div>
-    
+
     <a href="https://github.com/wvega/timepicker"><img style="position: fixed; top: 40px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript" src="jquery-tools/jquery.tools-1.2.6.min.js"></script>
-    <!--<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-scrollspy.js"></script>-->
-    <script type="text/javascript" src="jquery-timepicker/jquery.timepicker-1.2.2.js"></script>
-    <script type="text/javascript" src="timepicker.page.js"></script>
+    <script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="resources/jquery-timepicker/jquery.timepicker-1.2.2.js"></script>
+    <script type="text/javascript" src="resources/js/timepicker.page.js"></script>
     <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-5837468-17']);
