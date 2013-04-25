@@ -1,6 +1,5 @@
-/*global QUnit:false, module:false, test:false, asyncTest:false, expect:false*/
-/*global start:false, stop:false ok:false, equal:false, notEqual:false, deepEqual:false*/
-/*global notDeepEqual:false, strictEqual:false, notStrictEqual:false, raises:false*/
+/*global module: false, test: false, expect: false*/
+/*global ok: false, start:false, stop: false*/
 
 /**
  * ======== A Handy Little QUnit Reference ========
@@ -25,14 +24,14 @@
 // XXX: I think the tests can be rewritten to avoid using jQuery's queue
 if (jQuery.fn.jquery < '1.4') {
     (function(jQuery) {
-        
+
         jQuery.extend({
             queue: function( elem, type, data ) {
                 if ( !elem ) {
                     return;
                 }
 
-                type = (type || "fx") + "queue";
+                type = (type || 'fx') + 'queue';
                 var q = jQuery.data( elem, type );
 
                 // Speed up dequeue by getting out quickly if this is just a lookup
@@ -51,20 +50,20 @@ if (jQuery.fn.jquery < '1.4') {
             },
 
             dequeue: function( elem, type ) {
-                type = type || "fx";
+                type = type || 'fx';
 
                 var queue = jQuery.queue( elem, type ), fn = queue.shift();
 
                 // If the fx queue is dequeued, always remove the progress sentinel
-                if ( fn === "inprogress" ) {
+                if ( fn === 'inprogress' ) {
                     fn = queue.shift();
                 }
 
                 if ( fn ) {
                     // Add a progress sentinel to prevent the fx queue from being
                     // automatically dequeued
-                    if ( type === "fx" ) {
-                        queue.unshift("inprogress");
+                    if ( type === 'fx' ) {
+                        queue.unshift('inprogress');
                     }
 
                     fn.call(elem, function() {
@@ -76,18 +75,18 @@ if (jQuery.fn.jquery < '1.4') {
 
         jQuery.fn.extend({
             queue: function( type, data ) {
-                if ( typeof type !== "string" ) {
+                if ( typeof type !== 'string' ) {
                     data = type;
-                    type = "fx";
+                    type = 'fx';
                 }
 
                 if ( data === undefined ) {
                     return jQuery.queue( this[0], type );
                 }
-                return this.each(function( i ) {
+                return this.each(function(/*i*/) {
                     var queue = jQuery.queue( this, type, data );
 
-                    if ( type === "fx" && queue[0] !== "inprogress" ) {
+                    if ( type === 'fx' && queue[0] !== 'inprogress' ) {
                         jQuery.dequeue( this, type );
                     }
                 });
@@ -102,7 +101,7 @@ if (jQuery.fn.jquery < '1.4') {
             // http://blindsignals.com/index.php/2009/07/jquery-delay/
             delay: function( time, type ) {
                 time = jQuery.fx ? jQuery.fx.speeds[time] || time : time;
-                type = type || "fx";
+                type = type || 'fx';
 
                 return this.queue( type, function() {
                     var elem = this;
@@ -113,7 +112,7 @@ if (jQuery.fn.jquery < '1.4') {
             },
 
             clearQueue: function( type ) {
-                return this.queue( type || "fx", [] );
+                return this.queue( type || 'fx', [] );
             }
         });
 
@@ -129,7 +128,7 @@ if (jQuery.fn.jquery < '1.4') {
 
         $('body').append('<div id="main" style="position: absolute; top: -10000px; left: -10000px"><div><input id="timepicker" class="timepicker"/></div></div>');
 
-        module("TimePicker API", {
+        module('TimePicker API', {
             teardown: function() {
                 var instance = $('#timepicker').timepicker();
                 if (instance.destroy) { instance.destroy(); }
@@ -138,8 +137,7 @@ if (jQuery.fn.jquery < '1.4') {
 
         test('timepicker instance', function() {
             var timepicker = $('#timepicker').timepicker(),
-                instance = timepicker.timepicker(),
-                expected = 1;
+                instance = timepicker.timepicker();
             ok(typeof instance.widget !== 'undefined', 'Get access to the instance object.');
         });
 
@@ -178,7 +176,8 @@ if (jQuery.fn.jquery < '1.4') {
                 instance = timepicker.timepicker(),
                 expected = 5;
 
-            expect(expected); stop(timeout * expected);
+            expect(expected);
+            stop(timeout * expected);
 
             system.queue('test', []);
             system.queue('test', function(next) {
@@ -205,7 +204,7 @@ if (jQuery.fn.jquery < '1.4') {
                 next();
             });
 
-            system.queue('test', function(next) { start(); }).dequeue('test');
+            system.queue('test', function(/*next*/) { start(); }).dequeue('test');
         });
 
         test('parse', function() {
@@ -215,10 +214,14 @@ if (jQuery.fn.jquery < '1.4') {
                 value, parsed, result, expected, message, k, n, t;
 
             function time(hours, minutes, seconds) {
-                hours = hours || 0; minutes = minutes || 0; seconds = seconds || 0;
+                hours = hours || 0;
+                minutes = minutes || 0;
+                seconds = seconds || 0;
+
                 var t = new Date();
                 t.setTime(now.valueOf());
                 t.setHours(hours, minutes, seconds, 0, 0);
+
                 return t;
             }
 
@@ -289,14 +292,14 @@ if (jQuery.fn.jquery < '1.4') {
                          undefined, null];
 
             for (k = 0, n = input.length; k < n; k = k+2) {
-                value = input[k]; expected = input[k+1];
+                value = input[k];
+                expected = input[k+1];
                 t = instance.parse(value);
                 result = t ? time(t.getHours(), t.getMinutes(), t.getSeconds()) : false;
                 parsed = result ? result.toLocaleTimeString() : false;
                 message = expected ? expected.toLocaleTimeString() : 'false';
 
-                ok(result >= expected && result <= expected,
-                   'Input:' + value + ' | Parsed: ' + parsed + ' | Expected: ' + message);
+                ok(result >= expected && result <= expected, 'Input:' + value + ' | Parsed: ' + parsed + ' | Expected: ' + message);
             }
         });
 
@@ -313,8 +316,9 @@ if (jQuery.fn.jquery < '1.4') {
                        ['h:m:s a', '7:30:0 pm'],
                        ['H:m:s', '19:30:0']];
 
-            for (k = 0, n = formats.length; k < n; k++) {
-                format = formats[k][0]; expected = formats[k][1];
+            for (k = 0, n = formats.length; k < n; k = k + 1) {
+                format = formats[k][0];
+                expected = formats[k][1];
                 result = instance.format(time, format);
 
                 ok(result === expected, 'Object: ' + time.toLocaleTimeString() + ' | Format: ' + format + ' | Result: ' + result);
@@ -326,7 +330,7 @@ if (jQuery.fn.jquery < '1.4') {
                 instance = element.timepicker(),
                 date = new Date(0,0,0,12,50,34),
                 object = null;
-                
+
             object = instance.setTime(date);
             ok(object.jquery, 'setTime() method returns a jQuery instance');
             ok(element.val() === '12:50 PM', 'passing a Date object to setTime.');
@@ -364,7 +368,7 @@ if (jQuery.fn.jquery < '1.4') {
 
 
 
-        module("TimePicker Options", {
+        module('TimePicker Options', {
             teardown: function() {
                 $('#timepicker').timepicker().destroy();
             }
@@ -393,7 +397,7 @@ if (jQuery.fn.jquery < '1.4') {
         });
 
         test('minTime', function() {
-            var timepicker, instance;
+            var timepicker;
             timepicker = $('#timepicker').timepicker({ minTime: '2p' });
             timepicker.focus();
         });
@@ -412,16 +416,17 @@ if (jQuery.fn.jquery < '1.4') {
         });
 
         test('callbacks', function() {
-            var first = false, expected = 1, timepicker;
-            
+            var expected = 1, timepicker;
+
             timepicker = $('#timepicker').timepicker({
-                change: function(time) {
+                change: function(/*time*/) {
                     ok(true, 'change() callback executed.');
                     start();
                 }
             });
 
-            expect(expected); stop(timeout * expected);
+            expect(expected);
+            stop(timeout * expected);
 
             timepicker.val('46').change();
         });
@@ -436,7 +441,8 @@ if (jQuery.fn.jquery < '1.4') {
                 selected = null,
                 expected = 8;
 
-            expect(expected); stop(timeout * expected);
+            expect(expected);
+            stop(timeout * expected);
 
             system.queue('test', []);
             system.queue('test', function(next) {
@@ -484,7 +490,7 @@ if (jQuery.fn.jquery < '1.4') {
                 next();
             }, 50);
 
-            system.queue('test', function(next) {start();}).dequeue('test');
+            system.queue('test', function(/*next*/) { start(); }).dequeue('test');
         });
     };
 })(jQuery);
