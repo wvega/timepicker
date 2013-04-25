@@ -9,3 +9,5 @@ jquery.timepicker-*
 
 *~
 *.sample*
+*.DS_Store
+*.sublime-*

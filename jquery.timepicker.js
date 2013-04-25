@@ -29,7 +29,7 @@ if (typeof jQuery !== 'undefined') {
                 return new Date(1988, 7, 24);
             }
         }
-        
+
         $.TimePicker = function() {
             var widget = this;
 
@@ -93,7 +93,7 @@ if (typeof jQuery !== 'undefined') {
                 TAB: 9,
                 UP: 38
             },
-            
+
             _items: function(i, startTime) {
                 var widget = this, ul = $('<ul></ul>'), item = null, time, end;
 
@@ -110,7 +110,7 @@ if (typeof jQuery !== 'undefined') {
                 } else {
                     time = normalize(i.options.startHour, i.options.startMinutes);
                 }
-                
+
                 end = new Date(time.getTime() + 24 * 60 * 60 * 1000);
 
                 while(time < end) {
@@ -124,7 +124,7 @@ if (typeof jQuery !== 'undefined') {
 
                 return ul.children();
             },
-            
+
             _isValidTime: function(i, time) {
                 var min = null, max = null;
 
@@ -191,7 +191,7 @@ if (typeof jQuery !== 'undefined') {
                 var widget = this, i = {}; // timepicker instance object
 
                 i.element = $(node);
-                
+
                 if (i.element.data('TimePicker')) { return; }
 
                 i.element.data('TimePicker', i);
@@ -262,7 +262,7 @@ if (typeof jQuery !== 'undefined') {
 
             activate: function(i, item) {
                 var widget = this, instance = i === false ? widget.instance : i;
-                
+
                 if (instance !== widget.instance) {
                     return;
                 } else {
@@ -376,7 +376,7 @@ if (typeof jQuery !== 'undefined') {
                 }
 
                 i.rebuild = false;
-                
+
                 // theme
                 widget.container.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners').show();
 
@@ -604,7 +604,7 @@ if (typeof jQuery !== 'undefined') {
             if ($.fn.jquery < '1.3') {
                 return this;
             }
-            
+
             // support calling API methods using the following syntax:
             //   $(...).timepicker('parse', '11p');
             if (typeof options === 'string') {
@@ -642,14 +642,14 @@ if (typeof jQuery !== 'undefined') {
             if (this.length === 1 && this.data('TimePicker')) {
                 return this.data('TimePicker');
             }
-            
+
             var globals = $.extend({}, $.TimePicker.defaults, options);
-            
+
             return this.each(function() {
                 $.TimePicker.instance().register(this, globals);
             });
         };
-        
+
         /**
          * TODO: documentation
          */
