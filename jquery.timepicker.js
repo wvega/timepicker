@@ -318,14 +318,14 @@ if (typeof jQuery !== 'undefined') {
 
             first: function(i) {
                 if (this.instance === i) {
-                    return this.active && !this.active.prevAll('.ui-menu-item').length;
+                    return this.active && this.active.prevAll('.ui-menu-item').length === 0;
                 }
                 return false;
             },
 
             last: function(i) {
                 if (this.instance === i) {
-                    return this.active && !this.active.nextAll('.ui-menu-item').length;
+                    return this.active && this.active.nextAll('.ui-menu-item').length === 0;
                 }
                 return false;
             },
@@ -338,7 +338,8 @@ if (typeof jQuery !== 'undefined') {
             },
 
             open: function(i) {
-                var widget = this;
+                var widget = this,
+                    arrange = i.options.dynamic && i.selectedTime;
 
                 // return if dropdown is disabled
                 if (!i.options.dropdown) { return i.element; }
@@ -347,14 +348,13 @@ if (typeof jQuery !== 'undefined') {
                 // arrange the items in the list so the first item is
                 // cronologically right after the selected date.
                 // TODO: set selectedTime
-                if (i.rebuild || !i.items || (i.options.dynamic && i.selectedTime)) {
-                    i.items = widget._items(i);
+                if (i.rebuild || !i.items || arrange) {
+                    i.items = widget._items(i, arrange ? i.selectedTime : null);
                 }
 
-                // remove old li elements but keep associated events, then append
+                // remove old li elements keeping associated events, then append
                 // the new li elements to the ul
-                if (i.rebuild || widget.instance !== i || (i.options.dynamic && i.selectedTime)) {
-
+                if (i.rebuild || widget.instance !== i || arrange) {
                     // handle menu events when using jQuery versions previous to
                     // 1.4.2 (thanks to Brian Link)
                     // http://github.com/wvega/timepicker/issues#issue/4
@@ -737,7 +737,8 @@ if (typeof jQuery !== 'undefined') {
                     [/^(\d{3,}):(\d{2,})/, '$1$2'],
                     //
                     [/^(\d):(\d):(\d)$/, '0$10$20$3'],
-                    [/^(\d{1,2}):(\d):(\d\d)/, '$10$2$3']],
+                    [/^(\d{1,2}):(\d):(\d\d)/, '$10$2$3']
+                ],
                 length = patterns.length;
 
             return function(str) {
@@ -792,17 +793,15 @@ if (typeof jQuery !== 'undefined') {
                     h = h + 12;
                 }
 
-                if (h > 24 && (h % 10) <= 6 && m <= 60 && s <= 60) {
+                if (h > 24) {
                     if (str.length >= 6) {
                         return $.fn.timepicker.parseTime(str.substr(0,5));
                     } else {
                         return $.fn.timepicker.parseTime(str + '0' + (am ? 'a' : '') + (pm ? 'p' : ''));
                     }
-                } else if (h <= 24 && m <= 60 && s <= 60) {
+                } else {
                     time.setHours(h, m, s);
                     return time;
-                } else {
-                    return false;
                 }
             };
         })();

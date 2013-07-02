@@ -116,24 +116,30 @@ if (jQuery.fn.jquery < '1.4') {
             }
         });
 
-    })( jQuery );
+    })(jQuery);
 }
 
 
 /* jQuery Timepicker Tests */
 (function($) {
-    $.fn.timepicker.test = function() {
+    $(function() {
+        var system = $({}),
+            delay = 100, // ms
+            teardown;
 
-        var system = $({}), timeout = 100;
+        // $.browser is undefined when running in PhantomJS
+        $.browser = $.browser || {};
 
-        $('body').append('<div id="main" style="position: absolute; top: -10000px; left: -10000px"><div><input id="timepicker" class="timepicker"/></div></div>');
+        teardown = function() {
+            var instance = $('#timepicker').data('TimePicker');
 
-        module('TimePicker API', {
-            teardown: function() {
-                var instance = $('#timepicker').timepicker();
-                if (instance.destroy) { instance.destroy(); }
+            if (instance) {
+                instance.destroy();
             }
-        });
+        };
+
+
+        module('TimePicker API', { teardown: teardown });
 
         test('timepicker instance', function() {
             var timepicker = $('#timepicker').timepicker(),
@@ -141,27 +147,26 @@ if (jQuery.fn.jquery < '1.4') {
             ok(typeof instance.widget !== 'undefined', 'Get access to the instance object.');
         });
 
-        test('next, previous', function() {
-            var timepicker = $('#timepicker').timepicker(),
-                instance = timepicker.timepicker(),
-                object = null;
-
-            instance.open();
-
-            object = timepicker.timepicker('next');
-            ok(object.jquery, 'next() method returns a jQuery instance.');
-
-            object = timepicker.timepicker('previous');
-            ok(object.jquery, 'previous() method returns a jQuery instance.');
+        test('timepicker destroy', function() {
+            var timepicker = $('#timepicker').timepicker();
+            ok(timepicker.data('TimePicker') !== null, 'TimePicker instance exists.');
+            timepicker.timepicker().destroy();
+            ok(timepicker.data('TimePicker') === null, 'TimePicker instance no longer exists.');
         });
 
-        test('open, close, destroy', function() {
+        test('chainable methods: next, previous open, close, destroy', function() {
             var timepicker = $('#timepicker').timepicker(),
                 instance = timepicker.timepicker(),
                 object = null;
 
             object = instance.open();
             ok(object.jquery, 'open() method returns a jQuery instance.');
+
+            object = timepicker.timepicker('next');
+            ok(object.jquery, 'next() method returns a jQuery instance.');
+
+            object = timepicker.timepicker('previous');
+            ok(object.jquery, 'previous() method returns a jQuery instance.');
 
             object = instance.close();
             ok(object.jquery, 'close() method returns a jQuery instance.');
@@ -171,13 +176,13 @@ if (jQuery.fn.jquery < '1.4') {
         });
 
         test('selected, first, last', function() {
-            var selected = false,
-                timepicker = $('#timepicker').timepicker(),
+            var timepicker = $('#timepicker').timepicker(),
                 instance = timepicker.timepicker(),
+                selected = false,
                 expected = 5;
 
             expect(expected);
-            stop(timeout * expected);
+            stop();
 
             system.queue('test', []);
             system.queue('test', function(next) {
@@ -187,7 +192,7 @@ if (jQuery.fn.jquery < '1.4') {
                 next();
             });
 
-            system.delay(timeout, 'test');
+            system.delay(delay, 'test');
             system.queue('test', function(next) {
                 selected = instance.selected();
                 ok(selected !== null, 'An element is selected after the DOWN key is pressed.');
@@ -196,7 +201,7 @@ if (jQuery.fn.jquery < '1.4') {
                 next();
             });
 
-            system.delay(timeout, 'test');
+            system.delay(delay, 'test');
             system.queue('test', function(next) {
                 selected = instance.selected();
                 ok(selected !== null, 'Another element is selected after the UP key is pressed.');
@@ -235,7 +240,7 @@ if (jQuery.fn.jquery < '1.4') {
                          '4412345', time(4, 41, 23),
                          '44123456', time(4, 41, 23),
                          '441234567', time(4, 41, 23),
-                         '446161', false,
+                         '446161', time(4, 46, 16),
                          '46', time(5),
                          ':1', time(10),
                          ':2', time(20),
@@ -254,8 +259,8 @@ if (jQuery.fn.jquery < '1.4') {
                          ':1234567', time(12, 34, 56),
                          ':61', time(6, 10),
                          ':62', time(6, 20),
-                         ':1261', false,
-                         ':1271', false,
+                         ':1261', time(13, 1),
+                         ':1271', time(13, 11),
                          '1:7', time(1, 7),
                          '2:8', time(2, 8),
                          '3:9', time(3, 9),
@@ -278,7 +283,7 @@ if (jQuery.fn.jquery < '1.4') {
                          '6:032', time(6,3,20),
                          '1:23', time(1, 23),
                          '2:345', time(2, 34, 50),
-                         '3:4567', false,
+                         '3:4567', time(3, 46, 7),
                          '4:56012', time(4, 56, 1),
                          '123:4', time(1, 23, 4),
                          '1234:5', time(12, 34, 5),
@@ -367,12 +372,7 @@ if (jQuery.fn.jquery < '1.4') {
         });
 
 
-
-        module('TimePicker Options', {
-            teardown: function() {
-                $('#timepicker').timepicker().destroy();
-            }
-        });
+        module('TimePicker Options', { teardown: teardown });
 
         test('interval', function() {
             var timepicker, instance;
@@ -426,7 +426,7 @@ if (jQuery.fn.jquery < '1.4') {
             });
 
             expect(expected);
-            stop(timeout * expected);
+            stop();
 
             timepicker.val('46').change();
         });
@@ -442,7 +442,7 @@ if (jQuery.fn.jquery < '1.4') {
                 expected = 8;
 
             expect(expected);
-            stop(timeout * expected);
+            stop();
 
             system.queue('test', []);
             system.queue('test', function(next) {
@@ -451,21 +451,21 @@ if (jQuery.fn.jquery < '1.4') {
                 next();
             });
 
-            system.delay(timeout, 'test');
+            system.delay(delay, 'test');
             system.queue('test', function(next) {
                 ok(!instance.closed(), 'TimePicker opens when input field gains focus.');
                 timepicker.simulate('keydown', {keyCode: 65});
                 next();
             });
 
-            system.delay(timeout, 'test');
+            system.delay(delay, 'test');
             system.queue('test', function(next) {
                 ok(instance.closed(), 'TimePicker is closed after the \'a\' key is pressed.');
                 timepicker.simulate('keydown', {keyCode: $.TimePicker.prototype.keyCode.DOWN});
                 next();
             });
 
-            system.delay(timeout, 'test');
+            system.delay(delay, 'test');
             system.queue('test', function(next) {
                 ok(!instance.closed(), 'TimePicker opens when DOWN key is pressed.');
                 selected = instance.selected();
@@ -474,7 +474,7 @@ if (jQuery.fn.jquery < '1.4') {
                 next();
             });
 
-            system.delay(timeout, 'test');
+            system.delay(delay, 'test');
             system.queue('test', function(next) {
                 ok(!instance.closed(), 'TimePicker opens when UP key is pressed.');
                 selected = instance.selected();
@@ -482,7 +482,7 @@ if (jQuery.fn.jquery < '1.4') {
                 next();
             });
 
-            system.delay(timeout, 'test');
+            system.delay(delay, 'test');
             system.queue('test', function(next) {
                 ok(instance.closed(), 'TimePicker is closed after an item has been selected pressing ENTER key.');
                 ok(selected !== null, 'An element is selected after the DOWN key is pressed.');
@@ -492,5 +492,5 @@ if (jQuery.fn.jquery < '1.4') {
 
             system.queue('test', function(/*next*/) { start(); }).dequeue('test');
         });
-    };
+    });
 })(jQuery);
