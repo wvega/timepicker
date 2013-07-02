@@ -1,19 +1,6 @@
 language: node_js
 node_js:
     - "0.10"
-env:
-    - JQUERY=1.3.2
-    - JQUERY=1.4.2
-    - JQUERY=1.4.3
-    - JQUERY=1.5.1
-    - JQUERY=1.6.2
-    - JQUERY=1.6.4
-    - JQUERY=1.7.1
-    - JQUERY=1.7.2
-    - JQUERY=1.8.3
-    - JQUERY=1.9.0
-    - JQUERY=1.9.1
-    - JQUERY=1.10.1
-    - JQUERY=2.0.0
-    - JQUERY=2.0.1
-    - JQUERY=2.0.2
+install:
+    - npm install grunt-cli -g
+    - npm install
