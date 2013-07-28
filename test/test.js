@@ -127,9 +127,6 @@ if (jQuery.fn.jquery < '1.4') {
             delay = 100, // ms
             teardown;
 
-        // $.browser is undefined when running in PhantomJS
-        $.browser = $.browser || {};
-
         teardown = function() {
             var instance = $('#timepicker').data('TimePicker');
 
