@@ -623,11 +623,6 @@ if (typeof jQuery !== 'undefined') {
         };
 
         $.fn.timepicker = function(options) {
-            // TODO: see if it works with previous versions
-            if ($.fn.jquery < '1.3') {
-                return this;
-            }
-
             // support calling API methods using the following syntax:
             //   $(...).timepicker('parse', '11p');
             if (typeof options === 'string') {
