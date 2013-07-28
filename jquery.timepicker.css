@@ -20,7 +20,7 @@
     overflow: auto;
     overflow-x: hidden; /* IE */
     margin: 0;
-    padding: 0 0 0 1px;
+    padding: 0 1px;
 }
 .ui-timepicker-standard {
     /* .ui-widget */
@@ -73,4 +73,8 @@
 .ui-timepicker-hidden {
     /* .ui-helper-hidden */
     display: none;
+}
+
+.ui-timepicker-container .ui-no-scrollbar {
+    border: none;
 }
