@@ -47,19 +47,19 @@ if (typeof jQuery !== 'undefined') {
                                     .appendTo(widget.container);
 
                 if ($.fn.jquery >= '1.4.2') {
-                    widget.ui.delegate('a', 'mouseenter.timepicker', function(event) {
+                    widget.ui.delegate('a', 'mouseenter.timepicker', function() {
                         // passing false instead of an instance object tells the function
                         // to use the current instance
                         widget.activate(false, $(this).parent());
-                    }).delegate('a', 'mouseleave.timepicker', function(event) {
+                    }).delegate('a', 'mouseleave.timepicker', function() {
                         widget.deactivate(false);
-                    }).delegate('a', 'click.timepicker', function(event) {
+                    }).delegate('a', 'click.timepicker', function() {
                         event.preventDefault();
                         widget.select(false, $(this).parent());
                     });
                 }
 
-                widget.ui.bind('click.timepicker, scroll.timepicker', function(event) {
+                widget.ui.bind('click.timepicker, scroll.timepicker', function() {
                     clearTimeout(widget.closing);
                 });
             }
@@ -198,7 +198,6 @@ if (typeof jQuery !== 'undefined') {
                 // TODO: use $.fn.data()
                 i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : $.extend({}, options);
                 i.widget = widget;
-                i.selectedTime = $.fn.timepicker.parseTime(i.element.val());
 
                 // proxy functions for the exposed api methods
                 $.extend(i, {
@@ -221,32 +220,32 @@ if (typeof jQuery !== 'undefined') {
 
                 i.element.bind('keydown.timepicker', function(event) {
                     switch (event.which || event.keyCode) {
-                        case widget.keyCode.ENTER:
-                        case widget.keyCode.NUMPAD_ENTER:
-                            event.preventDefault();
-                            if (widget.closed()) {
-                                i.element.trigger('change.timepicker');
-                            } else {
-                                widget.select(i, widget.active);
-                            }
-                            break;
-                        case widget.keyCode.UP:
-                            i.previous();
-                            break;
-                        case widget.keyCode.DOWN:
-                            i.next();
-                            break;
-                        default:
-                            if (!widget.closed()) {
-                                i.close(true);
-                            }
-                            break;
+                    case widget.keyCode.ENTER:
+                    case widget.keyCode.NUMPAD_ENTER:
+                        event.preventDefault();
+                        if (widget.closed()) {
+                            i.element.trigger('change.timepicker');
+                        } else {
+                            widget.select(i, widget.active);
+                        }
+                        break;
+                    case widget.keyCode.UP:
+                        i.previous();
+                        break;
+                    case widget.keyCode.DOWN:
+                        i.next();
+                        break;
+                    default:
+                        if (!widget.closed()) {
+                            i.close(true);
+                        }
+                        break;
                     }
-                }).bind('focus.timepicker', function(event) {
+                }).bind('focus.timepicker', function() {
                     i.open();
-                }).bind('blur.timepicker', function(event) {
+                }).bind('blur.timepicker', function() {
                     i.close();
-                }).bind('change.timepicker', function(event) {
+                }).bind('change.timepicker', function() {
                     if (i.closed()) {
                         i.setTime($.fn.timepicker.parseTime(i.element.val()));
                     }
@@ -339,7 +338,8 @@ if (typeof jQuery !== 'undefined') {
 
             open: function(i) {
                 var widget = this,
-                    arrange = i.options.dynamic && i.selectedTime;
+                    selectedTime = i.getTime(),
+                    arrange = i.options.dynamic && selectedTime;
 
                 // return if dropdown is disabled
                 if (!i.options.dropdown) { return i.element; }
@@ -349,7 +349,7 @@ if (typeof jQuery !== 'undefined') {
                 // cronologically right after the selected date.
                 // TODO: set selectedTime
                 if (i.rebuild || !i.items || arrange) {
-                    i.items = widget._items(i, arrange ? i.selectedTime : null);
+                    i.items = widget._items(i, arrange ? selectedTime : null);
                 }
 
                 // remove old li elements keeping associated events, then append
@@ -361,9 +361,9 @@ if (typeof jQuery !== 'undefined') {
                     if ($.fn.jquery < '1.4.2') {
                         widget.ui.children().remove();
                         widget.ui.append(i.items);
-                        widget.ui.find('a').bind('mouseover.timepicker', function(event) {
+                        widget.ui.find('a').bind('mouseover.timepicker', function() {
                             widget.activate(i, $(this).parent());
-                        }).bind('mouseout.timepicker', function(event) {
+                        }).bind('mouseout.timepicker', function() {
                             widget.deactivate(i);
                         }).bind('click.timepicker', function(event) {
                             event.preventDefault();
@@ -381,16 +381,16 @@ if (typeof jQuery !== 'undefined') {
                 widget.container.removeClass('ui-helper-hidden ui-timepicker-hidden ui-timepicker-standard ui-timepicker-corners').show();
 
                 switch (i.options.theme) {
-                    case 'standard':
-                        widget.container.addClass('ui-timepicker-standard');
-                        //widget.ui.addClass('ui-timepicker-standard');
-                        break;
-                    case 'standard-rounded-corners':
-                        widget.container.addClass('ui-timepicker-standard ui-timepicker-corners');
-                        //widget.ui.addClass('ui-timepicker-standard ui-timepicker-corners');
-                        break;
-                    default:
-                        break;
+                case 'standard':
+                    widget.container.addClass('ui-timepicker-standard');
+                    //widget.ui.addClass('ui-timepicker-standard');
+                    break;
+                case 'standard-rounded-corners':
+                    widget.container.addClass('ui-timepicker-standard ui-timepicker-corners');
+                    //widget.ui.addClass('ui-timepicker-standard ui-timepicker-corners');
+                    break;
+                default:
+                    break;
                 }
 
                 /* resize ui */
@@ -439,7 +439,7 @@ if (typeof jQuery !== 'undefined') {
 
                 // try to match input field's current value with an item in the
                 // dropdown
-                if (i.selectedTime) {
+                if (selectedTime) {
                     i.items.each(function() {
                         var item = $(this), time;
 
@@ -449,7 +449,7 @@ if (typeof jQuery !== 'undefined') {
                             time = item.data('time-value');
                         }
 
-                        if (time.getTime() === i.selectedTime.getTime()) {
+                        if (time.getTime() === selectedTime.getTime()) {
                             widget.activate(i, item);
                             return false;
                         }
@@ -502,7 +502,23 @@ if (typeof jQuery !== 'undefined') {
             },
 
             getTime: function(i) {
-                return i.selectedTime ? i.selectedTime : null;
+                var current = $.fn.timepicker.parseTime(i.element.val());
+
+                if (current instanceof Date && i.selectedTime) {
+                    // if the textfield's value and the stored Date object
+                    // have the same representation using current format
+                    // we prefer the stored Date object to avoid unnecesary
+                    // lost of precision.
+                    if (i.format(current) === i.format(i.selectedTime)) {
+                        return i.selectedTime;
+                    } else {
+                        return current;
+                    }
+                } else if (current instanceof Date) {
+                    return current;
+                } else {
+                    return null;
+                }
             },
 
             setTime: function(i, time, silent) {
@@ -538,9 +554,11 @@ if (typeof jQuery !== 'undefined') {
                     return i.options[name];
                 }
 
-                var widget = this, options = {}, destructive;
+                var time = i.getTime(),
+                    options, destructive;
 
                 if (typeof name === 'string') {
+                    options = {};
                     options[name] = value;
                 } else {
                     options = name;
@@ -552,17 +570,14 @@ if (typeof jQuery !== 'undefined') {
                                'startHour', 'startMinutes', 'startTime',
                                'timeFormat', 'interval', 'dropdown'];
 
-                $.each(i.options, function(name, value) {
-                    if (typeof options[name] !== 'undefined') {
-                        i.options[name] = options[name];
-                        if (!i.rebuild && $.inArray(name, destructive) > -1) {
-                            i.rebuild = true;
-                        }
-                    }
+
+                $.each(options, function(name) {
+                    i.options[name] = options[name];
+                    i.rebuild = i.rebuild || $.inArray(name, destructive) > -1;
                 });
 
                 if (i.rebuild) {
-                    i.setTime(i.getTime());
+                    i.setTime(time);
                 }
             }
         };
@@ -585,7 +600,7 @@ if (typeof jQuery !== 'undefined') {
             dropdown: true,
             scrollbar: false,
             // callbacks
-            change: function(time) {}
+            change: function(/*time*/) {}
         };
 
         $.TimePicker.methods = {
@@ -716,7 +731,7 @@ if (typeof jQuery !== 'undefined') {
          * For a detailed list of supported formats check the unit tests at
          * http://github.com/wvega/timepicker/tree/master/tests/
          */
-        $.fn.timepicker.parseTime = (function(str) {
+        $.fn.timepicker.parseTime = (function() {
             var patterns = [
                     // 1, 12, 123, 1234, 12345, 123456
                     [/^(\d+)$/, '$1'],
@@ -752,7 +767,7 @@ if (typeof jQuery !== 'undefined') {
                 pm = am ? false : /p/.test(str);
                 str = str.replace(/[^0-9:]/g, '').replace(/:+/g, ':');
 
-                for (var k = 0; k < length; k++) {
+                for (var k = 0; k < length; k = k + 1) {
                     if (patterns[k][0].test(str)) {
                         str = str.replace(patterns[k][0], patterns[k][1]);
                         break;
@@ -785,7 +800,9 @@ if (typeof jQuery !== 'undefined') {
                     return false;
                 }
 
-                h = parseInt(h, 10); m = parseInt(m, 10); s = parseInt(s, 10);
+                h = parseInt(h, 10);
+                m = parseInt(m, 10);
+                s = parseInt(s, 10);
 
                 if (am && h === 12) {
                     h = 0;

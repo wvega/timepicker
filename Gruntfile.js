@@ -77,18 +77,33 @@ module.exports = function(grunt) {
 
     jshint: {
       options: {
+        bitwise: true,
         curly: true,
         eqeqeq: true,
-        immed: false,
+        forin: true,
+        immed: true,
+        sub: true,
+        boss: true,
+        eqnull: true,
+        indent: 4,
         latedef: true,
         newcap: true,
         noarg: true,
-        sub: true,
+        noempty: true,
+        nonew: true,
+        plusplus: true,
+        quotmark: true,
+        regexp: true,
         undef: true,
-        boss: true,
-        eqnull: true,
+        unused: true,
+        trailing: true,
+        // relaxing options
+        evil: false,
+        regexdash: true,
+        white: false,
+        // environments
         browser: true,
-        white: false
+        jquery: true
       },
       dist: {
         options: {
@@ -164,17 +179,17 @@ module.exports = function(grunt) {
             'http://localhost:8000/test/index.html?jquery=1.10.1',
             'http://localhost:8000/test/index.html?jquery=2.0.0',
             'http://localhost:8000/test/index.html?jquery=2.0.1',
-            'http://localhost:8000/test/index.html?jquery=2.0.2',
+            'http://localhost:8000/test/index.html?jquery=2.0.2'
           ]
         }
       }
     },
 
     connect: {
-      default: {}
+      'default': {}
     },
 
-    clean: ['dist/'],
+    clean: ['dist/']
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -191,7 +206,7 @@ module.exports = function(grunt) {
   grunt.registerTask('lint', ['jshint', 'csslint']);
   grunt.registerTask('min', ['uglify', 'cssmin']);
   grunt.registerTask('build', ['copy:legacy', 'compress']);
-  grunt.registerTask('test', ['connect', 'qunit']);
   grunt.registerTask('default', ['lint', 'concat', 'min', 'build', 'clean']);
+  grunt.registerTask('test', ['default', 'connect', 'qunit']);
 
 };

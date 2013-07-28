@@ -1,5 +1,5 @@
-/*global module: false, test: false, expect: false*/
-/*global ok: false, start:false, stop: false*/
+/*global module, test, expect */
+/*global ok, equal, start, stop */
 
 /**
  * ======== A Handy Little QUnit Reference ========
@@ -331,44 +331,48 @@ if (jQuery.fn.jquery < '1.4') {
         });
 
         test('getTime/setTime', function() {
-            var element = $('#timepicker').timepicker(),
+            var element = $('#timepicker').timepicker({
+                    'timeFormat': 'hh:mm p'
+                }),
                 instance = element.timepicker(),
                 date = new Date(0,0,0,12,50,34),
                 object = null;
 
             object = instance.setTime(date);
             ok(object.jquery, 'setTime() method returns a jQuery instance');
-            ok(element.val() === '12:50 PM', 'passing a Date object to setTime.');
+            equal(element.val(), '12:50 PM', 'passing a Date object to setTime.');
 
-            ok(instance.getTime().toLocaleTimeString() === date.toLocaleTimeString(), 'getTime return the time set by setTime using a Date object.');
+            equal(instance.getTime().toLocaleTimeString(), date.toLocaleTimeString(), 'getTime return the time set by setTime using a Date object.');
 
             element.timepicker('setTime', '1:20p');
-            ok(element.val() === '01:20 PM', 'passing a string to setTime.');
+            equal(element.val(), '01:20 PM', 'passing a string to setTime.');
 
             date = new Date(0,0,0,13,20,0);
-            ok(instance.getTime().toLocaleTimeString() === date.toLocaleTimeString(), 'getTime returns the time set by setTime using a string.');
+            equal(instance.getTime().toLocaleTimeString(), date.toLocaleTimeString(), 'getTime returns the time set by setTime using a string.');
 
             date = new Date(0,0,0,14,30,0);
-            ok(element.val('2:30 PM').timepicker('getTime').toLocaleTimeString() === date.toLocaleTimeString(), 'getTime returns the time set by jQuery.fn.val.');
+            equal(element.val('2:30 PM').timepicker('getTime').toLocaleTimeString(), date.toLocaleTimeString(), 'getTime returns the time set by jQuery.fn.val.');
         });
 
         test('option', function() {
-            var element = $('#timepicker').timepicker(),
+            var element = $('#timepicker').timepicker({
+                    'timeFormat': 'hh:mm p'
+                }),
                 instance = element.timepicker();
 
             instance.setTime('11:40');
 
-            ok(instance.option('timeFormat') === 'hh:mm p', 'timeFormat: value succesfully retrieved (instance).');
+            equal(instance.option('timeFormat'), 'hh:mm p', 'timeFormat: value succesfully retrieved (instance).');
 
             instance.option('timeFormat', 'h p');
-            ok(instance.format(instance.getTime()) === '11 AM', 'timeFormat: value succesfully updated (instance).');
-            ok(element.val() === '11 AM', 'timeFormat: input field value was properly updated with the new format (instance).');
+            equal(instance.format(instance.getTime()), '11 AM', 'timeFormat: value succesfully updated (instance).');
+            equal(element.val(), '11 AM', 'timeFormat: input field value was properly updated with the new format (instance).');
 
-            ok(element.timepicker('option', 'timeFormat') === 'h p', 'timeFormat: value succesfully retrieved (plugin).');
+            equal(element.timepicker('option', 'timeFormat'), 'h p', 'timeFormat: value succesfully retrieved (plugin).');
 
-            element.timepicker('option', 'timeFormat', 'h:m p');
-            ok(instance.format(instance.getTime()) === '11:40 AM', 'timeFormat: value succesfully updated (plugin).');
-            ok(element.val() === '11:40 AM', 'timeFormat: input field value was properly updated with the new format (plugin).');
+            element.timepicker('option', 'timeFormat', 'h:mm p');
+            equal(instance.format(instance.getTime()), '11:40 AM', 'timeFormat: value succesfully updated (plugin).');
+            equal(element.val(), '11:40 AM', 'timeFormat: input field value was properly updated with the new format (plugin).');
         });
 
 
