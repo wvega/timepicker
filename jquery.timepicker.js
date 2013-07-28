@@ -528,7 +528,7 @@ if (typeof jQuery !== 'undefined') {
             },
 
             setTime: function(i, time, silent) {
-                var widget = this;
+                var widget = this, previous = i.selectedTime;
 
                 if (typeof time === 'string') {
                     time = i.parse(time);
@@ -541,15 +541,17 @@ if (typeof jQuery !== 'undefined') {
 
                     // TODO: add documentaion about setTime being chainable
                     if (silent) { return i; }
+                } else {
+                    i.selectedTime = null;
+                }
 
-                    // custom change event and change callback
-                    // TODO: add documentation about this event
+                // custom change event and change callback
+                // TODO: add documentation about this event
+                if (previous !== null || i.selectedTime !== null) {
                     i.element.trigger('time-change', [time]);
                     if ($.isFunction(i.options.change)) {
                         i.options.change.apply(i.element, [time]);
                     }
-                } else {
-                    i.selectedTime = null;
                 }
 
                 return i.element;
