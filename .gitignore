@@ -6,6 +6,7 @@ libs/
 src/
 
 jquery.timepicker-*
+jquery.timepicker.min.*
 
 *~
 *.sample*
