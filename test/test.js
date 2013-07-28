@@ -1,5 +1,5 @@
 /*global module, test, expect */
-/*global ok, equal, start, stop */
+/*global ok, equal, deepEqual, start, stop */
 
 /**
  * ======== A Handy Little QUnit Reference ========
@@ -241,6 +241,10 @@ if (jQuery.fn.jquery < '1.4') {
                          '44123456', time(4, 41, 23),
                          '441234567', time(4, 41, 23),
                          '446161', time(4, 46, 16),
+                         '6666', time(7, 07, 0),
+                         '66666', time(7, 07, 06),
+                         '666666', time(7, 07, 06),
+                         '6666666', time(7, 07, 06),
                          '46', time(5),
                          ':1', time(10),
                          ':2', time(20),
@@ -304,7 +308,8 @@ if (jQuery.fn.jquery < '1.4') {
                 parsed = result ? result.toLocaleTimeString() : false;
                 message = expected ? expected.toLocaleTimeString() : 'false';
 
-                ok(result >= expected && result <= expected, 'Input:' + value + ' | Parsed: ' + parsed + ' | Expected: ' + message);
+                equal(result ? result.toLocaleTimeString() : null, expected ? expected.toLocaleTimeString() : null, 'Input: ' + value);
+                // ok(result >= expected && result <= expected, 'Input:' + value + ' | Parsed: ' + parsed + ' | Expected: ' + message);
             }
         });
 
@@ -350,8 +355,8 @@ if (jQuery.fn.jquery < '1.4') {
             date = new Date(0,0,0,13,20,0);
             equal(instance.getTime().toLocaleTimeString(), date.toLocaleTimeString(), 'getTime returns the time set by setTime using a string.');
 
-            date = new Date(0,0,0,14,30,0);
-            equal(element.val('2:30 PM').timepicker('getTime').toLocaleTimeString(), date.toLocaleTimeString(), 'getTime returns the time set by jQuery.fn.val.');
+            date = new Date(0,0,0,13,30,0);
+            equal(element.val('1:30 PM').timepicker('getTime').toLocaleTimeString(), date.toLocaleTimeString(), 'getTime returns the time set by jQuery.fn.val.');
         });
 
         test('option', function() {
@@ -401,9 +406,16 @@ if (jQuery.fn.jquery < '1.4') {
         });
 
         test('minTime', function() {
-            var timepicker;
+            var timepicker, instance;
+
             timepicker = $('#timepicker').timepicker({ minTime: '2p' });
-            timepicker.focus();
+            instance = timepicker.timepicker();
+
+            timepicker.val('13:59:59');
+            equal(instance.getTime(), null, 'An invalid time cannot be set using $.fn.val().');
+
+            timepicker.val('2p');
+            deepEqual(instance.getTime(), new Date(0, 0, 0, 14, 0, 0), 'A time equal to minTime can be set using $.fn.val().');
         });
 
         test('dropdown', function() {

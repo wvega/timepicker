@@ -20,13 +20,13 @@ if (typeof jQuery !== 'undefined') {
                 if (typeof date === 'string') {
                     date = $.fn.timepicker.parseTime(date);
                 }
-                return new Date(1988, 7, 24, date.getHours(), date.getMinutes(), date.getSeconds());
+                return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds());
             } else if (arguments.length === 3) {
-                return new Date(1988, 7, 24, arguments[0], arguments[1], arguments[2]);
+                return new Date(0, 0, 0, arguments[0], arguments[1], arguments[2]);
             } else if (arguments.length === 2) {
-                return new Date(1988, 7, 24, arguments[0], arguments[1], 0);
+                return new Date(0, 0, 0, arguments[0], arguments[1], 0);
             } else {
-                return new Date(1988, 7, 24);
+                return new Date(0, 0, 0);
             }
         }
 
@@ -502,9 +502,15 @@ if (typeof jQuery !== 'undefined') {
             },
 
             getTime: function(i) {
-                var current = $.fn.timepicker.parseTime(i.element.val());
+                var widget = this,
+                    current = $.fn.timepicker.parseTime(i.element.val());
 
-                if (current instanceof Date && i.selectedTime) {
+                // if current value is not valid, we return null.
+                // stored Date object is ignored, because the current value
+                // (valid or invalid) always takes priority
+                if (current instanceof Date && !widget._isValidTime(i, current)) {
+                    return null;
+                } else if (current instanceof Date && i.selectedTime) {
                     // if the textfield's value and the stored Date object
                     // have the same representation using current format
                     // we prefer the stored Date object to avoid unnecesary
