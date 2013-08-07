@@ -432,8 +432,14 @@ if (typeof jQuery !== 'undefined') {
                     widget.ui.css({ paddingRight: paddingRight + 40 }).addClass('ui-no-scrollbar');
                 }
 
-                // position
-                widget.container.css('top', parseInt(widget.container.css('top'), 10) + i.element.outerHeight());
+                // Check if timepicker would be off-screen and position accordingly.
+                var _widgetHeight = widget.container.height();
+                var _widgetCssTop = parseInt(widget.container.css('top'), 10);
+
+                if(widget.container.offset().top > ($(window).scrollTop() + $(window).height() - _widgetHeight))
+                  widget.container.css('top', _widgetCssTop - _widgetHeight);
+                else
+                  widget.container.css('top', _widgetCssTop + i.element.outerHeight());
 
                 widget.instance = i;
 
