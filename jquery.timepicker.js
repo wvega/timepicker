@@ -419,7 +419,8 @@ if (typeof jQuery !== 'undefined') {
                 widget.container.css($.extend(i.element.offset(), {
                     height: widget.ui.outerHeight(),
                     width: widget.ui.outerWidth(),
-                    zIndex: zindex
+                    zIndex: zindex,
+                    cursor: 'default'
                 }));
 
                 decoration = i.items.eq(0).outerWidth() - i.items.eq(0).width();
