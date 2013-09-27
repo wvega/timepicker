@@ -53,7 +53,7 @@ if (typeof jQuery !== 'undefined') {
                         widget.activate(false, $(this).parent());
                     }).delegate('a', 'mouseleave.timepicker', function() {
                         widget.deactivate(false);
-                    }).delegate('a', 'click.timepicker', function() {
+                    }).delegate('a', 'click.timepicker', function(event) {
                         event.preventDefault();
                         widget.select(false, $(this).parent());
                     });
