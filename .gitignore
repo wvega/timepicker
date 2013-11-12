@@ -1,4 +1,14 @@
-*.sublime-*
+node_modules/
 
 builds/
-node_modules/
+dist/
+libs/
+src/
+
+jquery.timepicker-*
+jquery.timepicker.min.*
+
+*~
+*.sample*
+*.DS_Store
+*.sublime-*
