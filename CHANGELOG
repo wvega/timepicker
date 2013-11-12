@@ -1,3 +1,6 @@
+* Sat Nov 09 2013 - Version 1.3.1
+- Fix minor errors in jQuery Package Manifest.
+
 * Sat Nov 09 2013 - Version 1.3.0
 - Drop support for jQuery 1.4.2 or below. Plugin requires jQuery 1.6.0 or newer.
 - Fix: Avoid showing dupliate time entries (#21)
@@ -13,9 +16,9 @@
 - Minor CSS fixes.
 
 * Sun Feb 26 2012 - Version 1.2.2
-- Fix too much recursion error in parseTime function (#20)
-- Verifies argument passed to parseTime is string
-- Add support for jQuery 1.6 prop function
+- Fix too much recursion error in parseTime function (#20).
+- Verifies argument passed to parseTime is string.
+- Add support for jQuery 1.6 prop function.
 
 * Mon Nov 14 2011 - Version 1.2.1
 - Fix strings support for startTime, minTime and maxTime options.

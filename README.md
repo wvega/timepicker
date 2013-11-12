@@ -8,7 +8,7 @@ and Getting Started information.
 
 ## Release History
 
-See [CHANGELOG](https://github.com/wvega/timepicker/blob/master/CHANGELOG)
+See [CHANGELOG](https://github.com/wvega/timepicker/blob/master/CHANGELOG).
 
 ## License
 Copyright (c) 2012 Willington Vega
