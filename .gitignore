@@ -2,8 +2,6 @@ node_modules/
 
 builds/
 dist/
-libs/
-src/
 
 jquery.timepicker-*
 jquery.timepicker.min.*
