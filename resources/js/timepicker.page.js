@@ -1,3 +1,4 @@
+/*global _gaq*/
 $(function() {
 
     if (!$('.nav li a[href="' + document.location.hash + '"]').tab('show').length) {
@@ -42,5 +43,27 @@ $(function() {
             text = 'Selected time is: ' + timepicker.format(time);
             element.siblings('span.help-line').text(text);
         }
+    });
+
+    /* track Google Analytics events */
+
+    var trackOutboundLinks = function(href, category, action) {
+        try {
+            _gaq.push(['_trackEvent', category, action]);
+        } catch (err) {
+            // pass
+        }
+
+        setTimeout(function() {
+            document.location.href = href;
+        }, 100);
+    };
+
+    $('#download-button').click(function(e) {
+        e.preventDefault();
+
+        var href = $(this).attr('href');
+
+        trackOutboundLinks(href, 'Outbound Links', href);
     });
 });

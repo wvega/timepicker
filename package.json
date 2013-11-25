@@ -1,0 +1,8 @@
+{
+    "name": "jquery-timepicker-gh-pages",
+    "title": "GitHub Pages for jQuery Timepicker",
+    "version": "0.1.0",
+    "devDependencies": {
+        "connect": "~2.11.0"
+    }
+}
