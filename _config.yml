@@ -4,3 +4,4 @@ pygments: true
 exclude: ['node_modules', 'test']
 timezone: 'America/Bogota'
 permalink: /:year/:month/:day/:title.html
+baseurl: http://timepicker.co
