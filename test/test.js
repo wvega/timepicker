@@ -381,6 +381,44 @@ if (jQuery.fn.jquery < '1.4') {
 
         module('TimePicker Options', { teardown: teardown });
 
+        test('defaultTime:string', function() {
+            var timepicker = $('#timepicker').timepicker({ defaultTime: '10p', timeFormat: 'hh:mm:ss a' });
+
+            equal(timepicker.val(), '10:00:00 pm', 'A default time can be passed in the `defaultTime` option.');
+            deepEqual(timepicker.timepicker('getTime'), new Date(0, 0, 0, 22, 0, 0), 'A default time can be passed in the `defaultTime` option.');
+        });
+
+        test('defaultTime:Date', function() {
+            var now = new Date(), timepicker;
+
+            now = new Date(0, 0, 0, now.getHours(), now.getMinutes(), now.getSeconds());
+            timepicker = $('#timepicker').timepicker({ defaultTime: now, timeFormat: 'hh:mm:ss a' });
+
+            deepEqual(timepicker.timepicker('getTime'), now, 'A default time can be passed in the `defaultTime` option.');
+        });
+
+        test('defaultTime:now', function() {
+            var now = new Date(), timepicker;
+
+            now = new Date(0, 0, 0, now.getHours(), now.getMinutes(), now.getSeconds());
+            timepicker = $('#timepicker').timepicker({ defaultTime: 'now', timeFormat: 'hh:mm:ss a' });
+
+            deepEqual(timepicker.timepicker('getTime'), now, 'A default time can be passed in the `defaultTime` option.');
+        });
+
+        test('minTime', function() {
+            var timepicker, instance;
+
+            timepicker = $('#timepicker').timepicker({ minTime: '2p' });
+            instance = timepicker.timepicker();
+
+            timepicker.val('13:59:59');
+            equal(instance.getTime(), null, 'An invalid time cannot be set using $.fn.val().');
+
+            timepicker.val('2p');
+            deepEqual(instance.getTime(), new Date(0, 0, 0, 14, 0, 0), 'A time equal to minTime can be set using $.fn.val().');
+        });
+
         test('interval', function() {
             var timepicker, instance;
             timepicker = $('#timepicker').timepicker({ interval:30, timeFormat: 'h' });
@@ -401,19 +439,6 @@ if (jQuery.fn.jquery < '1.4') {
             timepicker.focus();
             ok(instance.options.interval === 45, 'interval was not changed to 60, after the interval and timeFormat were updated, because the timeFormat includes m or mm.');
             timepicker.blur();
-        });
-
-        test('minTime', function() {
-            var timepicker, instance;
-
-            timepicker = $('#timepicker').timepicker({ minTime: '2p' });
-            instance = timepicker.timepicker();
-
-            timepicker.val('13:59:59');
-            equal(instance.getTime(), null, 'An invalid time cannot be set using $.fn.val().');
-
-            timepicker.val('2p');
-            deepEqual(instance.getTime(), new Date(0, 0, 0, 14, 0, 0), 'A time equal to minTime can be set using $.fn.val().');
         });
 
         test('dropdown', function() {

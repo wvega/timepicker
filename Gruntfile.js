@@ -188,7 +188,12 @@ module.exports = function(grunt) {
     },
 
     connect: {
-      'default': {}
+      'default': {},
+      'server': {
+        options: {
+          keepalive: true
+        }
+      }
     },
 
     clean: ['build/', 'dist/']
@@ -210,5 +215,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['copy:legacy', 'compress']);
   grunt.registerTask('default', ['lint', 'concat', 'min', 'build']);
   grunt.registerTask('test', ['default', 'connect', 'qunit']);
+  grunt.registerTask('server', ['default', 'connect:server']);
 
 };

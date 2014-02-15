@@ -192,10 +192,10 @@ if (typeof jQuery !== 'undefined') {
 
                 i.element = $(node);
 
-                if (i.element.data('TimePicker')) { return; }
+                if (i.element.data('TimePicker')) {
+                    return;
+                }
 
-                i.element.data('TimePicker', i);
-                // TODO: use $.fn.data()
                 i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : $.extend({}, options);
                 i.widget = widget;
 
@@ -217,6 +217,25 @@ if (typeof jQuery !== 'undefined') {
                     setTime: function(time, silent) { return widget.setTime(i, time, silent); },
                     option: function(name, value) { return widget.option(i, name, value); }
                 });
+
+                widget._setDefaultTime(i);
+                widget._addInputEventsHandlers(i);
+
+                i.element.data('TimePicker', i);
+            },
+
+            _setDefaultTime: function(i) {
+                if (i.options.defaultTime === 'now') {
+                    i.setTime(normalize(new Date()));
+                } else if (i.options.defaultTime && i.options.defaultTime.getFullYear) {
+                    i.setTime(normalize(i.options.defaultTime));
+                } else if (i.options.defaultTime) {
+                    i.setTime($.fn.timepicker.parseTime(i.options.defaultTime));
+                }
+            },
+
+            _addInputEventsHandlers: function(i) {
+                var widget = this;
 
                 i.element.bind('keydown.timepicker', function(event) {
                     switch (event.which || event.keyCode) {
