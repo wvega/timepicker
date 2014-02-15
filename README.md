@@ -3,8 +3,7 @@
 A jQuery plugin to enhance standard form input fields helping users to select
 (or type) times.
 
-Please visit http://wvega.github.com/timepicker/ for Documentation, Examples 
-and Getting Started information.
+Please visit http://timepicker.co for Documentation, Examples and Getting Started information.
 
 ## Release History
 

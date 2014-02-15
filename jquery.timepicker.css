@@ -1,6 +1,6 @@
 /**
  * jQuery Timepicker
- * http://wvega.github.com/timepicker/
+ * http://timepicker.co
  *
  * Enhances standard form input fields helping users to select (or type) times.
  *
