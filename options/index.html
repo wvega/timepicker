@@ -9,7 +9,7 @@ layout: default
     <div class="row">
         <div class="span2 columns"><code>timeFormat</code></div>
         <div class="span10 columns">
-            <p>The format of the time string displayed in the input and the menu items in the combobox. Available modifiers are:</p>
+            <p><span class="label important">string</span> The format of the time string displayed in the input and the menu items in the combobox. Available modifiers are:</p>
 
             <table class="table table-bordered table-striped table-hover table-condensed">
                 <tbody>
@@ -46,9 +46,11 @@ layout: default
                 </tbody>
             </table>
 
-            <pre>$(document).ready(function(){
-$('input.timepicker').timepicker({ timeFormat: 'h:mm:ss p' });
-});</pre>
+{% highlight javascript%}
+$(document).ready(function(){
+    $('input.timepicker').timepicker({ timeFormat: 'h:mm:ss p' });
+});
+{% endhighlight %}
 
             <form><input id="options-time-format"/></form>
         </div>
@@ -106,32 +108,34 @@ $('input.timepicker').timepicker({ timeFormat: 'h:mm:ss p' });
     <div class="row">
         <div class="span2 columns"><code>startHour</code></div>
         <div class="span10 columns">
-            <p><span class="label important">int</span>. The 24-hour part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
+            <p><span class="label important">int</span> The 24-hour part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
         </div>
     </div>
 
     <div class="row">
         <div class="span2 columns"><code>startMinutes</code></div>
         <div class="span10 columns">
-            <p><span class="label important">int</span>. The minutes part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
+            <p><span class="label important">int</span> The minutes part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
         </div>
     </div>
 
     <div class="row">
         <div class="span2 columns"><code>interval</code></div>
         <div class="span10 columns">
-            <p><span class="label important">int</span>. Separation in minutes between time entries in the dropdown menu.</p>
+            <p><span class="label important">int</span> Separation in minutes between time entries in the dropdown menu.</p>
 
-            <pre>$(document).ready(function(){
-$('input.timepicker').timepicker({
-timeFormat: 'HH:mm:ss',
-minTime: '11:45:00' // 11:45:00 AM,
-maxHour: 20,
-maxMinutes: 30,
-startTime: new Date(0,0,0,15,0,0) // 3:00:00 PM - noon
-interval: 15 // 15 minutos
+{% highlight javascript %}
+$(document).ready(function(){
+    $('input.timepicker').timepicker({
+        timeFormat: 'HH:mm:ss',
+        minTime: '11:45:00' // 11:45:00 AM,
+        maxHour: 20,
+        maxMinutes: 30,
+        startTime: new Date(0,0,0,15,0,0) // 3:00:00 PM - noon
+        interval: 15 // 15 minutos
+    });
 });
-});</pre>
+{% endhighlight %}
 
             <form><input id="options-time-constraints"/></form>
         </div>
@@ -140,14 +144,21 @@ interval: 15 // 15 minutos
     <div class="row">
         <div class="span2 columns"><code>dropdown</code></div>
         <div class="span10 columns">
-            <p><span class="label important">boolean</span>. Whether the dropdown should be displayed or not.</p>
+            <p><span class="label important">boolean</span> Whether the dropdown should be displayed or not.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>dynamic</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">boolean</span> If a date is already selected and <code>dynamic</code> is true, the items in the dropdown will be arranged so that the first item is chronologically right after the selected time entry.</p>
         </div>
     </div>
 
     <div class="row">
         <div class="span2 columns"><code>scrollbar</code></div>
         <div class="span10 columns">
-            <p><span class="label important">boolean</span>. Whether the scrollbars should be displayed or not.</p>
+            <p><span class="label important">boolean</span> Whether the scrollbars should be displayed or not.</p>
         </div>
     </div>
 
@@ -158,18 +169,20 @@ interval: 15 // 15 minutos
         <div class="span10 columns">
             <p>Event triggerd when the value of the input field changes. A Date object containing the selected time is passed as the first argument of the callback.</p>
 
-            <pre>$(document).ready({
-$('input.timepicker').timepicker({
-change: function(time) {
-// the input field
-var element = $(this), text;
-// get access to this TimePicker instance
-var timepicker = element.timepicker();
-text = 'Selected time is: ' + timepicker.format(time);
-element.siblings('span.help-line').text(text);
-}
+{% highlight javascript %}
+$(document).ready({
+    $('input.timepicker').timepicker({
+        change: function(time) {
+            // the input field
+            var element = $(this), text;
+            // get access to this TimePicker instance
+            var timepicker = element.timepicker();
+            text = 'Selected time is: ' + timepicker.format(time);
+            element.siblings('span.help-line').text(text);
+        }
+    });
 });
-});</pre>
+{% endhighlight %}
             <form>
                 <input id="options-change-event"/>
                 <span class="help-line"></span>
