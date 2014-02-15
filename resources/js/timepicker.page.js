@@ -1,26 +1,6 @@
 /*global _gaq*/
 $(function() {
 
-    if (!$('.nav li a[href="' + document.location.hash + '"]').tab('show').length) {
-        $('.nav li a:first').tab('show');
-    }
-
-    $('a[data-toggle="tab"]').on('shown', function(event) {
-        var link = $(event.target);
-        $('.nav li').removeClass('active');
-        $('.nav li a[href="' + link.attr('href') + '"]').closest('li').addClass('active');
-    });
-
-    $('a[data-toggle="tab"]').on('shown', function(event) {
-        var link = $(event.target);
-        $('.nav li').removeClass('active');
-        $('.nav li a[href="' + link.attr('href') + '"]').closest('li').addClass('active');
-
-        $('html, body').animate({
-            scrollTop: $(link.attr('href')).offset().top - 75
-        }, 500);
-    });
-
     /* activate timepickers */
 
     $('#options-time-format').timepicker({ timeFormat: 'h:mm:ss p' });

@@ -1,0 +1,179 @@
+---
+layout: default
+---
+<article>
+    <header class="page-header"><h1>jQuery TimePicker Options &amp; Events</h1></header>
+
+    <div class="page-header"><h2>jQuery TimePicker options</h2></div>
+
+    <div class="row">
+        <div class="span2 columns"><code>timeFormat</code></div>
+        <div class="span10 columns">
+            <p>The format of the time string displayed in the input and the menu items in the combobox. Available modifiers are:</p>
+
+            <table class="table table-bordered table-striped table-hover table-condensed">
+                <tbody>
+                    <tr>
+                        <td><code>h</code></td>
+                        <td>12 hour without leading 0.</td>
+                        <td><code>hh</code></td>
+                        <td>12 hour with leading 0.</td>
+                    </tr>
+                    <tr>
+                        <td><code>H</code></td>
+                        <td>24 hour without leadgin 0.</td>
+                        <td><code>HH</code></td>
+                        <td>24 hour with leading 0.</td>
+                    </tr>
+                    <tr>
+                        <td><code>m</code></td>
+                        <td>minutes without leading 0.</td>
+                        <td><code>mm</code></td>
+                        <td>minutes with leading 0.</td>
+                    </tr>
+                    <tr>
+                        <td><code>s</code></td>
+                        <td>seconds without leading 0.</td>
+                        <td><code>ss</code></td>
+                        <td>seconds with leading 0.</td>
+                    </tr>
+                    <tr>
+                        <td><code>p</code></td>
+                        <td>AM or PM</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <pre>$(document).ready(function(){
+$('input.timepicker').timepicker({ timeFormat: 'h:mm:ss p' });
+});</pre>
+
+            <form><input id="options-time-format"/></form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>minTime</code></div>
+        <div class="span10 columns">
+            <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. Only the time parts (getHours, getMinutes) of the object are important. Time entries before minTime won't be displayed/allowed.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>minHour</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">int</span>. Time entries with an 24-hour part before <code>minHour</code> won't be displayed/allowed. Ignored if <code>minTime</code> is set.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>minMinutes</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">int</span> Time entries with minutes part before <code>minMinutes</code> won't be displayed/allowed. Ignored if <code>minTime</code> is set.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>maxTime</code></div>
+        <div class="span10 columns">
+            <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. Only the time parts (getHours, getMinutes) of the object are important. Time entries after minTime won't be displayed/allowed.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>maxHour</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">int</span>. Time entries with an 24-hour part after <code>maxHour</code> won't be displayed/allowed. Ignored if <code>maxTime</code> is set.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>maxMinutes</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">int</span>. Time entries with minutes part after <code>maxHour</code> won't be displayed/allowed. Ignored if <code>maxTime</code> is set.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>startTime</code></div>
+        <div class="span10 columns">
+            <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. The time of the first item in the combobox when the input field is empty. If the input field is not empty the first item will be the next allowed time entry.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>startHour</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">int</span>. The 24-hour part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>startMinutes</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">int</span>. The minutes part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>interval</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">int</span>. Separation in minutes between time entries in the dropdown menu.</p>
+
+            <pre>$(document).ready(function(){
+$('input.timepicker').timepicker({
+timeFormat: 'HH:mm:ss',
+minTime: '11:45:00' // 11:45:00 AM,
+maxHour: 20,
+maxMinutes: 30,
+startTime: new Date(0,0,0,15,0,0) // 3:00:00 PM - noon
+interval: 15 // 15 minutos
+});
+});</pre>
+
+            <form><input id="options-time-constraints"/></form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>dropdown</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">boolean</span>. Whether the dropdown should be displayed or not.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span2 columns"><code>scrollbar</code></div>
+        <div class="span10 columns">
+            <p><span class="label important">boolean</span>. Whether the scrollbars should be displayed or not.</p>
+        </div>
+    </div>
+
+    <div class="page-header"><h2>jQuery TimePicker events</h2></div>
+
+    <div class="row">
+        <div class="span2 columns"><code>change</code></div>
+        <div class="span10 columns">
+            <p>Event triggerd when the value of the input field changes. A Date object containing the selected time is passed as the first argument of the callback.</p>
+
+            <pre>$(document).ready({
+$('input.timepicker').timepicker({
+change: function(time) {
+// the input field
+var element = $(this), text;
+// get access to this TimePicker instance
+var timepicker = element.timepicker();
+text = 'Selected time is: ' + timepicker.format(time);
+element.siblings('span.help-line').text(text);
+}
+});
+});</pre>
+            <form>
+                <input id="options-change-event"/>
+                <span class="help-line"></span>
+            </form>
+        </div>
+    </div>
+</article>

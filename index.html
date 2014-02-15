@@ -1,307 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>jQuery TimePicker</title>
-    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="resources/css/style.css">
-    <link rel="stylesheet" href="resources/jquery-timepicker/jquery.timepicker.min.css">
-</head>
-<body>
-    <div class="navbar navbar-fixed-top navbar-inverse">
-        <div class="navbar-inner">
-            <div class="container">
-                <a class="brand" href="">jQuery TimePicker</a>
-                <ul class="nav">
-                    <li><a href="#about" data-toggle="tab">About</a></li>
-                    <li><a href="#options" data-toggle="tab">Options</a></li>
-                    <li><a href="#demos" data-toggle="tab">Demos</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="tab-content">
-            <div id="about" class="tab-pane">
-                <article>
-                    <header class="page-header"><h1>jQuery TimePicker</h1></header>
+---
+layout: default
+title: jQuery Timepicker
+---
+<article>
+    <header class="page-header"><h1>jQuery TimePicker</h1></header>
 
-                    <p>jQuery TimePicker is a plugin to help users easily input time entries. It works by allowing the user to type times in a free format or selecting them from a dropdown menu.</p>
+    <p>jQuery TimePicker is a plugin to help users easily input time entries. It works by allowing the user to type times in a free format or selecting them from a dropdown menu.</p>
 
-                    <p>The plugin will automatically convert all time entries using a format that can be changed passing the <code>timeFormat</code> option; the default value is <code>hh:mm p</code> which will give something like <code>02:16 PM</code>.</p>
+    <p>The plugin will automatically convert all time entries using a format that can be changed passing the <code>timeFormat</code> option; the default value is <code>hh:mm p</code> which will give something like <code>02:16 PM</code>.</p>
 
-                    <p>The following are a few examples of the strings an user can type and how the plugin understands them:</p>
+    <p>The following are a few examples of the strings an user can type and how the plugin understands them:</p>
 
-                    <table class="table table-bordered table-striped table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Input</th>
-                                <th>Output (using the default format)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>1234</td><td>12:34 AM</td></tr>
-                            <tr><td>1234p</td><td>12:34 PM</td></tr>
-                            <tr><td>456</td><td>04:56 AM</td></tr>
-                            <tr><td>1656</td><td>04:56 PM</td></tr>
-                            <tr><td>1:1 P</td><td>1:10 PM</td></tr>
-                            <tr><td>1:9 A</td><td>1:09 AM</td></tr>
-                            <tr><td>8:59</td><td>8:59 AM</td></tr>
-                            <tr><td>12030</td><td>1:20:30 AM</td></tr>
-                            <tr><td>46</td><td>05:00 AM (it's interpreted as 4 hours plus 60 minutes)</td></tr>
-                        </tbody>
-                    </table>
+    <table class="table table-bordered table-striped table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>Input</th>
+                <th>Output (using the default format)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>1234</td><td>12:34 AM</td></tr>
+            <tr><td>1234p</td><td>12:34 PM</td></tr>
+            <tr><td>456</td><td>04:56 AM</td></tr>
+            <tr><td>1656</td><td>04:56 PM</td></tr>
+            <tr><td>1:1 P</td><td>1:10 PM</td></tr>
+            <tr><td>1:9 A</td><td>1:09 AM</td></tr>
+            <tr><td>8:59</td><td>8:59 AM</td></tr>
+            <tr><td>12030</td><td>1:20:30 AM</td></tr>
+            <tr><td>46</td><td>05:00 AM (it's interpreted as 4 hours plus 60 minutes)</td></tr>
+        </tbody>
+    </table>
 
-                    <p>There are other supported formats, all inspired by the behavior of a similar timepicker used in Google Calendar. To see more, <a href="#demos" title="jQuery TimePicker demos" data-toggle="tab">try the demos</a>.
+    <p>There are other supported formats, all inspired by the behavior of a similar timepicker used in Google Calendar. To see more, <a href="{{ site.url }}/demos" title="jQuery TimePicker demos">try the demos</a>.
 
-                    <div class="page-header"><h2>How to Use</h2></div>
+    <div class="page-header"><h2>How to Use</h2></div>
 
-                    <p>To use jQuery TimePicker you'll need to include two files: <code>jquery.timepicker.js</code> and <code>jquery.timepicker.css</code>. Then, assuming you have an <code>&lt;input&gt;</code> element in your document, you can use the following code to initialize the plugin:</p>
+    <p>To use jQuery TimePicker you'll need to include two files: <code>jquery.timepicker.js</code> and <code>jquery.timepicker.css</code>. Then, assuming you have an <code>&lt;input&gt;</code> element in your document, you can use the following code to initialize the plugin:</p>
 
-                    <pre>$(document).ready(function(){
+{% highlight javascript %}
+$(document).ready(function(){
     $('input.timepicker').timepicker({});
-});</pre>
+});
+{% endhighlight %}
 
-                    <p>Refer to the <a href="#options" data-toggle="tab" title="jQuery TimePicker options page">options page</a> for a detailed description about the available configuration.</p>
+    <p>Refer to the <a href="{{ site.url }}/options" title="jQuery TimePicker options page">options page</a> for a detailed description about the available configuration.</p>
 
-                    <div class="page-header"><h2>Bugs Reports</h2></div>
+    <div class="page-header"><h2>Bugs Reports</h2></div>
 
-                    <p>Bugs reports, comments and feature suggestions are always welcome at <a href="https://github.com/wvega/timepicker/issues" title="jQuery TimePicker at GitHub"  target="_blank">GitHub</a>, in <a href="https://groups.google.com/forum/#!forum/jquery-timepicker" title="jQuery TimePicker Google Group" target="_blank">jQuery TimePicker Google Group</a> or sent directly to <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#118;&#101;&#103;&#97;&#64;&#119;&#118;&#101;&#103;&#97;&#46;&#99;&#111;&#109;'>&#119;&#118;&#101;&#103;&#97;&#64;&#119;&#118;&#101;&#103;&#97;&#46;&#99;&#111;&#109;</a>.</p>
+    <p>Bugs reports, comments and feature suggestions are always welcome at <a href="https://github.com/wvega/timepicker/issues" title="jQuery TimePicker at GitHub"  target="_blank">GitHub</a>, in <a href="https://groups.google.com/forum/#!forum/jquery-timepicker" title="jQuery TimePicker Google Group" target="_blank">jQuery TimePicker Google Group</a> or sent directly to <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#118;&#101;&#103;&#97;&#64;&#119;&#118;&#101;&#103;&#97;&#46;&#99;&#111;&#109;'>&#119;&#118;&#101;&#103;&#97;&#64;&#119;&#118;&#101;&#103;&#97;&#46;&#99;&#111;&#109;</a>.</p>
 
-                    <div class="page-header"><h2>Download</h2></div>
+    <div class="page-header"><h2>Download</h2></div>
 
-                    <p>Latest version of jQuery TimePicker is available for download from GitHub. <a class="btn btn-primary" id="download-button" href="https://github.com/wvega/timepicker/releases" title="Download jQuery TimePicker">Download</a></p>
-                </article>
-            </div>
-
-            <div id="options" class="tab-pane">
-                <article>
-                    <header class="page-header"><h1>jQuery TimePicker Options &amp; Events</h1></header>
-
-                    <div class="page-header"><h2>jQuery TimePicker options</h2></div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>timeFormat</code></div>
-                        <div class="span10 columns">
-                            <p>The format of the time string displayed in the input and the menu items in the combobox. Available modifiers are:</p>
-
-                            <table class="table table-bordered table-striped table-hover table-condensed">
-                                <tbody>
-                                    <tr>
-                                        <td><code>h</code></td>
-                                        <td>12 hour without leading 0.</td>
-                                        <td><code>hh</code></td>
-                                        <td>12 hour with leading 0.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>H</code></td>
-                                        <td>24 hour without leadgin 0.</td>
-                                        <td><code>HH</code></td>
-                                        <td>24 hour with leading 0.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>m</code></td>
-                                        <td>minutes without leading 0.</td>
-                                        <td><code>mm</code></td>
-                                        <td>minutes with leading 0.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>s</code></td>
-                                        <td>seconds without leading 0.</td>
-                                        <td><code>ss</code></td>
-                                        <td>seconds with leading 0.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>p</code></td>
-                                        <td>AM or PM</td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <pre>$(document).ready(function(){
-    $('input.timepicker').timepicker({ timeFormat: 'h:mm:ss p' });
-});</pre>
-
-                            <form><input id="options-time-format"/></form>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>minTime</code></div>
-                        <div class="span10 columns">
-                            <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. Only the time parts (getHours, getMinutes) of the object are important. Time entries before minTime won't be displayed/allowed.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>minHour</code></div>
-                        <div class="span10 columns">
-                            <p><span class="label important">int</span>. Time entries with an 24-hour part before <code>minHour</code> won't be displayed/allowed. Ignored if <code>minTime</code> is set.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>minMinutes</code></div>
-                        <div class="span10 columns">
-                            <p><span class="label important">int</span> Time entries with minutes part before <code>minMinutes</code> won't be displayed/allowed. Ignored if <code>minTime</code> is set.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>maxTime</code></div>
-                        <div class="span10 columns">
-                            <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. Only the time parts (getHours, getMinutes) of the object are important. Time entries after minTime won't be displayed/allowed.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>maxHour</code></div>
-                        <div class="span10 columns">
-                            <p><span class="label important">int</span>. Time entries with an 24-hour part after <code>maxHour</code> won't be displayed/allowed. Ignored if <code>maxTime</code> is set.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>maxMinutes</code></div>
-                        <div class="span10 columns">
-                            <p><span class="label important">int</span>. Time entries with minutes part after <code>maxHour</code> won't be displayed/allowed. Ignored if <code>maxTime</code> is set.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>startTime</code></div>
-                        <div class="span10 columns">
-                            <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. The time of the first item in the combobox when the input field is empty. If the input field is not empty the first item will be the next allowed time entry.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>startHour</code></div>
-                        <div class="span10 columns">
-                            <p><span class="label important">int</span>. The 24-hour part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>startMinutes</code></div>
-                        <div class="span10 columns">
-                            <p><span class="label important">int</span>. The minutes part of the first item in the combobox when the input field is emptye. If input field is not empty the first item will be the next allowed time entry. Ignored if <code>startTime</code> is set.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>interval</code></div>
-                        <div class="span10 columns">
-                            <p><span class="label important">int</span>. Separation in minutes between time entries in the dropdown menu.</p>
-
-                            <pre>$(document).ready(function(){
-    $('input.timepicker').timepicker({
-        timeFormat: 'HH:mm:ss',
-        minTime: '11:45:00' // 11:45:00 AM,
-        maxHour: 20,
-        maxMinutes: 30,
-        startTime: new Date(0,0,0,15,0,0) // 3:00:00 PM - noon
-        interval: 15 // 15 minutos
-    });
-});</pre>
-
-                            <form><input id="options-time-constraints"/></form>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>dropdown</code></div>
-                        <div class="span10 columns">
-                            <p><span class="label important">boolean</span>. Whether the dropdown should be displayed or not.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>scrollbar</code></div>
-                        <div class="span10 columns">
-                            <p><span class="label important">boolean</span>. Whether the scrollbars should be displayed or not.</p>
-                        </div>
-                    </div>
-
-                    <div class="page-header"><h2>jQuery TimePicker events</h2></div>
-
-                    <div class="row">
-                        <div class="span2 columns"><code>change</code></div>
-                        <div class="span10 columns">
-                            <p>Event triggerd when the value of the input field changes. A Date object containing the selected time is passed as the first argument of the callback.</p>
-
-                            <pre>$(document).ready({
-    $('input.timepicker').timepicker({
-        change: function(time) {
-            // the input field
-            var element = $(this), text;
-            // get access to this TimePicker instance
-            var timepicker = element.timepicker();
-            text = 'Selected time is: ' + timepicker.format(time);
-            element.siblings('span.help-line').text(text);
-        }
-    });
-});</pre>
-                            <form>
-                                <input id="options-change-event"/>
-                                <span class="help-line"></span>
-                            </form>
-                        </div>
-                    </div>
-                </article>
-            </div>
-
-            <div id="demos" class="tab-pane">
-                <article>
-                    <header class="page-header"><h1>jQuery TimePicke - Demos</h1></header>
-
-                    <p>Overtime I have created some demos at <a href="http://jsfiddle.net">JSFiddle.net</a>, those can be seen below:</p>
-
-                    <ul>
-                        <li>
-                            <a href="http://jsfiddle.net/wvega/Cas6T/embedded/result,js,html,css,resources/" target="_blank">Basic Demo with default options.</a>
-                        </li>
-                        <li>
-                            <a href="http://jsfiddle.net/wvega/Gczvz/embedded/result,js,html,css,resources/" target="_blank">Basic Demo with custom options.</a>
-                        </li>
-                        <li>
-                            <a href="http://jsfiddle.net/wvega/ePE3f/embedded/result,js,html,css,resources/" target="_blank">Chaning options after initialization in version 1.1.2</a>
-                        </li>
-                        <li>
-                            <a href="http://jsfiddle.net/wvega/A9cE6/embedded/result,js,html,css,resources/" target="_blank">Chaning options in multiples timepickers after initialization in version 1.1.2</a>
-                        </li>
-                        <li>
-                            <a href="http://jsfiddle.net/wvega/qSCzu/embedded/result,js,html,css,resources/" target="_blank">Constraining time entries between two given times.</a>
-                        </li>
-                        <li>
-                            <a href="http://jsfiddle.net/wvega/xJRGw/embedded/result,js,html,css,resources/" target="_blank">Using the change callback.</a>
-                        </li>
-                    </ul>
-                </article>
-            </div>
-
-        </div>
-    </div>
-
-    <a href="https://github.com/wvega/timepicker">
-        <img style="position: fixed; top: 40px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
-    </a>
-
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="resources/jquery-timepicker/jquery.timepicker.min.js"></script>
-    <script type="text/javascript" src="resources/js/timepicker.page.js"></script>
-    <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-5837468-17']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-    </script>
-</body>
-</html>
+    <p>Latest version of jQuery TimePicker is available for download from GitHub. <a class="btn btn-primary" id="download-button" href="https://github.com/wvega/timepicker/releases" title="Download jQuery TimePicker">Download</a></p>
+</article>
