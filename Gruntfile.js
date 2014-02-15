@@ -155,7 +155,7 @@ module.exports = function(grunt) {
     compress: {
       zip: {
         options: {
-          archive: 'builds/<%= pkg.name %>-<%= pkg.version %>.zip'
+          archive: 'build/<%= pkg.name %>-<%= pkg.version %>.zip'
         },
         files: [{expand: true, cwd: 'dist/', src: ['*']}]
       }
@@ -191,7 +191,7 @@ module.exports = function(grunt) {
       'default': {}
     },
 
-    clean: ['dist/']
+    clean: ['build/', 'dist/']
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -208,7 +208,7 @@ module.exports = function(grunt) {
   grunt.registerTask('lint', ['jshint', 'csslint']);
   grunt.registerTask('min', ['uglify', 'cssmin']);
   grunt.registerTask('build', ['copy:legacy', 'compress']);
-  grunt.registerTask('default', ['lint', 'concat', 'min', 'build', 'clean']);
+  grunt.registerTask('default', ['lint', 'concat', 'min', 'build']);
   grunt.registerTask('test', ['default', 'connect', 'qunit']);
 
 };
