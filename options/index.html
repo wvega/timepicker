@@ -57,6 +57,14 @@ $(document).ready(function(){
     </div>
 
     <div class="row">
+        <div class="span2 columns"><code>defaultTime</code></div>
+        <div class="span10 columns">
+            <p>A <span class="label important">Date</span> object, <span class="label important">string</span> or the word <span class="label important">'now'</span>. Only the time parts (getHours, getMinutes) of the object are important. It must be a valid time, according to <code>minTime</code>, <code>minHour</code>, <code>minMinutes</code>, <code>maxTime</code>, <code>maxHour</code> and <code>maxMinutes</code>.</p>
+            <p>If <code>'now'</code> is passed, the current time as returned by <code>new Date()</code> will be used as the default value.</p>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="span2 columns"><code>minTime</code></div>
         <div class="span10 columns">
             <p>A <span class="label important">Date</span> object or <span class="label important">string</span>. Only the time parts (getHours, getMinutes) of the object are important. Time entries before minTime won't be displayed/allowed.</p>
