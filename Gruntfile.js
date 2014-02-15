@@ -214,7 +214,7 @@ module.exports = function(grunt) {
   grunt.registerTask('min', ['uglify', 'cssmin']);
   grunt.registerTask('build', ['copy:legacy', 'compress']);
   grunt.registerTask('default', ['lint', 'concat', 'min', 'build']);
-  grunt.registerTask('test', ['default', 'connect', 'qunit']);
+  grunt.registerTask('test', ['default', 'connect:default', 'qunit']);
   grunt.registerTask('server', ['default', 'connect:server']);
 
 };
