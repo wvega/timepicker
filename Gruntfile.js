@@ -179,10 +179,14 @@ module.exports = function(grunt) {
             'http://localhost:8000/test/index.html?jquery=1.9.1',
             'http://localhost:8000/test/index.html?jquery=1.10.1',
             'http://localhost:8000/test/index.html?jquery=1.10.2',
+            'http://localhost:8000/test/index.html?jquery=1.11.0',
+            'http://localhost:8000/test/index.html?jquery=1.11.1',
             'http://localhost:8000/test/index.html?jquery=2.0.0',
             'http://localhost:8000/test/index.html?jquery=2.0.1',
             'http://localhost:8000/test/index.html?jquery=2.0.2',
-            'http://localhost:8000/test/index.html?jquery=2.0.3'
+            'http://localhost:8000/test/index.html?jquery=2.0.3',
+            'http://localhost:8000/test/index.html?jquery=2.1.0',
+            'http://localhost:8000/test/index.html?jquery=2.1.1'
           ]
         }
       }

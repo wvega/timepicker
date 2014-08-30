@@ -2,7 +2,7 @@
 
     var parts = document.location.search.slice( 1 ).split( "&" ),
         length = parts.length,
-        version = "1.8.2",
+        version = "1.11.1",
         current,
         i = 0;
 

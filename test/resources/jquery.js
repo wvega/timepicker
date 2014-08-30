@@ -3,7 +3,7 @@
     var parts = document.location.search.slice( 1 ).split( "&" ),
         length = parts.length,
         file = "http://code.jquery.com/jquery-git.js",
-        version = "1.9.1",
+        version = "2.1.1",
         current,
         i = 0;
 
