@@ -174,14 +174,14 @@ if (typeof jQuery !== 'undefined') {
                     widget.open(i);
                 }
                 if (!widget.active) {
-                    widget.activate(i, widget.ui.children(edge));
+                    widget.activate( i, widget.viewport.children( edge ) );
                     return;
                 }
                 var next = widget.active[direction + 'All']('.ui-menu-item').eq(0);
                 if (next.length) {
                     widget.activate(i, next);
                 } else {
-                    widget.activate(i, widget.ui.children(edge));
+                    widget.activate( i, widget.viewport.children( edge ) );
                 }
             },
 
