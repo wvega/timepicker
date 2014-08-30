@@ -134,7 +134,8 @@ module.exports = function(grunt) {
       dist: {
         src: ['jquery.<%= meta.name %>.css'],
         options: {
-          'box-model': false
+          'box-model': false,
+          'box-sizing': false
         }
       }
     },
