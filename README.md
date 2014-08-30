@@ -1,4 +1,4 @@
-# jQuery Timepicker [![Build Status](https://travis-ci.org/wvega/timepicker.png?branch=master)](https://travis-ci.org/wvega/timepicker)
+# jQuery Timepicker [![Build Status](https://travis-ci.org/wvega/timepicker.png?branch=master)](https://travis-ci.org/wvega/timepicker) [![Gitter chat](https://badges.gitter.im/wvega/timepicker.png)](https://gitter.im/wvega/timepicker)
 
 A jQuery plugin to enhance standard form input fields helping users to select
 (or type) times.
