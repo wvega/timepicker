@@ -423,23 +423,37 @@ if (typeof jQuery !== 'undefined') {
                 }
 
                 var containerDecorationHeight = widget.container.outerHeight() - widget.container.height(),
-                    zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css( 'z-index' );
+                    zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css( 'z-index' ),
+                    elementOffset = i.element.offset();
 
-                widget.container.css( $.extend( i.element.offset(), {
+                // position the container right below the element, or as close to as possible.
+                widget.container.css( {
+                    top: elementOffset.top + i.element.outerHeight(),
+                    left: elementOffset.left
+                } );
+
+                // then show the container so that the browser can consider the timepicker's
+                // height to calculate the page's total height and decide if adding scrollbars
+                // is necessary.
+                widget.container.show();
+
+                // now we need to calculate the element offset and position the container again.
+                // If the browser added scrollbars, the container's original position is not aligned
+                // with the element's final position. This step fixes that problem.
+                widget.container.css( {
+                    left: i.element.offset().left,
                     height: widget.ui.outerHeight() + containerDecorationHeight,
                     width: i.element.outerWidth(),
                     zIndex: zindex,
                     cursor: 'default'
-                } ) );
-
-                widget.ui.css( {
-                    width: widget.container.width() - ( widget.ui.outerWidth() - widget.ui.width() )
                 } );
 
-                widget.viewport.css( { width: widget.ui.width() } );
+                var calculatedWidth = widget.container.width() - ( widget.ui.outerWidth() - widget.ui.width() );
 
-                // position
-                widget.container.css('top', parseInt(widget.container.css('top'), 10) + i.element.outerHeight());
+                // hardcode ui, viewport and item's width. I couldn't get it to work using CSS only
+                widget.ui.css( { width: calculatedWidth } );
+                widget.viewport.css( { width: calculatedWidth } );
+                i.items.css( { width: calculatedWidth } );
 
                 // XXX: what's this line doing here?
                 widget.instance = i;
