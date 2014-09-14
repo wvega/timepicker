@@ -102,7 +102,7 @@
 				}
 
 				if (details.source) {
-					response += "\n" + details.source;
+					response += '\n' + details.source;
 				}
 
 				currentTestAssertions.push('Failed assertion: ' + response);
@@ -116,7 +116,7 @@
 				if (result.failed) {
 					console.log('Test failed: ' + name);
 
-					for (i = 0, len = currentTestAssertions.length; i < len; i++) {
+					for (i = 0, len = currentTestAssertions.length; i < len; i = i + 1) {
 						console.log('    ' + currentTestAssertions[i]);
 					}
 				}

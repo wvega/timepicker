@@ -1,7 +1,7 @@
-node_modules/
-
-builds/
-dist/
+/build/
+/dist/
+/node_modules/
+/_site/
 
 jquery.timepicker-*
 jquery.timepicker.min.*

@@ -134,7 +134,8 @@ module.exports = function(grunt) {
       dist: {
         src: ['jquery.<%= meta.name %>.css'],
         options: {
-          'box-model': false
+          'box-model': false,
+          'box-sizing': false
         }
       }
     },
@@ -155,7 +156,7 @@ module.exports = function(grunt) {
     compress: {
       zip: {
         options: {
-          archive: 'builds/<%= pkg.name %>-<%= pkg.version %>.zip'
+          archive: 'build/<%= pkg.name %>-<%= pkg.version %>.zip'
         },
         files: [{expand: true, cwd: 'dist/', src: ['*']}]
       }
@@ -178,20 +179,29 @@ module.exports = function(grunt) {
             'http://localhost:8000/test/index.html?jquery=1.9.1',
             'http://localhost:8000/test/index.html?jquery=1.10.1',
             'http://localhost:8000/test/index.html?jquery=1.10.2',
+            'http://localhost:8000/test/index.html?jquery=1.11.0',
+            'http://localhost:8000/test/index.html?jquery=1.11.1',
             'http://localhost:8000/test/index.html?jquery=2.0.0',
             'http://localhost:8000/test/index.html?jquery=2.0.1',
             'http://localhost:8000/test/index.html?jquery=2.0.2',
-            'http://localhost:8000/test/index.html?jquery=2.0.3'
+            'http://localhost:8000/test/index.html?jquery=2.0.3',
+            'http://localhost:8000/test/index.html?jquery=2.1.0',
+            'http://localhost:8000/test/index.html?jquery=2.1.1'
           ]
         }
       }
     },
 
     connect: {
-      'default': {}
+      'default': {},
+      'server': {
+        options: {
+          keepalive: true
+        }
+      }
     },
 
-    clean: ['dist/']
+    clean: ['build/', 'dist/']
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -208,7 +218,8 @@ module.exports = function(grunt) {
   grunt.registerTask('lint', ['jshint', 'csslint']);
   grunt.registerTask('min', ['uglify', 'cssmin']);
   grunt.registerTask('build', ['copy:legacy', 'compress']);
-  grunt.registerTask('default', ['lint', 'concat', 'min', 'build', 'clean']);
-  grunt.registerTask('test', ['default', 'connect', 'qunit']);
+  grunt.registerTask('default', ['lint', 'concat', 'min', 'build']);
+  grunt.registerTask('test', ['default', 'connect:default', 'qunit']);
+  grunt.registerTask('server', ['default', 'connect:server']);
 
 };
