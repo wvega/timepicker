@@ -1,3 +1,7 @@
+* Sat Sep 13 2014 - Version 1.3.2
+- Add defaultTime option (#41).
+- Fix position bug (#43).
+
 * Sat Nov 09 2013 - Version 1.3.1
 - Fix minor errors in jQuery Package Manifest.
 
