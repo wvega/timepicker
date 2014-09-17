@@ -1,6 +1,6 @@
 _site
 
-builds/
+build/
 dist/
 libs/
 node_modules/

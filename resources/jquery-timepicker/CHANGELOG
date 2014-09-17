@@ -1,11 +1,18 @@
 /**
- * jQuery Timepicker - v1.3.1 - 2013-11-09
- * http://wvega.github.com/timepicker/
+ * jQuery Timepicker - v1.3.2 - 2014-09-13
+ * http://timepicker.co
  *
  * Enhances standard form input fields helping users to select (or type) times.
  *
- * Copyright (c) 2013 Willington Vega; Licensed MIT, GPL
+ * Copyright (c) 2014 Willington Vega; Licensed MIT, GPL
  */
+
+* Sat Sep 13 2014 - Version 1.3.2
+- Add defaultTime option (#41).
+- Fix position bug (#43).
+
+* Sat Nov 09 2013 - Version 1.3.1
+- Fix minor errors in jQuery Package Manifest.
 
 * Sat Nov 09 2013 - Version 1.3.0
 - Drop support for jQuery 1.4.2 or below. Plugin requires jQuery 1.6.0 or newer.
@@ -22,9 +29,9 @@
 - Minor CSS fixes.
 
 * Sun Feb 26 2012 - Version 1.2.2
-- Fix too much recursion error in parseTime function (#20)
-- Verifies argument passed to parseTime is string
-- Add support for jQuery 1.6 prop function
+- Fix too much recursion error in parseTime function (#20).
+- Verifies argument passed to parseTime is string.
+- Add support for jQuery 1.6 prop function.
 
 * Mon Nov 14 2011 - Version 1.2.1
 - Fix strings support for startTime, minTime and maxTime options.

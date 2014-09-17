@@ -1,10 +1,10 @@
 /**
- * jQuery Timepicker - v1.3.1 - 2013-11-09
- * http://wvega.github.com/timepicker/
+ * jQuery Timepicker - v1.3.2 - 2014-09-13
+ * http://timepicker.co
  *
  * Enhances standard form input fields helping users to select (or type) times.
  *
- * Copyright (c) 2013 Willington Vega; Licensed MIT, GPL
+ * Copyright (c) 2014 Willington Vega; Licensed MIT, GPL
  */
 
 if (typeof jQuery !== 'undefined') {
@@ -36,15 +36,17 @@ if (typeof jQuery !== 'undefined') {
             widget.container = $('.ui-timepicker-container');
             widget.ui = widget.container.find('.ui-timepicker');
 
-            if (widget.ui.length === 0) {
+            if (widget.container.length === 0) {
                 widget.container = $('<div></div>').addClass('ui-timepicker-container')
                                     .addClass('ui-timepicker-hidden ui-helper-hidden')
                                     .appendTo('body')
                                     .hide();
-                widget.ui = $('<ul></ul>').addClass('ui-timepicker')
+                widget.ui = $( '<div></div>' ).addClass('ui-timepicker')
                                     .addClass('ui-widget ui-widget-content ui-menu')
                                     .addClass('ui-corner-all')
                                     .appendTo(widget.container);
+                widget.viewport = $('<ul></ul>').addClass( 'ui-timepicker-viewport' )
+                                    .appendTo( widget.ui );
 
                 if ($.fn.jquery >= '1.4.2') {
                     widget.ui.delegate('a', 'mouseenter.timepicker', function() {
@@ -172,14 +174,14 @@ if (typeof jQuery !== 'undefined') {
                     widget.open(i);
                 }
                 if (!widget.active) {
-                    widget.activate(i, widget.ui.children(edge));
+                    widget.activate( i, widget.viewport.children( edge ) );
                     return;
                 }
                 var next = widget.active[direction + 'All']('.ui-menu-item').eq(0);
                 if (next.length) {
                     widget.activate(i, next);
                 } else {
-                    widget.activate(i, widget.ui.children(edge));
+                    widget.activate( i, widget.viewport.children( edge ) );
                 }
             },
 
@@ -192,10 +194,10 @@ if (typeof jQuery !== 'undefined') {
 
                 i.element = $(node);
 
-                if (i.element.data('TimePicker')) { return; }
+                if (i.element.data('TimePicker')) {
+                    return;
+                }
 
-                i.element.data('TimePicker', i);
-                // TODO: use $.fn.data()
                 i.options = $.metadata ? $.extend({}, options, i.element.metadata()) : $.extend({}, options);
                 i.widget = widget;
 
@@ -217,6 +219,25 @@ if (typeof jQuery !== 'undefined') {
                     setTime: function(time, silent) { return widget.setTime(i, time, silent); },
                     option: function(name, value) { return widget.option(i, name, value); }
                 });
+
+                widget._setDefaultTime(i);
+                widget._addInputEventsHandlers(i);
+
+                i.element.data('TimePicker', i);
+            },
+
+            _setDefaultTime: function(i) {
+                if (i.options.defaultTime === 'now') {
+                    i.setTime(normalize(new Date()));
+                } else if (i.options.defaultTime && i.options.defaultTime.getFullYear) {
+                    i.setTime(normalize(i.options.defaultTime));
+                } else if (i.options.defaultTime) {
+                    i.setTime($.fn.timepicker.parseTime(i.options.defaultTime));
+                }
+            },
+
+            _addInputEventsHandlers: function(i) {
+                var widget = this;
 
                 i.element.bind('keydown.timepicker', function(event) {
                     switch (event.which || event.keyCode) {
@@ -359,9 +380,9 @@ if (typeof jQuery !== 'undefined') {
                     // 1.4.2 (thanks to Brian Link)
                     // http://github.com/wvega/timepicker/issues#issue/4
                     if ($.fn.jquery < '1.4.2') {
-                        widget.ui.children().remove();
-                        widget.ui.append(i.items);
-                        widget.ui.find('a').bind('mouseover.timepicker', function() {
+                        widget.viewport.children().remove();
+                        widget.viewport.append(i.items);
+                        widget.viewport.find('a').bind('mouseover.timepicker', function() {
                             widget.activate(i, $(this).parent());
                         }).bind('mouseout.timepicker', function() {
                             widget.deactivate(i);
@@ -370,8 +391,8 @@ if (typeof jQuery !== 'undefined') {
                             widget.select(i, $(this).parent());
                         });
                     } else {
-                        widget.ui.children().detach();
-                        widget.ui.append(i.items);
+                        widget.viewport.children().detach();
+                        widget.viewport.append(i.items);
                     }
                 }
 
@@ -383,11 +404,9 @@ if (typeof jQuery !== 'undefined') {
                 switch (i.options.theme) {
                 case 'standard':
                     widget.container.addClass('ui-timepicker-standard');
-                    //widget.ui.addClass('ui-timepicker-standard');
                     break;
                 case 'standard-rounded-corners':
                     widget.container.addClass('ui-timepicker-standard ui-timepicker-corners');
-                    //widget.ui.addClass('ui-timepicker-standard ui-timepicker-corners');
                     break;
                 default:
                     break;
@@ -396,46 +415,47 @@ if (typeof jQuery !== 'undefined') {
                 /* resize ui */
 
                 // we are hiding the scrollbar in the dropdown menu adding a 40px
-                // padding to the UL element making the scrollbar appear in the
-                // part of the UL that's hidden by the container (a DIV).
-                //
-                // In order to calculate the position, width and height for the UI
-                // elements, regardless of the CSS styles  that could have been
-                // applied to them, we need to substract the additional padding,
-                // calculate the measuraments with the default styles and add the
-                // padding at the end of the process.
-                var paddingRight = parseInt(widget.ui.css('paddingRight'), 10),
-                    decoration, zindex;
-                if (widget.ui.hasClass('ui-no-scrollbar') && !i.options.scrollbar) {
-                    widget.ui.css({ paddingRight: paddingRight - 40 });
+                // padding to the wrapper element making the scrollbar appear in the
+                // part of the wrapper that's hidden by the container (a DIV).
+                if ( ! widget.container.hasClass( 'ui-timepicker-no-scrollbar' ) && ! i.options.scrollbar ) {
+                    widget.container.addClass( 'ui-timepicker-no-scrollbar' );
+                    widget.viewport.css( { paddingRight: 40 } );
                 }
 
-                decoration = (widget.ui.outerWidth() - widget.ui.width()) +
-                             (widget.container.outerWidth() - widget.container.width());
-                zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css('z-index');
+                var containerDecorationHeight = widget.container.outerHeight() - widget.container.height(),
+                    zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css( 'z-index' ),
+                    elementOffset = i.element.offset();
 
-                // width + padding + border = input field's outer width
-                widget.ui.css({ width: i.element.outerWidth() - decoration });
-                widget.container.css($.extend(i.element.offset(), {
-                    height: widget.ui.outerHeight(),
-                    width: widget.ui.outerWidth(),
+                // position the container right below the element, or as close to as possible.
+                widget.container.css( {
+                    top: elementOffset.top + i.element.outerHeight(),
+                    left: elementOffset.left
+                } );
+
+                // then show the container so that the browser can consider the timepicker's
+                // height to calculate the page's total height and decide if adding scrollbars
+                // is necessary.
+                widget.container.show();
+
+                // now we need to calculate the element offset and position the container again.
+                // If the browser added scrollbars, the container's original position is not aligned
+                // with the element's final position. This step fixes that problem.
+                widget.container.css( {
+                    left: i.element.offset().left,
+                    height: widget.ui.outerHeight() + containerDecorationHeight,
+                    width: i.element.outerWidth(),
                     zIndex: zindex,
                     cursor: 'default'
-                }));
+                } );
 
-                decoration = i.items.eq(0).outerWidth() - i.items.eq(0).width();
-                i.items.css('width', widget.ui.width() - decoration);
+                var calculatedWidth = widget.container.width() - ( widget.ui.outerWidth() - widget.ui.width() );
 
-                // here we add the padding again
-                if (widget.ui.hasClass('ui-no-scrollbar') && !i.options.scrollbar) {
-                    widget.ui.css({ paddingRight: paddingRight });
-                } else if (!i.options.scrollbar) {
-                    widget.ui.css({ paddingRight: paddingRight + 40 }).addClass('ui-no-scrollbar');
-                }
+                // hardcode ui, viewport and item's width. I couldn't get it to work using CSS only
+                widget.ui.css( { width: calculatedWidth } );
+                widget.viewport.css( { width: calculatedWidth } );
+                i.items.css( { width: calculatedWidth } );
 
-                // position
-                widget.container.css('top', parseInt(widget.container.css('top'), 10) + i.element.outerHeight());
-
+                // XXX: what's this line doing here?
                 widget.instance = i;
 
                 // try to match input field's current value with an item in the
