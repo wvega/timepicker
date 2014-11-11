@@ -20,9 +20,9 @@
     } else if ( version.substr( 0, 3 ) == '1.9' || version.substr( 0, 4 ) == '1.10' ) {
         css = "resources/jquery-ui/jquery-ui-" + version + "/css/ui-lightness/jquery-ui-" + version + ".custom.min.css";
         js = "resources/jquery-ui/jquery-ui-" + version + "/js/jquery-ui-" + version + ".custom.min.js";
-    } else if ( version.substr( 0, 3 ) == '1.11' ) {
-        css = "resources/jquery-ui/jquery-ui-" + version + "/css/jquery-ui.min.css";
-        js = "resources/jquery-ui/jquery-ui-" + version + "/js/jquery-ui.min.js";
+    } else if ( version.substr( 0, 4 ) == '1.11' ) {
+        css = "resources/jquery-ui/jquery-ui-" + version + "/jquery-ui.min.css";
+        js = "resources/jquery-ui/jquery-ui-" + version + "/jquery-ui.min.js";
     }
 
     document.write( "<link rel='stylesheet' href='" + css + "' type='text/css' />" );
