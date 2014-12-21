@@ -265,7 +265,11 @@ if (typeof jQuery !== 'undefined') {
                 }).bind('focus.timepicker', function() {
                     i.open();
                 }).bind('blur.timepicker', function() {
-                    i.close();
+                    setTimeout(function() {
+                        if (i.element.data('timepicker-user-clicked-outside')) {
+                            i.close();
+                        }
+                    });
                 }).bind('change.timepicker', function() {
                     if (i.closed()) {
                         i.setTime($.fn.timepicker.parseTime(i.element.val()));
@@ -364,6 +368,18 @@ if (typeof jQuery !== 'undefined') {
 
                 // return if dropdown is disabled
                 if (!i.options.dropdown) { return i.element; }
+
+                // fix for issue https://github.com/wvega/timepicker/issues/56
+                // idea from https://prototype.lighthouseapp.com/projects/8887/tickets/248-results-popup-from-ajaxautocompleter-disappear-when-user-clicks-on-scrollbars-in-ie6ie7
+                i.element.data('timepicker-event-namespace', Math.random());
+
+                $(document).bind('click.timepicker-' + i.element.data('timepicker-event-namespace'), function(event) {
+                    if (i.element.is(event.target)) {
+                        i.element.data('timepicker-user-clicked-outside', false);
+                    } else {
+                        i.element.data('timepicker-user-clicked-outside', true).blur();
+                    }
+                });
 
                 // if a date is already selected and options.dynamic is true,
                 // arrange the items in the list so the first item is
@@ -486,18 +502,23 @@ if (typeof jQuery !== 'undefined') {
 
             close: function(i, force) {
                 var widget = this;
+
                 if (widget.closed() || force) {
                     clearTimeout(widget.closing);
+
                     if (widget.instance === i) {
                         widget.container.addClass('ui-helper-hidden ui-timepicker-hidden').hide();
                         widget.ui.scrollTop(0);
                         widget.ui.children().removeClass('ui-state-hover');
                     }
+
+                    $(document).unbind('click.timepicker-' + i.element.data('timepicker-event-namespace'));
                 } else {
                     widget.closing = setTimeout(function() {
                         widget.close(i, true);
                     }, 150);
                 }
+
                 return i.element;
             },
 
