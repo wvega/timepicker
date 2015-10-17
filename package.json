@@ -50,5 +50,13 @@
   "scripts": {
     "test": "grunt test"
   },
-  "keywords": [ "timepicker", "time", "picker", "calendar", "dropdown", "input", "form" ]
+  "keywords": [
+    "timepicker",
+    "time",
+    "picker",
+    "calendar",
+    "dropdown",
+    "input",
+    "form"
+  ]
 }
