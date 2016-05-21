@@ -369,7 +369,7 @@ if (typeof jQuery !== 'undefined') {
                 i.element.data('timepicker-event-namespace', Math.random());
 
                 $(document).bind('click.timepicker-' + i.element.data('timepicker-event-namespace'), function(event) {
-                    if (i.element.is(event.target)) {
+                    if (i.element.get(0) === event.target) {
                         i.element.data('timepicker-user-clicked-outside', false);
                     } else {
                         i.element.data('timepicker-user-clicked-outside', true).blur();
