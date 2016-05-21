@@ -4,7 +4,7 @@
  *
  * Enhances standard form input fields helping users to select (or type) times.
  *
- * Copyright (c) 2012 Willington Vega; Licensed MIT, GPL
+ * Copyright (c) 2016 Willington Vega; Licensed MIT, GPL
  */
 
 if (typeof jQuery !== 'undefined') {

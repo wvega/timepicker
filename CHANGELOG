@@ -1,3 +1,7 @@
+* Fri May 20 2016 - Version 1.3.3
+- Prevent dropdown from closing in IE when user clicks scrollbar (#56).
+- Prevent long-click from closing the timepicker (#50).
+
 * Sat Sep 13 2014 - Version 1.3.2
 - Add defaultTime option (#41).
 - Fix position bug (#43).

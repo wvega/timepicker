@@ -10,5 +10,5 @@ Please visit http://timepicker.co for Documentation, Examples and Getting Starte
 See [CHANGELOG](https://github.com/wvega/timepicker/blob/master/CHANGELOG).
 
 ## License
-Copyright (c) 2012 Willington Vega
+Copyright (c) 2016 Willington Vega
 Licensed under the MIT, GPL licenses.
