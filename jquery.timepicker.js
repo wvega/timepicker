@@ -205,7 +205,7 @@ if (typeof jQuery !== 'undefined') {
                     last: function() { return widget.last(i) ;},
                     selected: function() { return widget.selected(i) ;},
                     open: function() { return widget.open(i) ;},
-                    close: function(force) { return widget.close(i, force) ;},
+                    close: function() { return widget.close(i) ;},
                     closed: function() { return widget.closed(i) ;},
                     destroy: function() { return widget.destroy(i) ;},
 
@@ -495,7 +495,7 @@ if (typeof jQuery !== 'undefined') {
                 return i.element;
             },
 
-            close: function(i, force) {
+            close: function(i) {
                 var widget = this;
 
                 if (widget.instance === i) {
