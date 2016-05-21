@@ -60,10 +60,6 @@ if (typeof jQuery !== 'undefined') {
                         widget.select(false, $(this).parent());
                     });
                 }
-
-                widget.ui.bind('click.timepicker, scroll.timepicker', function() {
-                    clearTimeout(widget.closing);
-                });
             }
         };
 
@@ -279,7 +275,6 @@ if (typeof jQuery !== 'undefined') {
 
             select: function(i, item) {
                 var widget = this, instance = i === false ? widget.instance : i;
-                clearTimeout(widget.closing);
                 widget.setTime(instance, $.fn.timepicker.parseTime(item.children('a').text()));
                 widget.close(instance, true);
             },
@@ -503,21 +498,13 @@ if (typeof jQuery !== 'undefined') {
             close: function(i, force) {
                 var widget = this;
 
-                if (widget.closed() || force) {
-                    clearTimeout(widget.closing);
-
-                    if (widget.instance === i) {
-                        widget.container.addClass('ui-helper-hidden ui-timepicker-hidden').hide();
-                        widget.ui.scrollTop(0);
-                        widget.ui.children().removeClass('ui-state-hover');
-                    }
-
-                    $(document).unbind('click.timepicker-' + i.element.data('timepicker-event-namespace'));
-                } else {
-                    widget.closing = setTimeout(function() {
-                        widget.close(i, true);
-                    }, 150);
+                if (widget.instance === i) {
+                    widget.container.addClass('ui-helper-hidden ui-timepicker-hidden').hide();
+                    widget.ui.scrollTop(0);
+                    widget.ui.children().removeClass('ui-state-hover');
                 }
+
+                $(document).unbind('click.timepicker-' + i.element.data('timepicker-event-namespace'));
 
                 return i.element;
             },
