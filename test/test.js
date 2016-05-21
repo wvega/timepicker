@@ -478,7 +478,7 @@ if (jQuery.fn.jquery < '1.4') {
             var timepicker = $('#timepicker').timepicker(),
                 instance = timepicker.timepicker(),
                 selected = null,
-                expected = 8;
+                expected = 10;
 
             expect(expected);
             stop();
@@ -526,8 +526,27 @@ if (jQuery.fn.jquery < '1.4') {
                 ok(instance.closed(), 'TimePicker is closed after an item has been selected pressing ENTER key.');
                 ok(selected !== null, 'An element is selected after the DOWN key is pressed.');
                 ok(selected ? timepicker.val() === selected.text() : false, 'The value in the input field is the text of the selected item.');
+
+                timepicker.focus();
+                timepicker.simulate('blur');
+
                 next();
             }, 50);
+
+            system.delay(300, 'test');
+            system.queue('test', function(next) {
+                ok(!instance.closed(), 'TimePicker is not closed after blur event. It requires a click outside the form element.');
+
+                instance.widget.ui.find('a').first().simulate('click');
+
+                next();
+            });
+
+            system.delay(delay, 'test');
+            system.queue('test', function(next) {
+                ok(instance.closed(), 'TimePicker is closed after click event.');
+                next();
+            });
 
             system.queue('test', function(/*next*/) { start(); }).dequeue('test');
         });
