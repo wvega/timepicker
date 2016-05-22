@@ -433,15 +433,25 @@ if (typeof jQuery !== 'undefined') {
                     widget.viewport.css( { paddingRight: 40 } );
                 }
 
-                var containerDecorationHeight = widget.container.outerHeight() - widget.container.height(),
+                var containerHeight = widget.container.outerHeight(),
+                    containerDecorationHeight = containerHeight - widget.container.height(),
                     zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css( 'z-index' ),
                     elementOffset = i.element.offset();
 
                 // position the container right below the element, or as close to as possible.
-                widget.container.css( {
-                    top: elementOffset.top + i.element.outerHeight(),
-                    left: elementOffset.left
-                } );
+                if(elementOffset.top + i.element.outerHeight() > ($(window).scrollTop() + $(window).height() - containerHeight)){
+                    widget.container.css({
+                        top: elementOffset.top - containerHeight,
+                        left: elementOffset.left
+                    });
+                }
+                else
+                {
+                    widget.container.css( {
+                        top: elementOffset.top + i.element.outerHeight(),
+                        left: elementOffset.left
+                    } );
+                }
 
                 // then show the container so that the browser can consider the timepicker's
                 // height to calculate the page's total height and decide if adding scrollbars
