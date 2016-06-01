@@ -42,15 +42,6 @@ module.exports = function(grunt) {
           'dist/CHANGELOG': 'CHANGELOG',
           'dist/AUTHORS': 'AUTHORS'
         }
-      },
-      plugin: {
-        options: {
-          banner: '',
-          stripBanners: true
-        },
-        files: {
-          '<%= pkg.name %>.jquery.json': ['package.json']
-        }
       }
     },
 
