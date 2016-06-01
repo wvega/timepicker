@@ -1,7 +1,6 @@
 {
   "name": "wvega-timepicker",
   "description": "Enhances standard form input fields helping users to select (or type) times.",
-  "main": "jquery.timepicker.js",
   "authors": [
     "Willington Vega <wvega@wvega.com>",
     "Brian Link <cpsubrian@gmail.com>",
@@ -17,12 +16,24 @@
     "input",
     "form"
   ],
-  "homepage": "https://github.com/wvega/timepicker",
+  "homepage": "https://timepicker.co",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wvega/timepicker.git"
+  },
+  "main": [
+    "jquery.timepicker.js",
+    "jquery.timepicker.css",
+  ],
+  "moduleType": "globals",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "jquery": ">= 1.4.3"
+  }
 }
