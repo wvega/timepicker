@@ -1,5 +1,5 @@
 name: jQuery Timepicker
-markdown: redcarpet
+markdown: kramdown
 highlighter: pygments
 exclude: ['node_modules', 'test']
 timezone: 'America/Bogota'
