@@ -2,54 +2,228 @@
 layout: default
 title: "jQuery Timepicker"
 ---
-<article>
-    <header class="page-header"><h1>jQuery Timepicker</h1></header>
 
-    <p>jQuery TimePicker is a plugin to help users easily input time entries. It works by allowing the user to type times in a free format or selecting them from a dropdown menu.</p>
+<div class="intro container-full-width">
+    <div class="container">
+        <div class="row row-fluid">
+            <div class="col-lg-12">
+                <h1 class="text-center">jQuery Timepicker is a plugin to help users <strong>easily</strong> input time entries.</h1>
 
-    <p>The plugin will automatically convert all time entries using a format that can be changed passing the <code>timeFormat</code> option; the default value is <code>hh:mm p</code> which will give something like <code>02:16 PM</code>.</p>
+                <!--<p class="lead text-center hidden-xs">It works by allowing the user to type times in a <strong>free format</strong> or selecting them from a dropdown menu.</p>-->
 
-    <p>The following are a few examples of the strings an user can type and how the plugin understands them:</p>
+                <p class="lead text-center">Tell me, what time is it right now?</p>
 
-    <table class="table table-bordered table-striped table-hover table-condensed">
-        <thead>
-            <tr>
-                <th>Input</th>
-                <th>Output (using the default format)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>1234</td><td>12:34 AM</td></tr>
-            <tr><td>1234p</td><td>12:34 PM</td></tr>
-            <tr><td>456</td><td>04:56 AM</td></tr>
-            <tr><td>1656</td><td>04:56 PM</td></tr>
-            <tr><td>1:1 P</td><td>1:10 PM</td></tr>
-            <tr><td>1:9 A</td><td>1:09 AM</td></tr>
-            <tr><td>8:59</td><td>8:59 AM</td></tr>
-            <tr><td>12030</td><td>1:20:30 AM</td></tr>
-            <tr><td>46</td><td>05:00 AM (it's interpreted as 4 hours plus 60 minutes)</td></tr>
-        </tbody>
-    </table>
+                <p class="lead text-center">Go ahead and type the current time in your side of the world. Finish with <kbd>TAB</kbd> or <kbd>ENTER</kbd></p>
 
-    <p>There are other supported formats, all inspired by the behavior of a similar timepicker used in Google Calendar. To see more, <a href="{{ site.baseurl }}/demos" title="jQuery TimePicker demos">try the demos</a>.
+                <div class="row row-fluid">
+                    <div class="col-lg-2 col-lg-offset-5 col-xs-12">
+                        <p class="lead text-center"><input class="timepicker timepicker-without-dropdown text-center" tabindex="0" /></p>
+                    </div>
+                </div>
 
-    <div class="page-header"><h2>How to Use</h2></div>
+                <div class="clearfix"></div>
 
-    <p>To use jQuery TimePicker you'll need to include two files: <code>jquery.timepicker.js</code> and <code>jquery.timepicker.css</code>. Then, assuming you have an <code>&lt;input&gt;</code> element in your document, you can use the following code to initialize the plugin:</p>
+                <div class="row row-fluid">
+                    <div class="col-lg-12">
+                        <p class="lead text-center focus-trap" tabindex="0"><strong>Did the plugin understand what you typed?</strong></p>
+                    </div>
+                </div>
 
-{% highlight javascript %}
-$(document).ready(function(){
-    $('input.timepicker').timepicker({});
-});
-{% endhighlight %}
+                <div class="row row-fluid">
+                    <div class="col-md-12">
+                        <p class="lead text-justify">jQuery Timepicker can parse the most used time representations allowing you and your users to enter time using their prefered way for writing it.</p>
+                    </div>
 
-    <p>Refer to the <a href="{{ site.baseurl }}/options" title="jQuery TimePicker options page">options page</a> for a detailed description about the available configuration.</p>
+                    <!--<div class="col-md-6">
+                        <div id="carbonads"></div>
+                    </div>-->
+                </div>
 
-    <div class="page-header"><h2>Bugs Reports</h2></div>
+                <div class="row row-fluid">
+                    <div class="col-xs-12">
+                        <p class="lead text-justify"><strong>Do you prefer to use the mouse to interact with websites?</strong> We got you covered. If writing is not your thing, you can also choose time entries from a dropdown of options. Please click the input field below to try it out.</p>
 
-    <p>Bugs reports, comments and feature suggestions are always welcome at <a href="https://github.com/wvega/timepicker/issues" title="jQuery TimePicker at GitHub"  target="_blank">GitHub</a>, in <a href="https://groups.google.com/forum/#!forum/jquery-timepicker" title="jQuery TimePicker Google Group" target="_blank">jQuery TimePicker Google Group</a> or sent directly to <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#118;&#101;&#103;&#97;&#64;&#119;&#118;&#101;&#103;&#97;&#46;&#99;&#111;&#109;'>&#119;&#118;&#101;&#103;&#97;&#64;&#119;&#118;&#101;&#103;&#97;&#46;&#99;&#111;&#109;</a>.</p>
+                        <p class="lead text-center">
+                            <input class="timepicker timepicker-with-dropdown text-center"/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div class="page-header"><h2>Download</h2></div>
+<div class="container-full-width">
+    <div class="container">
+        <div class="row row-fluid">
+            <div class="col-lg-12">
+                <h1 class="page-header text-center">Getting Started</h1>
 
-    <p>Latest version of jQuery TimePicker is available for download from GitHub. <a class="btn btn-primary" id="download-button" href="https://github.com/wvega/timepicker/releases" title="Download jQuery TimePicker">Download</a></p>
-</article>
+                <div class="row row-fluid">
+                    <div class="col-sm-6">
+                        <p>To use jQuery Timepicker you'll need to include two files: <code>jquery.timepicker.min.js</code> and <code>jquery.timepicker.min.css</code>. Then, assuming you have an <code>&lt;input&gt;</code> element in your document, with class <code>timepicker</code>, you can use the code on the right (or the code below, if you are reading on mobile) to initialize the plugin.</p>
+                    </div>
+                    <div class="col-sm-6">
+        {% highlight javascript %}
+        $(document).ready(function(){
+            $('input.timepicker').timepicker({});
+        });
+        {% endhighlight %}
+                    </div>
+                </div>
+
+                <h2>Installation</h2>
+
+                <p>The plugin is available from different sources, choose the one that goes better with your project!</p>
+
+                <h3>npm</h3>
+
+                <p>
+    {% highlight bash %}
+    npm i jquery-timepicker
+    {% endhighlight %}
+                </p>
+
+                <h3>Bower</h3>
+
+                <p>
+    {% highlight bash %}
+    bower install jquery-timepicker-wvega --save
+    {% endhighlight %}
+                </p>
+
+                <h3>cdnjs</h3>
+
+                <p>jQuery Timepicker is available in cdnjs. To get a list of all avaiable versions and files, go to <a href="https://cdnjs.com/libraries/timepicker">https://cdnjs.com/libraries/timepicker</a>. Alternatively, use the code below to include just the necessary stylesheet and script in your website.</p>
+
+                <p>Paste the following code inside the <code>&lt;head&gt;</code> element of your page:</p>
+
+                <p>
+    {% highlight html %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.css">
+    {% endhighlight %}
+                </p>
+
+                <p>Paste the following code before the <code>&lt;/body&gt;</code> tag:</p>
+
+                <p>
+    {% highlight html %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.js"></script>
+    {% endhighlight %}
+                </p>
+
+                <h3>Download</h3>
+
+                <p>The latest version of jQuery Timepicker is also available for <a href="https://github.com/wvega/timepicker/releases" id="download-button" title="Download jQuery Timepicker">download from GitHub</a>.</p>
+
+                <div class="jt-configuration-demo">
+                    <h2>Configuration</h2>
+
+                    <p>jQuery Timepicker offers several configuration options. Use the demo below to adjust its behaviour to your needs. If you are interested in a detailed description of each of the options available, please go to the <a href="{{ site.baseurl }}/options" title="jQuery Timepicker options page">options page</a>.</p>
+
+                    <form class="jt-configuration-demo-form form-horizontal" role="form">
+                        <div class="jt-configuration-demo-form-fields-container">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="jt-homepage-demo-time-format">Time Format <a href="#" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Try <code>h:mm p</code>, <code>h:mm:ss p</code> or <code>HH:mm:ss</code>"></a></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="jt-homepage-demo-time-format" name="timeFormat" ng-model="model.options.timeFormat">
+                                </div>
+                                <label class="control-label col-sm-2" for="jt-homepage-demo-interval">Interval <a href="#" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Number of minutes between time entries in the dropdown menu"></a></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="jt-homepage-demo-interval" name="interval" ng-model="model.options.interval">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="jt-homepage-demo-min-time">Min Time <a href="#" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="A time string"></a></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="jt-homepage-demo-min-time" name="minTime" ng-model="model.options.minTime">
+                                </div>
+                                <label class="control-label col-sm-2" for="jt-homepage-demo-max-time">Max Time <a href="#" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="A time string"></a></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="jt-homepage-demo-max-time" name="maxTime" ng-model="model.options.maxTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="jt-homepage-demo-default-time">Default Time <a href="#" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="A time string or the word <code>now</code> &mdash; It must be greater or equal than Min Time and less or equal than Max Time"></a></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="jt-homepage-demo-default-time" name="defaultTime" ng-model="model.options.default">
+                                </div>
+                                <label class="control-label col-sm-2" for="jt-homepage-demo-start-time">Start Time <a href="#" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="A time string &mdash; It must be greater or equal than Min Time and less or equal than Max Time"></a></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="jt-homepage-demo-start-time" name="startTime" ng-model="model.options.startTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-1 col-sm-3">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="dynamic" ng-model="model.options.dynamic"> Arrange items so that the first item is chronologically right after the selected time entry
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-offset-1 col-sm-3">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="dropdown" ng-model="model.options.dropdown" checked="checked"> Show a dropdown of time entries
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-offset-1 col-sm-3">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="scrollbar" ng-model="model.options.scrollbar"> Show the scrollbar
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="jt-configuration-demo-example-container">
+                        <div class="row row-fluid">
+                            <div class="col-md-6 col-md-push-6">
+                                <div class="jt-configuration-demo-example-timepicker-container">
+                                    <p class="lead text-center">
+                                        <input class="timepicker text-center"
+                                               jt-timepicker
+                                               time="model.time"
+                                               time-string="model.timeString"
+                                               default-time="model.options.defaultTime"
+                                               time-format="model.options.timeFormat"
+                                               start-time="model.options.startTime"
+                                               min-time="model.options.minTime"
+                                               max-time="model.options.maxTime"
+                                               interval="model.options.interval"
+                                               dynamic="model.options.dynamic"
+                                               scrollbar="model.options.scrollbar"
+                                               dropdown="model.options.dropdown" />
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-md-pull-6">
+                                <div class="jt-configuration-demo-example-code-container">
+    {% highlight javascript %}
+    $('.timepicker').timepicker({
+    });
+    {% endhighlight %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h1 class="page-header text-center">Help &amp; Bug Reports</h1>
+
+                <div class="row row-fluid">
+                    <div class="col-lg-12">
+                        <p>You can post bugs reports and feature suggestions to <a href="https://github.com/wvega/timepicker/issues">GitHub</a>.</p>
+
+                        <p>If you are having problems using the plugin, please post a question to <a href="http://stackoverflow.com/questions/tagged/jquery+timepicker">Stack Overflow</a> using <code>jquery</code> <strong>and</strong> <code>timepicker</code> as tags; I or someone from the community will surely help.</p>
+
+                        <p>Whether your are submitting a bug report or asking for help at <a href="http://stackoverflow.com/questions/tagged/jquery+timepicker">Stack Overflow</a>, please try to include an example demonstrating your problem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

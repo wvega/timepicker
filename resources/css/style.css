@@ -1,19 +1,167 @@
 body {
-  padding: 60px 0 40px;
+  background: #222;
+  font-family: 'Lato', sans-serif;
 }
-/* jQuery Tools applies the 'active' class to the link instead of its
- * parent element (the LI element) */
-.topbar .nav li a.active {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #FFF;
-  text-decoration: none;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Lato', sans-serif;
 }
-.page-header {
-  padding-top: 30px;
+h2 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+p {
+  font-size: 16px;
+  line-height: 23px;
+  font-weight: 300;
+}
+.container-full-width {
+  background: #fff;
+  padding-bottom: 40px;
+  width: 100%;
 }
 #options .label {
   text-transform: none;
 }
 #options .row {
   margin-bottom: 10px;
+}
+.navbar {
+  border: none;
+  border-radius: 0px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  margin-bottom: 0;
+}
+.navbar .navbar-header a {
+  color: #ffffff;
+}
+.navbar-inverse .navbar-nav > li > a {
+  font-size: 1.1em;
+  font-weight: 400;
+}
+.intro {
+  background: #00abff;
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+.intro h1 {
+  color: #ffffff;
+  font-size: 30px;
+}
+.intro h1 strong {
+  color: #002b40;
+}
+.intro p {
+  color: #002b40;
+}
+.intro .form-control {
+  font-size: inherit;
+}
+.intro .timepicker {
+  background: #0196df;
+  border: 1px solid #111111;
+  border-radius: 0;
+  border-width: 0 0 1px;
+  text-align: center;
+}
+.intro .timepicker:focus {
+  outline: none;
+}
+.intro .focus-trap:focus {
+  color: #ffffff;
+  outline: none;
+}
+.intro .focus-trap::selection {
+  background: none;
+}
+.options .row {
+  margin-bottom: 20px;
+}
+#carbonads {
+  display: block;
+  overflow: hidden;
+  margin: 0 auto 40px;
+  padding: 15px 15px 15px 160px;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+  background: #0196df;
+  border: solid #002b40;
+  border-width: 1px;
+}
+#carbonads a {
+  color: #fff;
+  text-decoration: none;
+}
+#carbonads a:focus {
+  outline: none;
+  text-shadow: 0px 0px 10px #ff1932, 1px 1px 10px #ff1932, -1px -1px 10px #ff1932;
+}
+#carbonads .carbon-img {
+  float: left;
+  margin-left: -145px;
+}
+#carbonads .carbon-img:focus {
+  box-shadow: 0 0 15px #ff1932, 1px 1px 15px #ff1932, -1px -1px 15px #ff1932;
+}
+#carbonads .carbon-poweredby {
+  display: block;
+  color: #111111 !important;
+}
+@media (min-width: 480px) {
+  #carbonads {
+    max-width: 330px;
+  }
+}
+.feedback .envelope {
+  display: block;
+  font-size: 100px;
+  text-align: center;
+}
+.jt-configuration-demo-form .glyphicon {
+  color: #e1f5ff;
+  text-decoration: none;
+}
+.jt-configuration-demo-form .tooltip-inner {
+  max-width: 300px;
+  padding: 6px 8px;
+}
+.jt-configuration-demo-form-fields-container {
+  background: #00abff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: 24px 20px 10px;
+}
+.jt-configuration-demo-example-container {
+  background: #0196df;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.jt-configuration-demo-example-timepicker-container {
+  min-height: 269px;
+  padding: 30px 0 10px;
+}
+.jt-configuration-demo-example-code-container {
+  min-height: 269px;
+  padding: 20px;
+}
+.jt-configuration-demo-example-code-container .highlight {
+  background: none;
+}
+footer {
+  background: #222;
+  color: #999;
+  padding: 60px 0;
+}
+footer a {
+  color: #fff;
+}
+footer a:hover {
+  color: #fff;
+  text-decoration: underline;
 }
