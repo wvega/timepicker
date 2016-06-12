@@ -33,7 +33,7 @@ if ( typeof jQuery !== 'undefined' ) {
                     maxTime: '6:00pm',
                     dynamic: false,
                     dropdown: true,
-                    scrollbar: false
+                    scrollbar: true
                 };
 
             $textfields = $textfields.add($form.find('[name="timeFormat"]').val(options.timeFormat));
