@@ -118,6 +118,10 @@ p {
     max-width: 330px;
   }
 }
+#heap-badge {
+  display: inline-block;
+  margin-left: 20px;
+}
 .feedback .envelope {
   display: block;
   font-size: 100px;
