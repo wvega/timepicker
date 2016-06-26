@@ -28,6 +28,8 @@
       "url": "http://github.com/wvega/timepicker/blob/master/LICENSE-GPL"
     }
   ],
+  "main": "./jquery.timepicker.js",
+  "style": "./jquery.timepicker.css",
   "dependencies": {
     "jquery": ">= 1.4.3"
   },

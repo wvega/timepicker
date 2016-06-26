@@ -7,8 +7,14 @@
  * Copyright (c) 2016 Willington Vega; Licensed MIT, GPL
  */
 
-if (typeof jQuery !== 'undefined') {
-    (function($, undefined) {
+(function (factory) {
+    if ( typeof module === 'object' && typeof module.exports === 'object' ) {
+        factory(require('jquery'), window, document);
+    } else if (typeof jQuery !== 'undefined') {
+        factory(jQuery, window, document);
+    }
+}(function($, window, document, undefined) {
+    (function() {
 
         function pad(str, ch, length) {
             return (new Array(length + 1 - str.length).join(ch)) + str;
@@ -854,5 +860,5 @@ if (typeof jQuery !== 'undefined') {
                 }
             };
         })();
-    })(jQuery);
-}
+    })();
+}));

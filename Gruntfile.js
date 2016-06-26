@@ -94,7 +94,8 @@ module.exports = function(grunt) {
         white: false,
         // environments
         browser: true,
-        jquery: true
+        jquery: true,
+        node: true
       },
       dist: {
         options: {
