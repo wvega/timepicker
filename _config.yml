@@ -1,7 +1,12 @@
 name: jQuery Timepicker
-markdown: kramdown
-highlighter: rouge
-exclude: ['node_modules', 'test']
+repository: wvega/timepicker
+
 timezone: 'America/Bogota'
 permalink: /:year/:month/:day/:title.html
 baseurl: http://timepicker.co
+
+markdown: kramdown
+highlighter: rouge
+exclude: ['node_modules', 'test']
+gems:
+  - jekyll-sitemap
