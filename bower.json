@@ -23,7 +23,7 @@
   },
   "main": [
     "jquery.timepicker.js",
-    "jquery.timepicker.css",
+    "jquery.timepicker.css"
   ],
   "moduleType": "globals",
   "ignore": [
