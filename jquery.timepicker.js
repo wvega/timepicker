@@ -571,6 +571,12 @@
 
                 if (time && time.getMinutes && widget._isValidTime(i, time)) {
                     time = normalize(time);
+                     if (i.options.interval !== null && i.options.lockToInterval === true) {
+                        time.setSeconds(0);
+                        time.setMilliseconds(0);
+                        time.setHours(time.getMinutes() > (60 - Math.ceil(i.options.interval/2)) ? (time.getHours() === 23 ? 0 : time.getHours()+1) : time.getHours());
+                        time.setMinutes((parseInt((time.getMinutes() + (i.options.interval/2))/i.options.interval)  * i.options.interval) % 60);
+                    }
                     i.selectedTime = time;
                     i.element.val(i.format(time, i.options.timeFormat));
 
