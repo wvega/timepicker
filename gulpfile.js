@@ -8,7 +8,7 @@ gulp.task('default', function() {
 
 gulp.task('less', function () {
     stream = Combine(
-        gulp.src('resources/less/**/*.less'),
+        gulp.src('resources/less/style.less'),
         less({}),
         gulp.dest('resources/css/')
     );
