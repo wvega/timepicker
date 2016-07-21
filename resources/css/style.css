@@ -80,39 +80,41 @@ p {
   font-size: 1.1em;
   font-weight: 400;
 }
-.intro {
+.container-blue-background {
   background: #00abff;
+}
+.home-intro {
   padding-top: 20px;
   padding-bottom: 40px;
 }
-.intro h1 {
+.home-intro h1 {
   color: #ffffff;
   font-size: 30px;
 }
-.intro h1 strong {
+.home-intro h1 strong {
   color: #002b40;
 }
-.intro p {
+.home-intro p {
   color: #002b40;
 }
-.intro .form-control {
+.home-intro .form-control {
   font-size: inherit;
 }
-.intro .timepicker {
+.home-intro .timepicker {
   background: #0196df;
   border: 1px solid #111111;
   border-radius: 0;
   border-width: 0 0 1px;
   text-align: center;
 }
-.intro .timepicker:focus {
+.home-intro .timepicker:focus {
   outline: none;
 }
-.intro .focus-trap:focus {
+.home-intro .focus-trap:focus {
   color: #ffffff;
   outline: none;
 }
-.intro .focus-trap::selection {
+.home-intro .focus-trap::selection {
   background: none;
 }
 .options .row {
