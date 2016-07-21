@@ -1,0 +1,165 @@
+body {
+    background: #222;
+    font-family: @font_lato;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: @font_lato;
+}
+h2 {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+p {
+    font-size: 16px;
+    line-height: 23px;
+    font-weight: 300;
+}
+
+.container-full-width {
+    background: #fff;
+    padding-bottom: 40px;
+    width: 100%;
+}
+
+#options {
+    .label {
+        text-transform: none;
+    }
+    .row {
+        margin-bottom: 10px;
+    }
+}
+
+.navbar {
+    // background: @deep_sky_blue;
+    border: none;
+    border-radius: 0px;
+    font-family: @font_lato;
+    font-weight: 300;
+    margin-bottom: 0;
+
+    .container {
+        // background: @deep_sky_blue;
+    }
+
+    .navbar-header a {
+        color: @white;
+    }
+}
+.navbar-inverse .navbar-nav > li > a {
+    // color: @onyx;
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+.intro {
+    background: @deep_sky_blue;
+    padding-top: 20px;
+    padding-bottom: 40px;
+
+    h1 {
+        color: @white;
+        font-size: 30px;
+        strong {
+            color: @oxford_blue;
+        }
+    }
+    p {
+        color: @oxford_blue;
+    }
+
+    .form-control {
+        font-size: inherit;
+    }
+
+    .timepicker {
+        background: @rich_electric_blue;
+        border: 1px solid @onyx;
+        border-radius: 0;
+        border-width: 0 0 1px;
+        text-align: center;
+
+        &:focus {
+            outline: none;
+        }
+    }
+    .focus-trap:focus {
+        color: @white;
+        outline: none;
+    }
+    .focus-trap::selection {
+        background: none;
+    }
+}
+
+.options {
+    .row {
+        margin-bottom: 20px;
+    }
+}
+
+#heap-badge {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.feedback {
+    .envelope {
+        display: block;
+        font-size: 100px;
+        text-align: center;
+    }
+}
+
+.jt-configuration-demo-form {
+    .glyphicon {
+        color: #e1f5ff;
+        text-decoration: none;
+    }
+    .tooltip-inner {
+        max-width: 300px;
+        padding: 6px 8px;
+    }
+}
+
+.jt-configuration-demo-form-fields-container {
+    background: @deep_sky_blue;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 24px 20px 10px;
+}
+
+.jt-configuration-demo-example-container {
+    background: @rich_electric_blue;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.jt-configuration-demo-example-timepicker-container {
+    min-height: 269px;
+    padding: 30px 0 10px;
+}
+
+.jt-configuration-demo-example-code-container {
+    min-height: 269px;
+    padding: 20px;
+
+    .highlight {
+        background: none;
+    }
+}
+
+footer {
+    background: #222;
+    color: #999;
+    padding: 60px 0;
+
+    a {
+        color: #fff;
+    }
+    a:hover {
+        color: #fff;
+        text-decoration: underline;
+    }
+}

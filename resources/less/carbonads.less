@@ -1,0 +1,50 @@
+#carbonads {
+    display: block;
+    overflow: hidden;
+    margin: 0 auto 40px;
+    padding: 15px 15px 15px 160px;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: left;
+    background: @rich_electric_blue;
+    border: solid @oxford_blue;
+    border-width: 1px;
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+    a:focus {
+        outline: none;
+        text-shadow: 0px 0px 10px @torch_red, 1px 1px 10px @torch_red, -1px -1px 10px @torch_red;
+    }
+
+    .carbon-img {
+        float: left;
+        margin-left: -145px;
+    }
+    .carbon-img:focus {
+        box-shadow: 0 0 15px @torch_red, 1px 1px 15px @torch_red, -1px -1px 15px @torch_red;
+    }
+
+    .carbon-poweredby {
+        display: block;
+        color: @onyx !important;
+    }
+}
+@media (min-width: 480px) {
+    #carbonads {
+        max-width: 330px;
+        // margin: 50px auto 0;
+        // border-width: 1px;
+        // border-radius: 4px;
+    }
+}
+@media (min-width: 992px) {
+    #carbonads {
+        // position: absolute;
+        // top: 0;
+        // right: 15px;
+        // margin-top: 0;
+    }
+}
