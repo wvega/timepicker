@@ -1,10 +1,10 @@
 if ( typeof jQuery !== 'undefined' ) {
     (function($) {
-        $('.intro .timepicker-without-dropdown').timepicker({
+        $('.home-intro .timepicker-without-dropdown').timepicker({
             dropdown: false
         });
 
-        $('.intro .timepicker-with-dropdown').timepicker({
+        $('.home-intro .timepicker-with-dropdown').timepicker({
         });
 
         $(function () {
