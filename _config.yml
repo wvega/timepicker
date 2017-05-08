@@ -3,7 +3,8 @@ repository: wvega/timepicker
 
 timezone: 'America/Bogota'
 permalink: /:year/:month/:day/:title.html
-baseurl: http://timepicker.co
+baseurl: ""
+url: http://timepicker.co
 
 markdown: kramdown
 highlighter: rouge
