@@ -211,6 +211,7 @@
                     last: function() { return widget.last(i) ;},
                     selected: function() { return widget.selected(i) ;},
                     open: function() { return widget.open(i) ;},
+                    reposition: function () { return widget.reposition(i); },
                     close: function() { return widget.close(i) ;},
                     closed: function() { return widget.closed(i) ;},
                     destroy: function() { return widget.destroy(i) ;},
@@ -259,8 +260,22 @@
                         i.next();
                         break;
                     default:
-                        if (!widget.closed()) {
+                        if (!i.options.showOnInput && !widget.closed()) {
                             i.close(true);
+                        }
+                        break;
+                    }
+                }).bind('keyup.timepicker', function(event) {
+                    switch (event.which || event.keyCode) {
+                    case widget.keyCode.ENTER:
+                    case widget.keyCode.NUMPAD_ENTER:
+                    case widget.keyCode.UP:
+                    case widget.keyCode.DOWN:
+                        break;
+                    default:
+                        if (i.options.showOnInput) {
+                            i.close(true);
+                            i.open();
                         }
                         break;
                     }
@@ -374,13 +389,20 @@
                 // idea from https://prototype.lighthouseapp.com/projects/8887/tickets/248-results-popup-from-ajaxautocompleter-disappear-when-user-clicks-on-scrollbars-in-ie6ie7
                 i.element.data('timepicker-event-namespace', Math.random());
 
-                $(document).bind('click.timepicker-' + i.element.data('timepicker-event-namespace'), function(event) {
+                $(document).bind('click.timepicker-' + i.element.data('timepicker-event-namespace') + ' ' +
+                    'keydown.timepicker-' + i.element.data('timepicker-event-namespace') + ' ' +
+                    'keyup.timepicker-' + i.element.data('timepicker-event-namespace'), function(event) {
                     if (i.element.get(0) === event.target) {
                         i.element.data('timepicker-user-clicked-outside', false);
                     } else {
                         i.element.data('timepicker-user-clicked-outside', true).blur();
                     }
                 });
+                // make sure we reposition the timepicker when the viewport changes
+                $(window).bind('resize.timepicker-' + i.element.data('timepicker-event-namespace'), i.reposition);
+                // use vanilla javascript to be able to use event capturing instead of bubbling: otherwise we have to listen
+                // on all parent containers.
+                window.addEventListener('scroll', i.reposition, true);
 
                 // if a date is already selected and options.dynamic is true,
                 // arrange the items in the list so the first item is
@@ -501,6 +523,46 @@
                 return i.element;
             },
 
+            reposition: function (i) {
+                var widget = this;
+                var containerDecorationHeight = widget.container.outerHeight() - widget.container.height(),
+                    zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css( 'z-index' ),
+                    elementOffset = i.element.offset();
+
+                // position the container right below the element, or as close to as possible.
+                widget.container.css( {
+                    top: elementOffset.top + i.element.outerHeight(),
+                    left: elementOffset.left
+                } );
+
+                // then show the container so that the browser can consider the timepicker's
+                // height to calculate the page's total height and decide if adding scrollbars
+                // is necessary.
+                widget.container.show();
+
+                // now we need to calculate the element offset and position the container again.
+                // If the browser added scrollbars, the container's original position is not aligned
+                // with the element's final position. This step fixes that problem.
+                widget.container.css( {
+                    left: i.element.offset().left,
+                    height: widget.ui.outerHeight() + containerDecorationHeight,
+                    width: i.element.outerWidth(),
+                    zIndex: zindex,
+                    cursor: 'default'
+                } );
+
+
+                var calculatedWidth = widget.container.width() - ( widget.ui.outerWidth() - widget.ui.width() );
+
+                // hardcode ui, viewport and item's width. I couldn't get it to work using CSS only
+                widget.ui.css( { width: calculatedWidth } );
+                widget.viewport.css( { width: calculatedWidth } );
+                i.items.css( { width: calculatedWidth } );
+
+
+                return i.element;
+            },
+
             close: function(i) {
                 var widget = this;
 
@@ -510,7 +572,12 @@
                     widget.ui.children().removeClass('ui-state-hover');
                 }
 
-                $(document).unbind('click.timepicker-' + i.element.data('timepicker-event-namespace'));
+                $(document).unbind('click.timepicker-' + i.element.data('timepicker-event-namespace') + ' ' +
+                    'keydown.timepicker-' + i.element.data('timepicker-event-namespace') + ' ' +
+                    'keyup.timepicker-' + i.element.data('timepicker-event-namespace'));
+
+                $(window).unbind('resize.timepicker-' + i.element.data('timepicker-event-namespace'));
+                window.removeEventListener('scroll', i.reposition, true);
 
                 return i.element;
             },
@@ -651,6 +718,7 @@
                 'next',
                 'previous',
                 'open',
+                'reposition',
                 'close',
                 'destroy',
                 'setTime'
