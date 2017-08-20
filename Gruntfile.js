@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         ' * <%= pkg.description %>\n' +
         ' *\n' +
         ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n' +
+        ' Licensed <%= _.map(pkg.licenses, "type").join(", ") %>\n' +
         ' */\n' +
         '\n'
     },
