@@ -439,20 +439,26 @@
                     widget.viewport.css( { paddingRight: 40 } );
                 }
 
-                var containerDecorationHeight = widget.container.outerHeight() - widget.container.height(),
-                    zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css( 'z-index' ),
-                    elementOffset = i.element.offset();
+                var elementOffset = i.element.offset(),
+                    containerOuterHeight = widget.container.outerHeight(),
+                    containerTop = elementOffset.top + i.element.outerHeight(),
+                    $window = $(window);
 
-                // position the container right below the element, or as close to as possible.
-                widget.container.css( {
-                    top: elementOffset.top + i.element.outerHeight(),
-                    left: elementOffset.left
-                } );
+                // Check if timepicker would be off-screen and position accordingly.
+                if ( containerTop > ( $window.scrollTop() + $window.height() - containerOuterHeight ) ) {
+                    containerTop = elementOffset.top - containerOuterHeight;
+                }
+
+                // position the container as close as possible to the element.
+                widget.container.css( { top: containerTop, left: elementOffset.left } );
 
                 // then show the container so that the browser can consider the timepicker's
                 // height to calculate the page's total height and decide if adding scrollbars
                 // is necessary.
                 widget.container.show();
+
+                var containerDecorationHeight = containerOuterHeight - widget.container.height(),
+                    zindex = i.options.zindex ? i.options.zindex : i.element.offsetParent().css( 'z-index' );
 
                 // now we need to calculate the element offset and position the container again.
                 // If the browser added scrollbars, the container's original position is not aligned
