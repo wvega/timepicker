@@ -472,7 +472,7 @@ if (jQuery.fn.jquery < '1.4') {
 
 
 
-        module('TimePicker Event Handlers', { teardown: teardown });
+        module('TimePicker Event Handlers');
 
         test('opened/closed', function() {
             var timepicker = $('#timepicker').timepicker(),
@@ -549,21 +549,6 @@ if (jQuery.fn.jquery < '1.4') {
             });
 
             system.queue('test', function(/*next*/) { start(); }).dequeue('test');
-        });
-
-        test('change event is triggered when a time entry is selected', function() {
-            var timepicker = $('#timepicker').timepicker();
-            var instance = timepicker.timepicker();
-
-            $('#timepicker').change(function(event) {
-                equal($(event.target).val(), '01:00 PM', 'The value of the element matches expected value.');
-                ok(true, 'The handler for change event was executed');
-                start();
-            });
-
-            expect(2); stop();
-
-            instance.setTime('1300');
         });
     });
 })(jQuery);

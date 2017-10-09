@@ -272,8 +272,8 @@
                             i.close();
                         }
                     });
-                }).bind('change.timepicker', function(event, time) {
-                    if (typeof time === 'undefined' && i.closed()) {
+                }).bind('change.timepicker', function() {
+                    if (i.closed()) {
                         i.setTime($.fn.timepicker.parseTime(i.element.val()));
                     }
                 });
@@ -589,7 +589,6 @@
                 // custom change event and change callback
                 // TODO: add documentation about this event
                 if (previous !== null || i.selectedTime !== null) {
-                    i.element.trigger('change', [time]);
                     i.element.trigger('time-change', [time]);
                     if ($.isFunction(i.options.change)) {
                         i.options.change.apply(i.element, [time]);
