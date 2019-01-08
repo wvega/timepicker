@@ -219,6 +219,7 @@
                     format: function(time, format) { return widget.format(i, time, format); },
                     getTime: function() { return widget.getTime(i) ;},
                     setTime: function(time, silent) { return widget.setTime(i, time, silent); },
+					clearSelectedTime: function() { return widget.clearSelectedTime(i); },
                     option: function(name, value) { return widget.option(i, name, value); }
                 });
 
@@ -597,7 +598,13 @@
 
                 return i.element;
             },
-
+			
+			clearSelectedTime: function(i){
+            	i.element.val('');
+            	
+            	return i.element;
+            },
+			
             option: function(i, name, value) {
                 if (typeof value === 'undefined') {
                     return i.options[name];
