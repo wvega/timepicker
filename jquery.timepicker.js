@@ -160,7 +160,7 @@
             _hasScroll: function() {
                 // fix for jQuery 1.6 new prop method
                 var m = typeof this.ui.prop !== 'undefined' ? 'prop' : 'attr';
-                return this.ui.height() < this.ui[m]('scrollHeight');
+                return this.ui.height() < this.viewport[m]('scrollHeight');
             },
 
             /**
@@ -281,6 +281,8 @@
 
             select: function(i, item) {
                 var widget = this, instance = i === false ? widget.instance : i;
+                item.parent().find('a.ui-state-active').removeClass('ui-state-active');         // Clear select class from all
+                item.children('a').addClass('ui-state-active');                                 // Set select class
                 widget.setTime(instance, $.fn.timepicker.parseTime(item.children('a').text()));
                 widget.close(instance, true);
             },
@@ -294,20 +296,20 @@
                     widget.deactivate();
                 }
 
-                if (widget._hasScroll()) {
+                /* if (widget._hasScroll()) {
                     var offset = item.offset().top - widget.ui.offset().top,
-                        scroll = widget.ui.scrollTop(),
-                        height = widget.ui.height();
+                        scroll = 0, //widget.ui.scrollTop(),
+                        height = widget.ui.height()/2;
                     if (offset < 0) {
-                        widget.ui.scrollTop(scroll + offset);
+                        widget.viewport.scrollTop(scroll + offset);
                     } else if (offset >= height) {
-                        widget.ui.scrollTop(scroll + offset - height + item.height());
+                        widget.viewport.scrollTop(scroll + offset - height + item.height());
                     }
-                }
+                } */
 
                 widget.active = item.eq(0).children('a').addClass('ui-state-hover')
                                                         .attr('id', 'ui-active-item')
-                                          .end();
+                                                        .end();
             },
 
             deactivate: function() {
@@ -488,13 +490,27 @@
                         }
 
                         if (time.getTime() === selectedTime.getTime()) {
+                            //widget.select(i, item);
+                            item.children('a').addClass('ui-state-active');
                             widget.activate(i, item);
+
+                            if (i.options.dynamic == false && widget._hasScroll()) {
+                                var offset = item.offset().top - widget.viewport.offset().top,
+                                    scroll = widget.viewport.scrollTop(),
+                                    height = (widget.viewport.height() - item.height())/2;
+                                    widget.viewport.scrollTop(scroll + offset - height);
+                            }
+
                             return false;
                         }
                         return true;
                     });
                 } else {
                     widget.deactivate(i);
+                }
+
+                if ($.isFunction(i.options.open)) {
+                    i.options.open.apply(i.element);
                 }
 
                 // don't break the chain
@@ -511,6 +527,10 @@
                 }
 
                 $(document).unbind('click.timepicker-' + i.element.data('timepicker-event-namespace'));
+
+                if ($.isFunction(i.options.close)) {
+                    i.options.close.apply(i.element);
+                }
 
                 return i.element;
             },
@@ -643,6 +663,8 @@
             dropdown: true,
             scrollbar: false,
             // callbacks
+            open: function(/*time*/) {},
+            close: function(/*time*/) {},
             change: function(/*time*/) {}
         };
 
