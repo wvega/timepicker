@@ -497,6 +497,10 @@
                     widget.deactivate(i);
                 }
 
+                if ($.isFunction(i.options.open)) {
+                    i.options.open.apply(i.element);
+                }
+
                 // don't break the chain
                 return i.element;
             },
@@ -511,6 +515,10 @@
                 }
 
                 $(document).unbind('click.timepicker-' + i.element.data('timepicker-event-namespace'));
+
+                if ($.isFunction(i.options.close)) {
+                    i.options.close.apply(i.element);
+                }
 
                 return i.element;
             },
@@ -643,6 +651,8 @@
             dropdown: true,
             scrollbar: false,
             // callbacks
+            open: function(/*time*/) {},
+            close: function(/*time*/) {},
             change: function(/*time*/) {}
         };
 
