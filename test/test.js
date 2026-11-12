@@ -550,5 +550,39 @@ if (jQuery.fn.jquery < '1.4') {
 
             system.queue('test', function(/*next*/) { start(); }).dequeue('test');
         });
+
+        test('ignores selection when an open input becomes disabled', function() {
+            var timepicker = $('<input type="text">').appendTo('#main').val('09:00').timepicker({
+                    timeFormat: 'HH:mm',
+                    minTime: '09:00',
+                    maxTime: '12:00',
+                    interval: 30
+                }),
+                instance = timepicker.timepicker(),
+                changes = 0,
+                option;
+
+            timepicker.on('time-change', function() { changes++; });
+            timepicker.focus();
+            option = instance.widget.ui.find('a').filter(function() {
+                return $(this).text() === '09:30';
+            });
+
+            try {
+                timepicker.prop('disabled', true);
+                option.simulate('click');
+                equal(timepicker.val(), '09:00');
+                equal(changes, 0);
+
+                timepicker.prop('disabled', false);
+                option.simulate('click');
+                equal(timepicker.val(), '09:30');
+                equal(changes, 1);
+            } finally {
+                timepicker.prop('disabled', false).off('time-change');
+                instance.destroy();
+                timepicker.remove();
+            }
+        });
     });
 })(jQuery);
