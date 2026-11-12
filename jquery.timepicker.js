@@ -281,6 +281,9 @@
 
             select: function(i, item) {
                 var widget = this, instance = i === false ? widget.instance : i;
+                if (instance.element.is(':disabled')) {
+                    return;
+                }
                 widget.setTime(instance, $.fn.timepicker.parseTime(item.children('a').text()));
                 widget.close(instance, true);
             },
